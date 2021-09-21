@@ -18,7 +18,13 @@ int main()
 	float decimal = 0.5;
 	printf("%f\n", decimal);
 
+	printf("%s\n", "toto");
 
+	long long int t = 123456789123456789;
+	printf("%lld\n", t);
+
+	int64_t t1 = 123456789123456789;
+	printf("%lld\n", t1);
 	
 }
 
