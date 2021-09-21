@@ -18,7 +18,7 @@ int main()
 	float decimal = 0.5;
 	printf("%f\n", decimal);
 
-
+	printf("%s\n", 'a');
 	
 }
 

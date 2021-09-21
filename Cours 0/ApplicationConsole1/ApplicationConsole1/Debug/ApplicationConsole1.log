@@ -1,3 +1,3 @@
-﻿  pch.cpp
-  ApplicationConsole1.cpp
+﻿  ApplicationConsole1.cpp
+c:\workspace\emile-gpro2\cours 0\applicationconsole1\applicationconsole1\applicationconsole1.cpp(21): warning C4477: 'printf' : la chaîne de format '%s' nécessite un argument de type 'char *', mais l'argument variadique 1 est de type 'int'
   ApplicationConsole1.vcxproj -> C:\WorkSpace\Emile-GPro2\Cours 0\ApplicationConsole1\Debug\ApplicationConsole1.exe
