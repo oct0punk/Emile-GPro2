@@ -3,38 +3,33 @@
 
 #include "pch.h"
 #include <iostream>
+#include "Vec4.h"
 
-namespace GP2 {
+struct Vec {
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
 
-}
+	Vec(float x, float y, float z) {
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+};
 
 int main()
 {
-	printf("0\n");
+	/*Vec4 vec;
+	vec.Set(1.0f, 4.0f, 7.0, 0.0f);
+	printf("%f %f %f %f\n", vec.x, vec.y, vec.z, vec.w);
 
-	int zero = 0;
-	printf("%i\n", zero);
+	Vec4 vec2;
+	vec2.Set(-0.1f, 0.2f, -3.2f, 1.0f);
+	printf("%f %f %f %f\n", vec2.x, vec2.y, vec2.z, vec2.w);
 
-	float decimal = 0.5;
-	printf("%f\n", decimal);
+	Vec4 add = vec.Add(vec2);
+	printf("%f %s %f %s %f %s %f\n", add.x, ",", add.y, ",", add.z, ",", add.w);*/
 
-	printf("%s\n", "toto");
-
-	long long int t = 123456789123456789;
-	printf("%lld\n", t);
-
-	int64_t t1 = 123456789123456789;
-	printf("%lld\n", t1);
-	
+	int tab[] = { 1, 2, 3, 4 };
+	printf("%i\n %i\n %i\n %i\n", *&tab[0], *&tab[1], *&tab[2], *&tab[3]);
 }
-
-// Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
-// Déboguer le programme : F5 ou menu Déboguer > Démarrer le débogage
-
-// Conseils pour bien démarrer : 
-//   1. Utilisez la fenêtre Explorateur de solutions pour ajouter des fichiers et les gérer.
-//   2. Utilisez la fenêtre Team Explorer pour vous connecter au contrôle de code source.
-//   3. Utilisez la fenêtre Sortie pour voir la sortie de la génération et d'autres messages.
-//   4. Utilisez la fenêtre Liste d'erreurs pour voir les erreurs.
-//   5. Accédez à Projet > Ajouter un nouvel élément pour créer des fichiers de code, ou à Projet > Ajouter un élément existant pour ajouter des fichiers de code existants au projet.
-//   6. Pour rouvrir ce projet plus tard, accédez à Fichier > Ouvrir > Projet et sélectionnez le fichier .sln.
