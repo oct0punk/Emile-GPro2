@@ -34,11 +34,31 @@ void Strcpy(char* dest, const char* maChaine) {
 	*(dest + count) = 0;
 }
 
+void Strncpy(char* dest, const char* maChaine, int nchars) {
+	int count = 0;
+	bool zeroFound = false;
+	for (char* i = dest; i < dest + nchars; i++) {
+
+		if (zeroFound)
+			*i = 0;
+		else
+			*i = *(maChaine + count);
+		count++;
+	}
+	*(dest + count) = 0;
+}
+
+
 int main()
 {
 	const char* str = "epuisette";
 	char* dest = (char*)malloc(sizeof(char)*strLen(str));
-	Strcpy(dest, str);
+	int n = 3;
+	Strncpy(dest, str, n);
+
+	for (char* i = dest; i < (dest + n); i++) {
+		printf("%c", *i);
+	}
 
 	return 0;
 }
