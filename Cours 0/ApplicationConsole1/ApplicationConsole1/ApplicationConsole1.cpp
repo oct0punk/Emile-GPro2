@@ -25,12 +25,20 @@ int strLen(const char* maChaine) {
 }
 
 
+void Strcpy(char* dest, const char* maChaine) {
+	int count = 0;
+	for (char* i = dest; i < dest + strLen(maChaine); i++) {
+		*i = *(maChaine + count);
+		count++;
+	}
+	*(dest + count) = 0;
+}
+
 int main()
 {
-	int nbA = Countc("anarchie", 'a');
-
-	printf("nombre de a:%d\n", nbA);
-	printf("%i", strLen("anarchie"));
+	const char* str = "epuisette";
+	char* dest = (char*)malloc(sizeof(char)*strLen(str));
+	Strcpy(dest, str);
 
 	return 0;
 }
