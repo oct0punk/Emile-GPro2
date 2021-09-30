@@ -152,7 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IntArray.hpp" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Str.h" />
     <ClInclude Include="Vec4.h" />
   </ItemGroup>
   <ItemGroup>
