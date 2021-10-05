@@ -19,16 +19,17 @@ struct LinkedList {
 	}
 
 	void RemoveFirst() {
-		Node* crématorium = First->Next;
+		Node* newFirst = First->Next;
 		free(First);
-		First = crématorium;
+		First = newFirst;
 	}
 	
 	void RemoveLast() {
 		Node* node = First;
-		while (node->Next != nullptr)
+		while (node->Next->Next != nullptr)
 			node = node->Next;
-		free(node);
+		node->Next = nullptr;
+		free(node->Next);
 	}
 
 	void Print() {
@@ -37,6 +38,16 @@ struct LinkedList {
 			printf("%i, ", node->value);
 			node = node->Next;
 		}
+	}
+
+	int GetLength() {
+		Node* node = First;
+		int count = 1;
+		while (node->Next != nullptr) {
+			node = node->Next;
+			count++;
+		}
+		return count;
 	}
 };
 
