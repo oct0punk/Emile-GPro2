@@ -49,7 +49,10 @@ struct LinkedList {
 		}
 		return count;
 	}
+
+	static void test();
 };
+
 
 LinkedList* CreateLinkedList(int firstVal) {
 	LinkedList* listPtr = (LinkedList*)malloc(sizeof(LinkedList));
