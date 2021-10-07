@@ -1,6 +1,7 @@
 #pragma once
-
+#include <utility>
 #include <cstdlib>
+#include <cstring>
 
 class IntArray {
 public:
@@ -10,14 +11,14 @@ public:
 public:
 	IntArray() {
 		// Faire l'allocation dynamique de data qui sera de taille "suffisamment grande"
-		data = new int[65536];
-		length = 65536;
+		data = new int[length = 65536];
+		memset(data, 0, 65535 * sizeof(int));
 	};
 
 	IntArray(int size) {
 		// Faire l'allocation dynamique de data qui sera de taille "suffisamment grande"
-		data = new int[size];
-		length = size;
+		data = new int[length = size];
+		memset(data, 0, size * sizeof(int));
 	};
 
 	~IntArray() {
@@ -35,9 +36,7 @@ public:
 
 	void InsertAt(int idx, int value) {
 		int sz = length;
-		int resz = idx > length ?
-			idx + 1 : length + 1;
-		Resize(resz);
+		Resize(std::max<int>(idx + 1, length + 1));
 		for (; sz > idx; sz--)
 			data[sz] = data[sz - 1];
 		data[idx] = value;
@@ -50,16 +49,12 @@ public:
 		InsertAt(idx, value);
 	}
 
-
-	static int cmp(const void* v0, const void* v1) {
-
-		return (*(int*)v1 - *(int*)v0) < 0;
+	void InsertAtMove(int idx, int value) {
+		int sz = length;
+		Resize(std::max<int>(idx + 1, length + 1));
+		memmove(&data[idx + 1], &data[idx], (sz - idx) * sizeof(int));
+		data[idx] = value;
 	}
-
-	void Sort() {
-		::qsort(data, length, sizeof(int), cmp);
-	}
-
 
 	int Get(int idx) {
 		//Récupérer la donnée à l'index
@@ -71,20 +66,23 @@ public:
 	}
 
 
-	void Resize(int newSize) {
-		if (length >= newSize)
-			return;
+	static int cmp(const void* v0, const void* v1) {
 
+		return (*(int*)v1 - *(int*)v0);
+	}
+
+	void Sort() {
+		::qsort(data, length, sizeof(int), cmp);
+	}
+
+	void Resize(int newSize) {
 		int* ndata = new int[newSize];
-		for (int i = 0; i < length; i++) {
-			ndata[i] = data[i];
-		}
-		for (int i = length; i < newSize; i++) {
-			ndata[i] = 0;
-		}
+		memset(ndata, 0, newSize * sizeof(int));
+		memcpy(ndata, data, length * sizeof(int));
 		int* oldData = data;
 		this->data = ndata;
 		delete oldData;
 		length = newSize;
 	}
+
 };

@@ -2,8 +2,7 @@
 //
 															
 #include "pch.h"											
-#include <iostream>											
-#include "BinaryTree.h"
+#include <iostream>
 #include "LinkedList.h"
 #include "IntArray.hpp"
 															
@@ -11,8 +10,4 @@
 															
 int main()													
 {
-	LinkedList list;
-	list.test();
-
-	return 0;
 }

@@ -1,4 +1,7 @@
 #pragma once
+#include <stdlib.h>
+#include <malloc.h>
+#include <iostream>
 
 struct Node {
 	int value;
@@ -50,7 +53,6 @@ struct LinkedList {
 		return count;
 	}
 
-	static void test();
 };
 
 
