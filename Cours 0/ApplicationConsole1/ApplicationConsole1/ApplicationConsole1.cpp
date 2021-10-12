@@ -3,23 +3,11 @@
 
 #include "pch.h"											
 #include <iostream>
-#include "IntList.h"
+#include "IntTree.h"
 
 
 
-int main()
+int main32343()
 {
-	IntList* tata = (IntList*)malloc(sizeof(IntList));
-	tata->value = 90;
-
-	if (IntList::length(tata) != 1) throw "alarm?";
-	if (IntList::length(0) != 0) throw "alarm?";
-
-	tata = IntList::appendFirst(tata, 33);
-	if (IntList::length(tata) != 2) throw "alarm?";
-	IntList::remove(tata, 33);
-	if (IntList::length(tata) != 0) throw "alarm?";
-	
-	
-
+	return 0;
 }
