@@ -61,7 +61,7 @@ IntTree* merge(IntTree* a, IntTree* b) {
 
 
 
-int main() {
+int main0() {
 
 	IntTree* tree = create(10);
 
