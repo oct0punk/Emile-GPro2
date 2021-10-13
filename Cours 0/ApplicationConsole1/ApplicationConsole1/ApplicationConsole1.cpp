@@ -67,14 +67,22 @@ int mul(int a, int b) {
 int divInt(int a, int b) {
 	if (a == 0) return 0;
 	if (b == 1) return a;
-	if (a < b) return 0;
-	if (b == 0) throw "Division par zero";
-
-	if ()
+	if (b == 0) throw "division by zero";
+	if (a < 0)  return sub(0, divInt(sub(0, a), b));
+	if (a < b)  return 0;
 	return 1 + divInt(sub(a, b), b);
+}
+
+int modulo(int a, int b) {
+	if (a == b) return 0;
+	if (b == 1) return 0;
+	if (a < b)
+		return a;
+	if (a > b)
+		return modulo(a - b, b);
 }
 
 int main()
 {
-	printf("%i", divInt(6, 1));
+	printf("%i", modulo(10, 2));
 }
