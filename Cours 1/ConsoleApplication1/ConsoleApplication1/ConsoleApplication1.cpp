@@ -201,12 +201,16 @@ int mulExplicit(int a, int b, int tempResult) {
 }
 
 int divIntExplicit(int a, int b, int tempResult) {
-
+	if (a == 0) return 0;
+	if (b == 1) return 1;
+	if (b == 0) throw "non";
+	if (a < b) return divIntExplicit(a, -b, -tempResult);
+	return divIntExplicit(a - b, b, tempResult + 1);
 }
 #pragma endregion
 
 int main()
 {
-	int jeperdsmeschveux = mulExplicit(4, -8, 0);
+	int jeperdsmeschveux = divIntExplicit(4, -8, 0);
 	return 0;
 }
