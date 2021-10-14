@@ -1,0 +1,4 @@
+﻿  ConsoleApplication1.cpp
+C:\WorkSpace\Emile-GPro2\Cours 1\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(170): warning C4715: 'FindEnd' : les chemins de contrôle ne retournent pas tous une valeur
+C:\WorkSpace\Emile-GPro2\Cours 1\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(178): warning C4715: 'StrCat' : les chemins de contrôle ne retournent pas tous une valeur
+  ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\Cours 1\ConsoleApplication1\Debug\ConsoleApplication1.exe
