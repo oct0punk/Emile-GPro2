@@ -17,12 +17,29 @@ double getTimeStamp() //retourne le temps actuel en seconde
 
 int main()
 {	
-	srand(0);
-	Int64Array ti6;
-	double t0 = getTimeStamp();
-	for (int i = 0; i < 1000; i++) {
-		ti6.PushBack(rand());
+	Int64Array toto;
+	for (int i = 0; i < 5000; i++) {
+		toto.PushBack(i*i);
 	}
-	double t1 = getTimeStamp();
-	printf("time elapsed : %lld\n", (t1 - t0));
+	printf("\n");
+
+	{
+		double t0 = getTimeStamp();
+		for (int i = 0; i < toto.curSize - 1; i++) {
+			int64_t random = (rand() % toto.curSize * toto.curSize);
+			int idx = toto.bSearch(random, 0, toto.curSize - 1);
+		}
+		double t1 = getTimeStamp();
+		printf("\nRecursive time elapsed : %llf", (t1 - t0));
+	}
+	{
+		double t0 = getTimeStamp();
+		for (int i = 0; i < toto.curSize - 1; i++) {
+			int64_t random = (rand() % toto.curSize * toto.curSize);
+			int idx = toto.bSearchIter(random);
+		}
+		double t1 = getTimeStamp();
+		printf("\nIterative time elapsed : %llf\n", (t1 - t0));
+	}
+
 }
