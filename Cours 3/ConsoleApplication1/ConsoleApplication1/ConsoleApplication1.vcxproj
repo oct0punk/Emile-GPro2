@@ -146,6 +146,7 @@
     <ClInclude Include="IntArray.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Str.h" />
+    <ClInclude Include="Tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

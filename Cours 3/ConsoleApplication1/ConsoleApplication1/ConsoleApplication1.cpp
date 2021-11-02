@@ -6,6 +6,7 @@
 #include <chrono>
 #include "List.h"
 #include <vector>
+#include "Tree.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -21,10 +22,7 @@ typedef List<double>		ListD;
 typedef List<float>			ListF;
 typedef List<int>			ListI;
 typedef List<std::string>	ListS;
-
-
-int main()
-{	
+int main0() {
 	std::vector<double> vd = { 0.0, 1.0, 2.0 };
 	vd.push_back(13);
 	vd[0] = 14;
@@ -46,5 +44,18 @@ int main()
 			iter++;
 	}
 	printf("\n------------");
+
+	return 0;
+}
+
+
+typedef Tree<int>			IntTree;
+typedef Tree<std::string>	StrTree;
+int main()
+{	
+	IntTree* root = new IntTree(8200200);
+	root->Insert(root, 8033033);
+	root->Insert(root, 8202100);
+
 
 }
