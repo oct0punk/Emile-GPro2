@@ -2,32 +2,35 @@
 #include <cstring>
 #include <stdlib.h>
 
+template<typename Type>
 class List {
 public:
-	double val = 0.0;
+	Type val;
 	List* next = nullptr;
 
-	List(double elem) {
+	List(Type elem) {
 		val = elem;
 	}
 
-	List(double elem, List* next) {
+	List(Type elem, List* next) {
 		val = elem;
 		this->next = next;
 	}
 
 
-	List* PushFirst(List* list, double elem) {
+	List* PushFirst(List* list, Type elem) {
 		return new List(elem, list);
 	}
 
-	List* PushBack(List* node, double elem) {
-		if (node->next) return PushBack(node->next, elem);
-		node->next = (List*)malloc(sizeof(List));
-		node->next->val = elem;
+	List* PushBack(Type elem) {
+		if (!next)
+			next = new List(elem);
+		else
+			next->PushBack(elem);
+		return next;
 	}
 
-	List* Remove(double elem) {
+	List* Remove(Type elem) {
 		if (val == elem) {
 			List* rest = next;
 			delete this;

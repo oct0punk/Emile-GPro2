@@ -2,10 +2,11 @@
 //
 
 #include <iostream>
-#include "IntArray.h"
 #include <ctime>
 #include <chrono>
 #include "List.h"
+#include <vector>
+
 using namespace std;
 using namespace std::chrono;
 
@@ -16,11 +17,34 @@ double getTimeStamp() //retourne le temps actuel en seconde
 	return ns.count() / 1000000000.0;
 }
 
+typedef List<double>		ListD;
+typedef List<float>			ListF;
+typedef List<int>			ListI;
+typedef List<std::string>	ListS;
+
+
 int main()
 {	
-	List* list = new List(1.0);
-	list = list->PushFirst(list, 67.98);
-	list = list->PushFirst(list, 6798.546);
-	list = list->PushFirst(list, 0.6666);
-	list->Remove(1.0);
+	std::vector<double> vd = { 0.0, 1.0, 2.0 };
+	vd.push_back(13);
+	vd[0] = 14;
+	for (int i = 0; i < vd.size(); i++) {
+		printf("%f", vd[i]);
+	}
+	printf("\n------------");
+
+	for (auto f : vd) {
+		printf("%f", f);
+	}
+	printf("\n------------");
+
+	for (auto iter = vd.begin(); iter != vd.end();) {
+		printf("%f", *iter);
+		if (*iter == 1.0)
+			iter = vd.erase(iter);
+		else
+			iter++;
+	}
+	printf("\n------------");
+
 }
