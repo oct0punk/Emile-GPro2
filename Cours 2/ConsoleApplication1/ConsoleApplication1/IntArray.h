@@ -1,59 +1,45 @@
 #pragma once
-#include <cstdint>
-#include <cstring>
-#include <malloc.h>
-
+#include<stdlib.h>
+#include<cstring>
+#include<stdint.h>
 
 class Int64Array {
 public:
 	int64_t* data = nullptr;
-
 	int maxSize = 0;
 	int curSize = 0;
 
+
 	Int64Array(int size = 0);
 
-	void zero(int idx, int nbElem);
+	~Int64Array();
 
-	void ensure(int size);
+private:
+	void zero(int end, int start);
 
-	void ensureNew(int size);
+	void Ensure(int size);
 
-	void set_unsafe(int pos, int64_t elem);
+	void ShiftRight(int end, int idx);
 
-	void set(int pos, int64_t elem);;
+	int GetOrderedIndex(int idx, int64_t value);
 
-	void insert(int pos, int64_t elem);
+public:
+	void Set_Unsafe(int idx, int64_t value);
 
-	void shift_right(int pos);
+	void Set(int idx, int64_t value);
 
-	void shift_from_to(int end, int node);
+	void InsertAt(int idx, int64_t value);
 
-	void insert_ordered(int64_t elem);
+	void InsertOrdered(int64_t value);
 
-	int search_position(int64_t elem, int node);
+	void PushBack(int64_t value);
 
-	void load(const int* arr, int sz);
+	void PushFront(int64_t value);
 
-	void append_sorted(const int* arr, int sz);
+	int64_t& Get(int idx);
 
-	void clear() {
-		curSize = 0;
+	int64_t& operator[] (int idx) {
+		return Get(idx);
 	}
 
-	void insertion_sort(const int* arr, int sz);
-
-	void push_back(int64_t elem);
-
-	void push_front(int64_t elem);
-
-	int64_t& get(int pos);
-
-	int64_t& operator[](int idx) {
-		return get(idx);
-	};
-
-	~Int64Array();
 };
-
-

@@ -1,3 +1,3 @@
 ﻿  ConsoleApplication1.cpp
-C:\WorkSpace\Emile-GPro2\Cours 2\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(27,9): warning C4475: 'printf' : le modificateur de longueur 'll' ne peut pas être utilisé avec le caractère de champ de type 'f' dans le spécificateur de format
+C:\WorkSpace\Emile-GPro2\Cours 2\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(27,9): warning C4477: 'printf' : la chaîne de format '%lld' nécessite un argument de type '__int64', mais l'argument variadique 1 est de type 'double'
   ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\Cours 2\ConsoleApplication1\Debug\ConsoleApplication1.exe

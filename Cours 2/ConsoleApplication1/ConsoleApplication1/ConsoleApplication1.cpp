@@ -20,8 +20,8 @@ int main()
 	srand(0);
 	Int64Array ti6;
 	double t0 = getTimeStamp();
-	for (int i = 0; i < 1000000; i++) {
-		ti6.push_back(rand() % 11353453);
+	for (int i = 0; i < 1000; i++) {
+		ti6.PushBack(rand());
 	}
 	double t1 = getTimeStamp();
 	printf("time elapsed : %lld\n", (t1 - t0));
