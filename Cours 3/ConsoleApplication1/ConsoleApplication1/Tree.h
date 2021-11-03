@@ -1,40 +1,89 @@
-#pragma once
+
 
 template<typename Type>
 class Tree {
-public :
-	Type value;
-	Tree* l;
-	Tree* r;
+public:
+	Type	value = {};
+	Tree* left = nullptr;
+	Tree* right = nullptr;
 
 	Tree(Type val) {
 		value = val;
 	}
 
-	Tree* Insert(Tree* node, Type elem) {
-		if (!node) return new Tree(elem);
-		if (node->value < elem) {
-			node->r = Insert(node->r, elem);
+	Tree* Insert(Type newVal) {
+		if (newVal <= value) {
+			if (left)
+				left->Insert(newVal);
+			else
+				left = new Tree(newVal);
 		}
 		else {
-			node->l = Insert(node->l, elem);
+			if (right)
+				right->Insert(newVal);
+			else
+				right = new Tree(newVal);
 		}
-		return node;
+		return this;
 	}
 
-	Tree* Search(Type o) {
-		if (value == o)
-			return this;
-		else
-			if (o < v)
-			{
-				if (l)	return l->Search(o);
-				else	return nullptr;
+	Tree* Merge(Tree* other) {
+		Type vo = other->value;
+		insert(vo);
+		if (other->left) Merge(other->left);
+		if (other->right) Merge(other->right);
+		delete other;
+		return this;
+	}
+
+	Tree* Remove(Type other) {
+		if (value == other) {
+			Tree* _l = left;
+			Tree* _r = right;
+			if (!left) {
+				delete this;
+				return _r;
+			}
+			else if (!right) {
+				delete this;
+				return _l;
 			}
 			else {
-				if (r)	return r->Search(o);
-				else	return nullptr;
+				left->Merge(right);
+				delete this;
+				return _l;
 			}
-
+		}
+		else {
+			if (other < value) {
+				if (left)
+					left = left->Remove(other);
+			}
+			else {
+				if (right)
+					right = right->Remove(other);
+			}
+			return this;
+		}
 	}
+
+	Tree* Search(Type val) {
+		if (value == val)
+			return this;
+		else
+			if (val < value) {
+				if (left)
+					return left->Search(val);
+				else
+					return nullptr;
+			}
+			else//o>v -> part a droite
+			{
+				if (right)
+					return right->Search(val);
+				else
+					return nullptr;
+			}
+	}
+
 };

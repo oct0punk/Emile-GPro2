@@ -54,8 +54,8 @@ typedef Tree<std::string>	StrTree;
 int main()
 {	
 	IntTree* root = new IntTree(8200200);
-	root->Insert(root, 8033033);
-	root->Insert(root, 8202100);
+	root->Insert(8033033);
+	root->Insert(8202100);
 
 
 }
