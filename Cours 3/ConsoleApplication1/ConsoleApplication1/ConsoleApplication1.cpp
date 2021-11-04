@@ -27,23 +27,23 @@ int main0() {
 	vd.push_back(13);
 	vd[0] = 14;
 	for (int i = 0; i < vd.size(); i++) {
-		printf("%f", vd[i]);
+		printf("%f\n", vd[i]);
 	}
-	printf("\n------------");
+	printf("------------\n");
 
 	for (auto f : vd) {
-		printf("%f", f);
+		printf("%f\n", f);
 	}
-	printf("\n------------");
+	printf("------------\n");
 
 	for (auto iter = vd.begin(); iter != vd.end();) {
-		printf("%f", *iter);
+		printf("%f\n", *iter);
 		if (*iter == 1.0)
 			iter = vd.erase(iter);
 		else
 			iter++;
 	}
-	printf("\n------------");
+	printf("------------");
 
 	return 0;
 }
@@ -53,9 +53,10 @@ typedef Tree<int>			IntTree;
 typedef Tree<std::string>	StrTree;
 int main()
 {	
+
+	main0(); return 0;
 	IntTree* root = new IntTree(8200200);
 	root->Insert(8033033);
 	root->Insert(8202100);
-
 
 }
