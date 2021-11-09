@@ -1,40 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
-
-void drawMountain(sf::RenderWindow& window) {
-    sf::VertexArray arr;
-    arr.setPrimitiveType(sf::LinesStrip);
-    sf::Color col = sf::Color::Red;
-
-    float baseLine = 660;
-
-    for (int i = 0; i < window.getSize().x / 2; i++) {
-        arr.append(sf::Vertex(sf::Vector2f(i, baseLine - (i * i) / 1000), col));
-    }
-    for (int i = window.getSize().x / 2 + 1; i < window.getSize().x; i++) {
-        arr.append(sf::Vertex(sf::Vector2f(i, baseLine), col));
-    }
-
-    window.draw(arr);
-}
-
-void drawGround(sf::RenderWindow& window) {
-    sf::VertexArray arr;
-    arr.setPrimitiveType(sf::LinesStrip);
-    sf::Color col = sf::Color::Yellow;
-
-    float baseLine = 660;
-    sf::Vector2f a(0, baseLine);
-    sf::Vector2f b(window.getSize().x, baseLine);
-
-    arr.append(sf::Vertex(a, col));
-    arr.append(sf::Vertex(b, col));
-    window.draw(arr);
-}
+#include "Curve.h"
+#include "Boulette.h"
 
 
 int main()
 {
+    #pragma region Shapes
     sf::Color orange(255, 128, 0);
     sf::RenderWindow window(sf::VideoMode(900, 720), "SFML works!");
     sf::CircleShape circle(10);
@@ -45,8 +17,9 @@ int main()
     rectangle.setFillColor(sf::Color(25, 25, 25));
     rectangle.setOutlineColor(orange);
     rectangle.setOutlineThickness(4);
-    rectangle.setPosition(450, 660);
+    rectangle.setPosition(450, 360);
     rectangle.setOrigin(4, 0);
+    #pragma endregion
 
     sf::Font font;
     if (!font.loadFromFile("res/NotoSerif-Regular.ttf"))
@@ -56,7 +29,8 @@ int main()
 
     sf::VertexArray mountain(sf::LinesStrip);
     sf::Color col = sf::Color::Cyan;
-    
+
+    Bullet bullet;
 
     while (window.isOpen())
     {
@@ -97,10 +71,28 @@ int main()
             #pragma endregion
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                std::vector<float> pos = { rectangle.getPosition().x, rectangle.getPosition().y };
+                std::vector<float> dir = { sf::Mouse::getPosition().x - rectangle.getPosition().x, sf::Mouse::getPosition().y - rectangle.getPosition().y };
+                bullet.create(BulletShape(), pos, dir);
+            }
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+                /*if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    sf::Vector2f mountainVec = mountain[mountain.getVertexCount()].position;
+                    sf::Vector2f clic = (sf::Vector2f)sf::Mouse::getPosition(window);
+                    for (int i = mountainVec.x; clic.x; i++) {
+                        float t = 1.0f * i * mountain[mountain.getVertexCount()].position.x;
+                        float x = catmull(mountainVec.x, mountainVec.x, clic.x, clic.x, t);
+                        float y = catmull(mountainVec.y, mountainVec.y, clic.y, clic.y, t);
+                        mountain.append(sf::Vertex(sf::Vector2f(x, y), col));
+                    }
+
+                }*/
                 mountain.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), col));
             }
 
         }
+
         window.clear(sf::Color::Black);
         drawGround(window);
         drawMountain(window);
@@ -112,3 +104,4 @@ int main()
 
     return 0;
 }
+
