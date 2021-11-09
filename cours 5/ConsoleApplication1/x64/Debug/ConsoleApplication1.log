@@ -1,0 +1,54 @@
+﻿  Bullet.cpp
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Bullet.cpp(5,22): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Bullet.cpp(9,30): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Bullet.cpp(9,27): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Bullet.cpp(33,23): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
+          with
+          [
+              _Ty=float
+          ]
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Bullet.cpp(34,23): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
+          with
+          [
+              _Ty=float
+          ]
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Bullet.cpp(46,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Bullet.cpp(46,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'const int', perte possible de données
+  ConsoleApplication1.cpp
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Curve.hpp(48,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Curve.hpp(49,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Curve.hpp(50,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(40,33): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(74,33): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(124,16): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(125,16): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(179,27): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+  Int64Array.cpp
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Int64Array.cpp(18,31): warning C4244: 'argument' : conversion de 'int64_t' en 'int', perte possible de données
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Int64Array.cpp(97,17): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+  Génération de code en cours...
+  ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
