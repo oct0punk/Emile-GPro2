@@ -1,6 +1,27 @@
 ﻿  main.cpp
+C:\WorkSpace\Emile-GPro2\Cours 4\SFML\SFML\main.cpp(11,23): warning C4018: '<' : incompatibilité signed/unsigned
+C:\WorkSpace\Emile-GPro2\Cours 4\SFML\SFML\main.cpp(12,44): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+C:\WorkSpace\Emile-GPro2\Cours 4\SFML\SFML\main.cpp(14,48): warning C4018: '<' : incompatibilité signed/unsigned
+C:\WorkSpace\Emile-GPro2\Cours 4\SFML\SFML\main.cpp(15,44): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+C:\WorkSpace\Emile-GPro2\Cours 4\SFML\SFML\main.cpp(28,36): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
   Génération de code en cours
-  1 of 72 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+  2 of 74 functions ( 2.7%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code

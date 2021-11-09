@@ -1,6 +1,38 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 
+void drawMountain(sf::RenderWindow& window) {
+    sf::VertexArray arr;
+    arr.setPrimitiveType(sf::LinesStrip);
+    sf::Color col = sf::Color::Red;
+
+    float baseLine = 660;
+
+    for (int i = 0; i < window.getSize().x / 2; i++) {
+        arr.append(sf::Vertex(sf::Vector2f(i, baseLine - (i * i) / 1000), col));
+    }
+    for (int i = window.getSize().x / 2 + 1; i < window.getSize().x; i++) {
+        arr.append(sf::Vertex(sf::Vector2f(i, baseLine), col));
+    }
+
+    window.draw(arr);
+}
+
+void drawGround(sf::RenderWindow& window) {
+    sf::VertexArray arr;
+    arr.setPrimitiveType(sf::LinesStrip);
+    sf::Color col = sf::Color::Yellow;
+
+    float baseLine = 660;
+    sf::Vector2f a(0, baseLine);
+    sf::Vector2f b(window.getSize().x, baseLine);
+
+    arr.append(sf::Vertex(a, col));
+    arr.append(sf::Vertex(b, col));
+    window.draw(arr);
+}
+
+
 int main()
 {
     sf::Color orange(255, 128, 0);
@@ -13,7 +45,7 @@ int main()
     rectangle.setFillColor(sf::Color(25, 25, 25));
     rectangle.setOutlineColor(orange);
     rectangle.setOutlineThickness(4);
-    rectangle.setPosition(450, 360);
+    rectangle.setPosition(450, 660);
     rectangle.setOrigin(4, 0);
 
     sf::Font font;
@@ -22,6 +54,9 @@ int main()
         throw "no font";
     }
 
+    sf::VertexArray mountain(sf::LinesStrip);
+    sf::Color col = sf::Color::Cyan;
+    
 
     while (window.isOpen())
     {
@@ -46,7 +81,7 @@ int main()
                 pos.y -= 10;
             }
             rectangle.setPosition(pos);
-#pragma endregion
+            #pragma endregion
 
             #pragma region aim
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -61,14 +96,16 @@ int main()
             rectangle.setRotation(angleC2M * rad2deg);
             #pragma endregion
 
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                mountain.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), col));
             }
 
         }
         window.clear(sf::Color::Black);
+        drawGround(window);
+        drawMountain(window);
         window.draw(circle);
+        window.draw(mountain);
         window.draw(rectangle);
         window.display();
     }
