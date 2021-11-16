@@ -5,6 +5,7 @@ void Entity::update(double dt) {
 	move.x += dx * dt;
 	move.y += dy * dt;
 	setPosition(move.x, move.y);
+
 }
 
 void Entity::draw(sf::RenderWindow& win) {

@@ -18,6 +18,7 @@ public:
 	bool visible = true;
 	float dx = 0.0f;
 	float dy = 0.0f;
+		
 
 	Entity(EType type, sf::Shape* _spr) {
 		this->type = type;
@@ -49,7 +50,7 @@ public:
 	Entity* currentBall = nullptr;
 
 	PlayerPad(EType type, sf::Shape* _spr) : Entity(type, _spr) {
-
+		
 	}
 
 	virtual void update(double dt);

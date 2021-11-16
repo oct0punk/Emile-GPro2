@@ -68,15 +68,14 @@ void drawMountain(sf::RenderWindow& window) {
 void drawGround(sf::RenderWindow& window) {
 	sf::VertexArray arr;
 	arr.setPrimitiveType(sf::LineStrip);
-	sf::Color col = sf::Color::Yellow;
 
 	float baseline = 600+60;
 
 	sf::Vector2f a(0, baseline);
 	sf::Vector2f b(window.getSize().x, baseline);
 
-	arr.append(sf::Vertex(a, col));
-	arr.append(sf::Vertex(b, col));
+	arr.append(sf::Vertex(a, sf::Color::Yellow));
+	arr.append(sf::Vertex(b, sf::Color::Red));
 
 	window.draw(arr);
 }
@@ -112,13 +111,17 @@ int main()
 	Entity* ball = new Entity(EType::Ball, bullet);
 	player->currentBall = ball;
 	ball->setPosition(640, 500);
-	ball->dx = 5;
-	ball->dy = 10;
+	ball->dx = 150;
+	ball->dy = 200;
 	Entity* leftSideBound = new Entity(EType::Wall, wall);
+	sf::RectangleShape wall2 = *wall;
+	Entity* rightSideBound = new Entity(EType::Wall, &wall2);
+	rightSideBound->setPosition(1270, 0);
 
 	world.data.push_back(player);
 	world.data.push_back(ball);
 	world.data.push_back(leftSideBound);
+	world.data.push_back(rightSideBound);
 
 	sf::Font fArial;
 	if (!fArial.loadFromFile("res/arial.ttf"))	
@@ -170,13 +173,12 @@ int main()
 		}
 #pragma endregion
 
-		//calculate angle from char to mouse
-		//sf::Vector2f characterToMouse(mousePos.y - player.getPosition().y, mousePos.x - player.getPosition().x);
 		tDt.setString( to_string(dt)+" FPS:"+ to_string((int)(1.0f / dt)));
 
 		world.update(dt);
 
-		window.clear();
+
+		window.clear(sf::Color(20, 20, 20));
 		
 		window.draw(tDt);
 
