@@ -14,6 +14,8 @@
 #include <SFML/Window.hpp>
 #include "Curve.hpp"
 #include "Bullet.hpp"
+#include "Entity.h"
+#include "World.h"
 
 float catmull(float p0 , float p1 , float p2,float p3 , float t ) {
 	auto q = 2.0f * p1;
@@ -79,19 +81,44 @@ void drawGround(sf::RenderWindow& window) {
 	window.draw(arr);
 }
 
+
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
-	sf::RectangleShape shape(sf::Vector2f(25,60));
-	shape.setFillColor(sf::Color::Green);
-	shape.setPosition(800, 600);
 
-	sf::RectangleShape gun(sf::Vector2f(8, 32));
-	gun.setFillColor(sf::Color(	0xFF,0x00,0x00));
-	gun.setOrigin(4,0);
-	gun.setPosition(800, 600);
+	World world;
+
+	#pragma region Shapes
+	sf::RectangleShape* wall = new sf::RectangleShape(sf::Vector2f(10, 720));
+	wall->setFillColor(sf::Color::Green);
+	wall->setOutlineColor(sf::Color::White);
+	wall->setOutlineThickness(3);
+
+	sf::RectangleShape* platform = new sf::RectangleShape(sf::Vector2f(80, 20));
+	platform->setOrigin(sf::Vector2f(40, 8));
+	platform->setFillColor(sf::Color::Cyan);
+
+	sf::CircleShape* bullet = new sf::CircleShape(10);
+	bullet->setFillColor(sf::Color::Yellow);
+	bullet->setOutlineColor(sf::Color::Red);
+	bullet->setOutlineThickness(4);
+#pragma endregion
+
+	PlayerPad* player = new PlayerPad(EType::Player, platform);
+	player->setPosition(640, 640);
+	Entity* ball = new Entity(EType::Ball, bullet);
+	player->currentBall = ball;
+	ball->setPosition(640, 500);
+	ball->dx = 5;
+	ball->dy = 10;
+	Entity* leftSideBound = new Entity(EType::Wall, wall);
+
+	world.data.push_back(player);
+	world.data.push_back(ball);
+	world.data.push_back(leftSideBound);
 
 	sf::Font fArial;
 	if (!fArial.loadFromFile("res/arial.ttf"))	
@@ -101,116 +128,63 @@ int main()
 	tDt.setFillColor(sf::Color::White);
 	tDt.setCharacterSize(45);
 
-	sf::CircleShape ptr(8);
-	ptr.setFillColor(sf::Color::Cyan);
-	ptr.setOrigin(4, 4);
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
 	double tExitFrame = getTimeStamp();
 
-	Bullet bullets;
-	bool mouseLeftWasPressed = false;
-	Curve c;
+	
+	float radToDeg = 57.2958;
+
 	while (window.isOpen()){
+		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+
 		sf::Event event;
 		double dt = tExitFrame - tEnterFrame;
 		tEnterFrame = getTimeStamp();
 		while (window.pollEvent(event)){
-			if (event.type == sf::Event::Closed)
+			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				window.close();
 		}
-		auto pos = shape.getPosition();
+
+		#pragma region Player Movement
+		sf::Vector2f move;
 		float deltaX = dt * 160;
 		float deltaY = dt * 160;
 		bool keyHit = false;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)|| sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-			pos.x -= deltaX;
+			move.x -= deltaX;
 			keyHit = true;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			pos.x += deltaX;
+			move.x += deltaX;
 			keyHit = true;
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-			pos.y -= deltaY;
-			keyHit = true;
+		if (keyHit) {
+			auto vec = player->getPosition() + sf::Vector2f(move.x, move.y);
+			if (vec.x < 0)
+				vec.x = 0;
+			else if (vec.x > window.getSize().x)
+				vec.x = window.getSize().x;
+			player->setPosition(vec.x, vec.y);
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			pos.y += deltaY;
-			keyHit = true;
-		}
-		if(keyHit)
-			shape.setPosition(pos);
-
-
-		bool mouseLeftIsPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
-		bool mouseIsReleased = (!mouseLeftIsPressed && mouseLeftWasPressed);
-
-		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
-
-		if (false) {
-			if (mouseIsReleased) c.addPoint(mousePos);
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) c.clear();
-		}
-
-		if (mouseLeftIsPressed && !mouseLeftWasPressed) {
-			auto pos = gun.getPosition();
-			auto dir = mousePos - pos;
-			float dirLen = std::sqrt(dir.x * dir.x + dir.y * dir.y);
-			sf::Vector2f dxy(1, 0);
-			if (dirLen) {
-				dxy = dir / dirLen;
-			}
-			dxy *= 60.0f * 3;
-			bullets.create(pos.x, pos.y, dxy.x, dxy.y);
-		}
-
-		if (mouseLeftIsPressed) 
-			mouseLeftWasPressed = true;
-		else
-			mouseLeftWasPressed = false;
+#pragma endregion
 
 		//calculate angle from char to mouse
-		sf::Vector2f characterToMouse(
-			mousePos.y - shape.getPosition().y,
-			mousePos.x - shape.getPosition().x);
-
-		float radToDeg = 57.2958;
-		float angleC2M = atan2(characterToMouse.y, characterToMouse.x);
-		gun.setRotation(-angleC2M * radToDeg);
-		gun.setPosition(shape.getPosition() + sf::Vector2f(8, 16));
-		///
-
-		ptr.setPosition(mousePos);
+		//sf::Vector2f characterToMouse(mousePos.y - player.getPosition().y, mousePos.x - player.getPosition().x);
 		tDt.setString( to_string(dt)+" FPS:"+ to_string((int)(1.0f / dt)));
-		
-		////////////////////
 
-		//CLEAR
+		world.update(dt);
+
 		window.clear();
 		
-		////////////////////
-		//UPDATE
-		bullets.update(dt);
-
-		////////////////////
-		//DRAW
-		drawMountain(window);
-
-		bullets.draw(window);
-
-		//game elems
-		window.draw(shape);
-		window.draw(gun);
-		
-		c.draw(window);
-		window.draw(ptr);
-
-		//ui
 		window.draw(tDt);
+
+		world.draw(window);
+		drawGround(window);
 		
 		window.display();
+
 		tExitFrame = getTimeStamp();
 	}
 
