@@ -49,8 +49,13 @@ void PlayerPad::draw(sf::RenderWindow& win) {
 void Particle::update(double dt) {
 	Entity::update(dt);
 	dy += 9.81f;
+
+	sf::Color c = spr->getFillColor();
+	spr->setFillColor(sf::Color(c.r, c.g, c.b, (timeLeft * 255)));
+	spr->setOutlineColor(sf::Color(c.r, c.g, c.b, (timeLeft * 255)));
+	
 	timeLeft = timeLeft - dt;
-	if (time < 0)
+	if (timeLeft < 0)
 		visible = false;
 }
 

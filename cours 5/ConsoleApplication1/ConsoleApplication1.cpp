@@ -91,7 +91,7 @@ int main()
 	World world;
 
 	#pragma region Shapes
-	sf::RectangleShape wall(sf::Vector2f(50, 4000));
+	sf::RectangleShape wall(sf::Vector2f(10, 4000));
 	wall.setOrigin(10, 2000);
 	wall.setFillColor(sf::Color::Green);
 	wall.setOutlineColor(sf::Color::White);
@@ -102,19 +102,29 @@ int main()
 	platform->setFillColor(sf::Color::Cyan);
 	platform->setOutlineThickness(5);
 
-	sf::CircleShape* bullet = new sf::CircleShape(10);
-	bullet->setOrigin(10, 10);
+	sf::Texture brochet;
+	if (!brochet.loadFromFile("res/brochet.png"))
+		throw "pesson";
+	sf::CircleShape* bullet = new sf::CircleShape(50);
+	bullet->setOrigin(50, 50);
+	bullet->setTexture(&brochet);
 	bullet->setFillColor(sf::Color::Yellow);
 	bullet->setOutlineColor(sf::Color::Red);
 	bullet->setOutlineThickness(1);
 
+	sf::Texture macron;
+	if (!macron.loadFromFile("res/macron.jpg"))
+		throw "nous sommes en guerre";
+
 	int brickWidth = 80;
 	sf::RectangleShape brick(sf::Vector2f(brickWidth, 30));
-	brick.setFillColor(sf::Color::Magenta);
+	brick.setOutlineColor(sf::Color(100, 0, 0));
+	brick.setOutlineThickness(5);
+	brick.setTexture(&macron);
 #pragma endregion
 
 
-#pragma region Entity
+	#pragma region Entity
 	PlayerPad* player = new PlayerPad(EType::Player, platform);
 	player->setPosition(640, window.getSize().y - 200);
 	Entity* ball = new Entity(EType::Ball, bullet);

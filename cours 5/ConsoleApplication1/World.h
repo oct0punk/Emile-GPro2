@@ -20,6 +20,6 @@ public:
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 
-	std::vector<Entity> toBreak;
+	std::vector<Particle*> particles;
 };
 
