@@ -116,7 +116,7 @@ int main()
 	player->setPosition(640, 640);
 	Entity* ball = new Entity(EType::Ball, bullet);
 	player->currentBall = ball;
-	ball->setPosition(100, 100);
+	ball->setPosition(window.getSize().x / 2, window.getSize().y / 2);
 	ball->dx = 666;
 	ball->dy = 300;
 	Entity* leftSideBound = new Entity(EType::Wall, &wall);
