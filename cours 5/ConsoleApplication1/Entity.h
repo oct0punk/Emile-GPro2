@@ -50,7 +50,7 @@ public:
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
-	void CheckCollision(Entity* wall, Entity* ball);
+	bool CheckCollision(Entity* wall, Entity* ball);
 };
 
 class PlayerPad : public Entity {

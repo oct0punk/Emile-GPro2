@@ -13,7 +13,7 @@ void Entity::draw(sf::RenderWindow& win) {
 		win.draw(*spr);
 }
 
-void Entity::CheckCollision(Entity* wall, Entity* ball) {
+bool Entity::CheckCollision(Entity* wall, Entity* ball) {
 	if (wall->spr->getGlobalBounds().contains(ball->getPosition())) {
 		float x = ball->getPosition().x - wall->getPosition().x;
 		float y = ball->getPosition().y - wall->getPosition().y;
@@ -29,7 +29,9 @@ void Entity::CheckCollision(Entity* wall, Entity* ball) {
 
 		if (abs(x) > w)		ball->dx *= -1;
 		else if (abs(y) > h)	ball->dy *= -1;
+		return true;
 	}
+	return false;
 }
 
 void PlayerPad::update(double dt) {

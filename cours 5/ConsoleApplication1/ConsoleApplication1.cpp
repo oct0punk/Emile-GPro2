@@ -102,9 +102,14 @@ int main()
 	platform->setFillColor(sf::Color::Cyan);
 
 	sf::CircleShape* bullet = new sf::CircleShape(10);
+	bullet->setOrigin(10, 10);
 	bullet->setFillColor(sf::Color::Yellow);
 	bullet->setOutlineColor(sf::Color::Red);
 	bullet->setOutlineThickness(4);
+
+	float brickWidth = 80;
+	sf::RectangleShape brick(sf::Vector2f(brickWidth, 30));
+	brick.setFillColor(sf::Color::Magenta);
 #pragma endregion
 
 	PlayerPad* player = new PlayerPad(EType::Player, platform);
@@ -124,6 +129,26 @@ int main()
 	Entity* floor = new Entity(EType::Wall, new sf::RectangleShape(wall));
 	floor->setRotation(-90);
 	floor->setPosition(window.getSize().x / 2, window.getSize().y - 10);
+	for (int i = 20; i < window.getSize().x - brickWidth; i += brickWidth + 20) {
+		Entity* newBrick = new Entity(EType::Brick, new sf::RectangleShape(brick));
+		newBrick->setPosition(i, 70);
+		world.data.push_back(newBrick);
+	}
+	for (int i = 50; i < window.getSize().x - brickWidth; i += brickWidth + 20) {
+		Entity* newBrick = new Entity(EType::Brick, new sf::RectangleShape(brick));
+		newBrick->setPosition(i, 120);
+		world.data.push_back(newBrick);
+	}
+	for (int i = 20; i < window.getSize().x - brickWidth; i += brickWidth + 20) {
+		Entity* newBrick = new Entity(EType::Brick, new sf::RectangleShape(brick));
+		newBrick->setPosition(i, 170);
+		world.data.push_back(newBrick);
+	}
+	for (int i = 50; i < window.getSize().x - brickWidth; i += brickWidth + 20) {
+		Entity* newBrick = new Entity(EType::Brick, new sf::RectangleShape(brick));
+		newBrick->setPosition(i, 220);
+		world.data.push_back(newBrick);
+	}
 
 	world.data.push_back(player);
 	world.data.push_back(ball);

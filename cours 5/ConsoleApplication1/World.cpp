@@ -8,6 +8,11 @@ void World::update(double dt) {
 			for (auto wall : data) {
 				if (wall->type == EType::Wall)
 					e->CheckCollision(wall, e);
+				if (wall->type == EType::Brick && wall->visible) {
+					if (e->CheckCollision(wall, e))
+						wall->visible = false;
+
+				}
 			}
 		}
 	}
