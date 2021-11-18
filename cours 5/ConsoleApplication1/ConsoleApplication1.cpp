@@ -178,7 +178,7 @@ int main()
 	tDt.setFont(fArial);
 	tDt.setFillColor(sf::Color::White);
 	tDt.setCharacterSize(45);
-	tDt.setPosition(sf::Vector2f(20, 20));
+	tDt.setPosition(sf::Vector2f(20, window.getSize().y - 150));
 
 	sf::Texture texture;
 	if (!texture.loadFromFile("res/clouds.jpg"))
@@ -230,7 +230,7 @@ int main()
 		}
 #pragma endregion
 
-		tDt.setString( to_string(dt)+" FPS:"+ to_string((int)(1.0f / dt)));
+		tDt.setString( to_string(dt)+" FPS:"+ to_string((int)(1.0f / dt)) + "\nNous sommes en guerre");
 		world.update(dt);
 
 		window.clear(sf::Color(20, 20, 20));

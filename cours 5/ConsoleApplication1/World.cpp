@@ -17,8 +17,8 @@ void World::update(double dt) {
 				}
 				if (wall->type == EType::Brick && wall->visible) {
 					if (e->CheckCollision(wall, e)) {
+						wall->spr->setOutlineColor(sf::Color::White);
 						e->setPosition(e->lastGoodPos.x, e->lastGoodPos.y);
-						wall->visible = false;
 						audio->pong.play();
 						// FX
 						for (int i = 0; i < 50; i++) {

@@ -9,8 +9,11 @@ void Entity::update(double dt) {
 }
 
 void Entity::draw(sf::RenderWindow& win) {
-	if (visible)
+	if (visible) {
+		if (spr->getOutlineColor() == sf::Color::White)
+			visible = false;
 		win.draw(*spr);
+	}
 }
 
 bool Entity::CheckCollision(Entity* wall, Entity* ball) {
@@ -42,7 +45,8 @@ void PlayerPad::update(double dt) {
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {
-	Entity::draw(win);
+	if (visible)
+		win.draw(*spr);
 
 }
 
