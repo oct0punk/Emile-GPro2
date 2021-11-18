@@ -33,13 +33,11 @@ void Entity::CheckCollision(Entity* wall, Entity* ball) {
 }
 
 void PlayerPad::update(double dt) {
-	
+	CheckCollision(this, currentBall);
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {
-	if (visible) {
-		CheckCollision(this, currentBall);
-		win.draw(*spr);
-	}
+	if (visible)
+		win.draw(*spr);	
 
 }

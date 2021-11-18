@@ -162,8 +162,8 @@ int main()
 
 		#pragma region Player Movement
 		sf::Vector2f move;
-		float deltaX = dt * 160;
-		float deltaY = dt * 160;
+		float deltaX = dt * 666;
+		float deltaY = dt * 666;
 		bool keyHit = false;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)|| sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
 			move.x -= deltaX;
