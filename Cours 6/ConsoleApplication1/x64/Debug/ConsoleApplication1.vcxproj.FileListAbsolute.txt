@@ -1,0 +1,5 @@
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
+C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\x64\Debug\ConsoleApplication1.pdb
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
+C:\WorkSpace\Emile-GPro2\Cours 6\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
+C:\WorkSpace\Emile-GPro2\Cours 6\ConsoleApplication1\x64\Debug\ConsoleApplication1.pdb
