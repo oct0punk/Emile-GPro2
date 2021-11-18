@@ -84,17 +84,18 @@ void drawGround(sf::RenderWindow& window) {
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 
 	World world;
 
 	#pragma region Shapes
-	sf::RectangleShape* wall = new sf::RectangleShape(sf::Vector2f(10, 720));
-	wall->setFillColor(sf::Color::Green);
-	wall->setOutlineColor(sf::Color::White);
-	wall->setOutlineThickness(3);
+	sf::RectangleShape wall(sf::Vector2f(20, 4000));
+	wall.setOrigin(10, 2000);
+	wall.setFillColor(sf::Color::Green);
+	wall.setOutlineColor(sf::Color::White);
+	wall.setOutlineThickness(6);
 
 	sf::RectangleShape* platform = new sf::RectangleShape(sf::Vector2f(80, 20));
 	platform->setOrigin(sf::Vector2f(40, 8));
@@ -110,18 +111,26 @@ int main()
 	player->setPosition(640, 640);
 	Entity* ball = new Entity(EType::Ball, bullet);
 	player->currentBall = ball;
-	ball->setPosition(640, 500);
-	ball->dx = 150;
-	ball->dy = 200;
-	Entity* leftSideBound = new Entity(EType::Wall, wall);
-	sf::RectangleShape wall2 = *wall;
-	Entity* rightSideBound = new Entity(EType::Wall, &wall2);
-	rightSideBound->setPosition(1270, 0);
+	ball->setPosition(100, 100);
+	ball->dx = 666;
+	ball->dy = 300;
+	Entity* leftSideBound = new Entity(EType::Wall, &wall);
+	leftSideBound->setPosition(10, window.getSize().y / 2);
+	Entity* rightSideBound = new Entity(EType::Wall, new sf::RectangleShape(wall));
+	rightSideBound->setPosition(1920, window.getSize().y / 2);
+	Entity* ceiling = new Entity(EType::Wall, new sf::RectangleShape(wall));
+	ceiling->setRotation(-90);
+	ceiling->setPosition(window.getSize().x / 2, 10);
+	Entity* floor = new Entity(EType::Wall, new sf::RectangleShape(wall));
+	floor->setRotation(-90);
+	floor->setPosition(window.getSize().x / 2, window.getSize().y - 10);
 
 	world.data.push_back(player);
 	world.data.push_back(ball);
 	world.data.push_back(leftSideBound);
 	world.data.push_back(rightSideBound);
+	world.data.push_back(ceiling);
+	world.data.push_back(floor);
 
 	sf::Font fArial;
 	if (!fArial.loadFromFile("res/arial.ttf"))	
@@ -130,6 +139,7 @@ int main()
 	tDt.setFont(fArial);
 	tDt.setFillColor(sf::Color::White);
 	tDt.setCharacterSize(45);
+	tDt.setPosition(sf::Vector2f(20, 20));
 
 
 	double tStart = getTimeStamp();
@@ -174,14 +184,11 @@ int main()
 #pragma endregion
 
 		tDt.setString( to_string(dt)+" FPS:"+ to_string((int)(1.0f / dt)));
-
 		world.update(dt);
-
 
 		window.clear(sf::Color(20, 20, 20));
 		
 		window.draw(tDt);
-
 		world.draw(window);
 		drawGround(window);
 		

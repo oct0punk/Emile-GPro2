@@ -37,11 +37,20 @@ public:
 	}
 
 	void setPosition(float x, float y) {
-		return spr->setPosition(sf::Vector2f(x, y));
+		spr->setPosition(sf::Vector2f(x, y));
+	}
+
+	void setRotation(float angle) {
+		return spr->setRotation(angle);
+	}
+
+	int getRotation() {
+		return spr->getRotation();
 	}
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
+	void CheckCollision(Entity* wall, Entity* ball);
 };
 
 class PlayerPad : public Entity {
