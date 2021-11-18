@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics/Shape.hpp"
+#include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/Rect.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 
@@ -8,11 +9,14 @@ enum EType {
 	Brick,
 	Wall,
 	Ball,
+	FX,
 };
+
 
 class Entity {
 public:
 	sf::Shape* spr = nullptr;
+	sf::Vector2f lastGoodPos;
 	EType			type;
 
 	bool visible = true;
@@ -22,6 +26,7 @@ public:
 
 	Entity(EType type, sf::Shape* _spr) {
 		this->type = type;
+		lastGoodPos = sf::Vector2f(0, 0);
 		spr = _spr;
 	}
 
@@ -60,6 +65,21 @@ public:
 
 	PlayerPad(EType type, sf::Shape* _spr) : Entity(type, _spr) {
 		
+	}
+
+	virtual void update(double dt);
+	virtual void draw(sf::RenderWindow& win);
+};
+
+class Particle : public Entity {
+
+	float timeLeft;
+
+public:
+	Particle(EType type, sf::CircleShape* _spr, float time) : Entity(type, _spr){
+		this->type = type;
+		spr = _spr;
+		timeLeft = time;
 	}
 
 	virtual void update(double dt);

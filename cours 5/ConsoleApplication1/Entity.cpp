@@ -29,17 +29,32 @@ bool Entity::CheckCollision(Entity* wall, Entity* ball) {
 
 		if (abs(x) > w)		ball->dx *= -1;
 		else if (abs(y) > h)	ball->dy *= -1;
+		ball->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
+		wall->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
+		ball->setPosition(ball->lastGoodPos.x, ball->lastGoodPos.y);
 		return true;
 	}
+	ball->lastGoodPos = ball->getPosition();
 	return false;
 }
 
 void PlayerPad::update(double dt) {
-	CheckCollision(this, currentBall);
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {
-	if (visible)
-		win.draw(*spr);	
+	Entity::draw(win);
 
+}
+
+void Particle::update(double dt) {
+	Entity::update(dt);
+	dy += 9.81f;
+	timeLeft = timeLeft - dt;
+	if (time < 0)
+		visible = false;
+}
+
+void Particle::draw(sf::RenderWindow& win) {
+	if (visible)
+		win.draw(*spr);
 }

@@ -69,7 +69,7 @@ void drawGround(sf::RenderWindow& window) {
 	sf::VertexArray arr;
 	arr.setPrimitiveType(sf::LineStrip);
 
-	float baseline = 600+60;
+	float baseline = window.getSize().y - 160;
 
 	sf::Vector2f a(0, baseline);
 	sf::Vector2f b(window.getSize().x, baseline);
@@ -84,36 +84,39 @@ void drawGround(sf::RenderWindow& window) {
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(1240, 720), "SFML works!");
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
-
+	
 	World world;
 
 	#pragma region Shapes
-	sf::RectangleShape wall(sf::Vector2f(20, 4000));
+	sf::RectangleShape wall(sf::Vector2f(50, 4000));
 	wall.setOrigin(10, 2000);
 	wall.setFillColor(sf::Color::Green);
 	wall.setOutlineColor(sf::Color::White);
 	wall.setOutlineThickness(6);
 
-	sf::RectangleShape* platform = new sf::RectangleShape(sf::Vector2f(80, 20));
+	sf::RectangleShape* platform = new sf::RectangleShape(sf::Vector2f(300, 10));
 	platform->setOrigin(sf::Vector2f(40, 8));
 	platform->setFillColor(sf::Color::Cyan);
+	platform->setOutlineThickness(5);
 
 	sf::CircleShape* bullet = new sf::CircleShape(10);
 	bullet->setOrigin(10, 10);
 	bullet->setFillColor(sf::Color::Yellow);
 	bullet->setOutlineColor(sf::Color::Red);
-	bullet->setOutlineThickness(4);
+	bullet->setOutlineThickness(1);
 
-	float brickWidth = 80;
+	int brickWidth = 80;
 	sf::RectangleShape brick(sf::Vector2f(brickWidth, 30));
 	brick.setFillColor(sf::Color::Magenta);
 #pragma endregion
 
+
+#pragma region Entity
 	PlayerPad* player = new PlayerPad(EType::Player, platform);
-	player->setPosition(640, 640);
+	player->setPosition(640, window.getSize().y - 200);
 	Entity* ball = new Entity(EType::Ball, bullet);
 	player->currentBall = ball;
 	ball->setPosition(window.getSize().x / 2, window.getSize().y / 2);
@@ -122,7 +125,7 @@ int main()
 	Entity* leftSideBound = new Entity(EType::Wall, &wall);
 	leftSideBound->setPosition(10, window.getSize().y / 2);
 	Entity* rightSideBound = new Entity(EType::Wall, new sf::RectangleShape(wall));
-	rightSideBound->setPosition(1920, window.getSize().y / 2);
+	rightSideBound->setPosition(window.getSize().x - 10, window.getSize().y / 2);
 	Entity* ceiling = new Entity(EType::Wall, new sf::RectangleShape(wall));
 	ceiling->setRotation(-90);
 	ceiling->setPosition(window.getSize().x / 2, 10);
@@ -156,6 +159,7 @@ int main()
 	world.data.push_back(rightSideBound);
 	world.data.push_back(ceiling);
 	world.data.push_back(floor);
+#pragma endregion
 
 	sf::Font fArial;
 	if (!fArial.loadFromFile("res/arial.ttf"))	
@@ -166,6 +170,14 @@ int main()
 	tDt.setCharacterSize(45);
 	tDt.setPosition(sf::Vector2f(20, 20));
 
+	sf::Texture texture;
+	if (!texture.loadFromFile("res/clouds.jpg"))
+		throw "noJPG";
+
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+	sprite.setScale(2.0f, 2.0f);
+	sprite.setColor(sf::Color(50, 50, 50));
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
@@ -187,8 +199,8 @@ int main()
 
 		#pragma region Player Movement
 		sf::Vector2f move;
-		float deltaX = dt * 666;
-		float deltaY = dt * 666;
+		float deltaX = dt * 1000;
+		float deltaY = dt * 1000;
 		bool keyHit = false;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)|| sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
 			move.x -= deltaX;
@@ -212,7 +224,8 @@ int main()
 		world.update(dt);
 
 		window.clear(sf::Color(20, 20, 20));
-		
+		window.draw(sprite);
+
 		window.draw(tDt);
 		world.draw(window);
 		drawGround(window);
