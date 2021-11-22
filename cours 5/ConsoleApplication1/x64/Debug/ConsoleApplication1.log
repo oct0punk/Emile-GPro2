@@ -1,16 +1,108 @@
-﻿  Entity.cpp
-C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Entity.h(53,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
-C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Entity.cpp(5,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
+﻿  ConsoleApplication1.cpp
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\Curve.hpp(48,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\Curve.hpp(49,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\Curve.hpp(50,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\Entity.h(53,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(42,33): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(72,17): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(75,33): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(120,40): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
           with
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Entity.cpp(6,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(129,46): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
           with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(132,63): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(132,39): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(136,52): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(138,74): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(138,49): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(141,42): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(144,64): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(144,40): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(145,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(147,25): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(150,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(152,25): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(155,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(157,25): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(160,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(162,25): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(181,54): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Entity.cpp(58,55): warning C4244: 'argument' : conversion de 'float' en 'sf::Uint8', perte possible de données
-C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Entity.cpp(59,58): warning C4244: 'argument' : conversion de 'float' en 'sf::Uint8', perte possible de données
-C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\Entity.cpp(61,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-  ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\cours 5\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(197,26): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(212,16): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(213,16): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\ConsoleApplication1.cpp(228,29): warning C4244: '=' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  ConsoleApplication1.vcxproj -> C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 5\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe

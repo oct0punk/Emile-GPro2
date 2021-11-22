@@ -5,29 +5,34 @@
 #include "List.hpp"
 
 
-enum cmdType {
-	advance,
-	Turn,
-};
-
-struct Command
-{
-	cmdType type;
-	float time = 1;
-	float factor = 1;
-};
-
-
 class Turtle {
 	sf::CircleShape carapace;
 	sf::CircleShape head;
 	sf::CircleShape leftEye;
 	sf::CircleShape rightEye;
-	float direction = 90;
 public:
+	float direction = 90;
 	bool visible;
 
-	List<Command*> list;
+	Turtle() {
+		sf::Texture shellTexture;
+		shellTexture.loadFromFile("res/shellTexture.jpg");
+		shellTexture.setSmooth(true);
+
+		sf::CircleShape carapace(60);
+		carapace.setTexture(&shellTexture);
+		sf::CircleShape head(20);
+		head.setFillColor(sf::Color(100, 0, 0));
+		sf::CircleShape leftEye(2);
+		sf::CircleShape rightEye(2);
+
+		leftEye.setOrigin(-80, 4);
+		rightEye.setOrigin(-80, -4);
+		carapace.setOrigin(60, 60);
+		head.setOrigin(-50, 20);
+
+		Turtle(carapace, head, leftEye, rightEye);
+	}
 
 	Turtle(sf::CircleShape carapace, sf::CircleShape head, sf::CircleShape leftE, sf::CircleShape rightE) {
 		this->carapace = carapace;
@@ -77,13 +82,54 @@ public:
 		win.draw(leftEye);
 		win.draw(rightEye);
 	}
+};
 
-	void appendList(Command* cmd) {
-		list.push_first(cmd);
+
+enum CmdType {
+	Advance,
+	Forward,
+};
+
+struct Cmd {
+	CmdType type;
+	float t;
+
+public:
+	Cmd(CmdType type, float time) {
+		this->type = type;
+		t = time;
 	}
 
-	Command* applyList(Command* cmd) {
-		list.remove(cmd);
-		return nullptr;
+	Cmd() {
+		t = 0;
+	}
+};
+
+class CmdList {
+	List<Cmd>* list;
+	Turtle turtle;
+	
+public:
+	CmdList(Turtle tortue) {
+		turtle = tortue;
+	};
+
+	void update() {
+		if (list->val.t > 0)
+			if (list->val.type == CmdType::Advance) {
+				turtle.forward(.03f);
+			}
+			else
+				turtle.Rotate(turtle.direction + 1);
+		if (list->val.t <= 0)
+			apply();
+	}
+
+	void append(CmdType type, float time) {
+		list->push_back(*new Cmd(type, time));
+	}
+
+	void apply() {
+		list = list->next;
 	}
 };

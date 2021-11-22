@@ -28,7 +28,7 @@ public:
 			return n;
 		}
 		else {
-			if (next) 
+			if (next)
 				next->remove(elem);
 			return this;
 		}

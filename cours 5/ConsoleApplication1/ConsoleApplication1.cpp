@@ -84,7 +84,7 @@ void drawGround(sf::RenderWindow& window) {
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1240, 720), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(3000, 2080), "SFML works!");
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 	

@@ -50,6 +50,11 @@ int main()
 	Turtle turtle(carapace, head, leftEye, rightEye);
 	turtle.setPosition(400, 400);
 
+	CmdList list(turtle);
+	list.append(CmdType::Advance, 2);
+	list.append(CmdType::Forward, 2);
+	list.append(CmdType::Advance, 2);
+
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
 	double tExitFrame = getTimeStamp();
@@ -66,6 +71,9 @@ int main()
 			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				window.close();
 		}
+
+		list.update();
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			turtle.visible = !turtle.visible;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
