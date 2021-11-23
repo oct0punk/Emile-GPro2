@@ -2,17 +2,17 @@
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML//Graphics.hpp"
 #include "List.hpp"
 
 
 class Turtle {
-	sf::CircleShape carapace;
-	sf::CircleShape head;
-	sf::CircleShape leftEye;
-	sf::CircleShape rightEye;
+	std::vector<sf::CircleShape> shapes;
+	sf::VertexArray arr;
 public:
 	float direction = 90;
-	bool visible;
+	bool visible = true;
+	bool penDown = true;
 
 	Turtle() {
 		sf::Texture shellTexture;
@@ -35,17 +35,20 @@ public:
 	}
 
 	Turtle(sf::CircleShape carapace, sf::CircleShape head, sf::CircleShape leftE, sf::CircleShape rightE) {
-		this->carapace = carapace;
-		this->head = head;
-		this->leftEye = leftE;
-		this->rightEye = rightE;
+		shapes.push_back(head);
+		shapes.push_back(leftE);
+		shapes.push_back(rightE);
+		shapes.push_back(carapace);
+		arr.setPrimitiveType(sf::PrimitiveType::LinesStrip);
+		penDown = true;
 	}
 
 	void setPosition(float x, float y) {
-		carapace.setPosition(sf::Vector2f(x, y));
-		head.setPosition(sf::Vector2f(x, y));
-		leftEye.setPosition(sf::Vector2f(x, y));
-		rightEye.setPosition(sf::Vector2f(x, y));
+		for (int i = 0; i < shapes.size(); i++) {
+			shapes[i].setPosition(sf::Vector2f(x, y));
+		}
+		if (penDown)
+			arr.append(sf::Vertex(sf::Vector2f(x, y), sf::Color::Blue));
 	}
 
 	void forward(float speed) {
@@ -57,46 +60,46 @@ public:
 	}
 
 	sf::Vector2f getPosition() {
-		return carapace.getPosition();
+		return shapes[0].getPosition();
 	}
 
 	void Rotate(float angle) {
-		head.setRotation(angle);
-		leftEye.setRotation(angle);
-		rightEye.setRotation(angle);
-		carapace.setRotation(angle + 90);
+		for (int i = 0; i < shapes.size(); i++)
+			shapes[i].setRotation(angle);
 		direction = angle;
 	}
 
 	void RandomColor() {
-		head.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		carapace.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		leftEye.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		rightEye.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));;
+		for (int i = 0; i < shapes.size(); i++)
+			shapes[i].setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
 	}
 
 	void draw(sf::RenderWindow& win) {
 		if (!visible) return;
-		win.draw(head);
-		win.draw(carapace);
-		win.draw(leftEye);
-		win.draw(rightEye);
+		win.draw(arr);
+		for (int i = 0; i < shapes.size(); i++)
+			win.draw(shapes[i]);
 	}
 };
 
 
+#pragma region Command
 enum CmdType {
 	Advance,
-	Forward,
+	Rotate,
+	//PenUp, 
+	//PenDown,
 };
 
 struct Cmd {
 	CmdType type;
+	float factor = 1.5f;
 	float t;
 
 public:
-	Cmd(CmdType type, float time) {
+	Cmd(CmdType type, float factor, float time) {
 		this->type = type;
+		this->factor = factor;
 		t = time;
 	}
 
@@ -117,26 +120,56 @@ public:
 
 	void update(double dt) {
 		if (!list) return;
-		if (list->val.t > 0) {
-			if (list->val.type == CmdType::Advance) {
-				turtle->forward(100 * dt);
+		if (list->val.t >= 0) {
+			switch (list->val.type)
+			{
+			case Advance:
+				turtle->forward(list->val.factor * dt);
 				list->val.t -= dt;
-			}
-			else {
-				turtle->Rotate(turtle->direction + 60 * dt);
+				break;
+			case Rotate:
+				turtle->Rotate(turtle->direction + list->val.factor * dt);
 				list->val.t -= dt;
+				break;
+			//case PenUp
+			//	turtle->penDown = false;
+			//	list->val.t -= dt;
+			//	break;
+			//case PenDown:
+			//	turtle->penDown = true;
+			//	list->val.t -= dt;
+			//	break;
+			default:
+				apply();
+				break;
 			}
 		}
-		if (list->val.t <= 0)
+		else
 			apply();
 	}
 
-	void append(CmdType type, float time) {
-		list->push_back(*new Cmd(type, time));
+	void appendTranslation(float speed, float time) {
+		list->push_back(*new Cmd(CmdType::Advance, speed, time));
 	}
+
+	void appendRotation(float deltaAngle, float time) {
+		list->push_back(*new Cmd(CmdType::Rotate, deltaAngle, time));
+	}
+
+	//void appendPen(bool down) {
+	//	float f = 0.0f;
+	//	CmdType t = CmdType::PenUp;
+	//	if (down) {
+	//		t = CmdType::PenDown;
+	//		f = 1.0f;
+	//	}
+	//	list->push_back(*new Cmd(t, f, 0));
+	//}
 
 	void apply() {
+		List<Cmd>* current = list;
 		list = list->next;
-
+		delete current;
 	}
 };
+#pragma endregion

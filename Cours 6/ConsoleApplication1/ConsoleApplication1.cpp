@@ -22,6 +22,7 @@ int main()
 	
 	World world;
 
+#pragma region SFML
 	sf::Font fArial;
 	if (!fArial.loadFromFile("res/arial.ttf"))	
 		cout << "font not loaded" << endl;
@@ -46,15 +47,22 @@ int main()
 	rightEye.setOrigin(-80, -4);
 	carapace.setOrigin(60, 60);
 	head.setOrigin(-50, 20);
-
 	Turtle turtle(carapace, head, leftEye, rightEye);
 	turtle.setPosition(400, 400);
+#pragma endregion
 
+	
 	CmdList list(&turtle);
-	for (int i = 0; i < 10; i++) {
-		list.append(CmdType::Forward, 2);
-		list.append(CmdType::Advance, 2);
-	}
+	//list.appendPen(true);
+	list.appendRotation(rand() % 180 - 90, rand() % 2);
+	list.appendTranslation(rand() % 250, rand() % 3);
+	list.appendRotation(rand() % 180 - 90, rand() % 2);
+	list.appendTranslation(rand() % 250, rand() % 3);
+	list.appendRotation(rand() % 180 - 90, rand() % 2);
+	list.appendTranslation(rand() % 250, rand() % 3);
+
+
+
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();

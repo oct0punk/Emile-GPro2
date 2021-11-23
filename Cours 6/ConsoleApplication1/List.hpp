@@ -43,6 +43,12 @@ public:
 		}
 		return this;
 	}
+
+	int Count(List<Type>* node) {
+		if (node)
+			return 1 + Count(node->next);
+		return 0;
+	}
 };
 
 template<typename Type>
