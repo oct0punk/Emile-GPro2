@@ -35,6 +35,7 @@ public:
 	};
 
 	List* push_back(Type nu_elem) {
+		if (!this) return nullptr;
 		if (!next) {
 			next = new List(nu_elem);
 		}

@@ -19,18 +19,18 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1240, 720), "Turtle");
 	window.setFramerateLimit(60);
-	
+
 	World world;
 
 #pragma region SFML
 	sf::Font fArial;
-	if (!fArial.loadFromFile("res/arial.ttf"))	
+	if (!fArial.loadFromFile("res/arial.ttf"))
 		cout << "font not loaded" << endl;
 	sf::Text tDt;
 	tDt.setFont(fArial);
 	tDt.setFillColor(sf::Color::White);
 	tDt.setCharacterSize(45);
-	
+
 
 	sf::Texture shellTexture;
 	shellTexture.loadFromFile("res/shellTexture.jpg");
@@ -51,41 +51,55 @@ int main()
 	turtle.setPosition(400, 400);
 #pragma endregion
 
-	
+
 	CmdList list(&turtle);
-	//list.appendPen(true);
-	list.appendRotation(rand() % 180 - 90, rand() % 2);
-	list.appendTranslation(rand() % 250, rand() % 3);
-	list.appendRotation(rand() % 180 - 90, rand() % 2);
-	list.appendTranslation(rand() % 250, rand() % 3);
-	list.appendRotation(rand() % 180 - 90, rand() % 2);
-	list.appendTranslation(rand() % 250, rand() % 3);
-
-
 
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
 	double tExitFrame = getTimeStamp();
 	float radToDeg = 57.2958;
+	bool enterWasPressed = false;
 
-	while (window.isOpen()){
-		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
-
+	while (window.isOpen()) {
 		sf::Event event;
 		double dt = tExitFrame - tEnterFrame;
 		tEnterFrame = getTimeStamp();
-		while (window.pollEvent(event)){
+		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				window.close();
 		}
 
-		list.update(dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-			turtle.visible = !turtle.visible;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-			turtle.RandomColor();
+			FILE* file = nullptr;
+			fopen_s(&file, "res/truc.txt", "rb");
+			if (file && !feof(file)) {
+				char line[256]{};
+
+				for (;;) {
+					int64_t nb = 0;
+					fscanf_s(file, "%s %lli\n", line, 256, &nb);
+					std::string s = line;
+					if (s == "Rotate") {
+						list.appendRotation(nb, 2);
+					}
+					if (s == "Forward") {
+						list.appendTranslation(nb, 2);
+					}
+					if (s == "PenUp") {
+						list.appendPen(false);
+					}
+					if (s == "PenDown") {
+						list.appendPen(true);
+					}
+					if (feof(file))
+						break;
+				}
+			}
+		}
+
+		list.update(dt);
 
 		float angle = turtle.direction;
 		sf::Vector2f move = turtle.getPosition();
@@ -103,7 +117,7 @@ int main()
 		}
 		turtle.Rotate(angle);
 
-		tDt.setString( to_string(dt)+" FPS:"+ to_string((int)(1.0f / dt)));
+		tDt.setString(to_string(dt) + " FPS:" + to_string((int)(1.0f / dt)));
 		world.update(dt);
 
 		window.clear(sf::Color(20, 20, 20));

@@ -1,0 +1,11 @@
+PenDown 0
+Forward 66
+Rotate 66
+Forward 66
+Rotate 66
+Forward 66
+Rotate 66
+PenUp 
+
+Rotate 66
+Forward 66

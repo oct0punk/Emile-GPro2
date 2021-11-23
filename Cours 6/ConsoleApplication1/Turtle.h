@@ -14,7 +14,8 @@ public:
 	sf::Color circleColor = sf::Color(100, 50, 0);
 	float direction = 90;
 	bool visible = true;
-	bool penDown = true;
+	bool penDown = false;
+
 
 	Turtle() {
 		sf::Texture shellTexture;
@@ -42,27 +43,27 @@ public:
 		shapes.push_back(rightE);
 		shapes.push_back(carapace);
 		
-		penDown = true;
+		penDown = false;
 		if (!splash.loadFromFile("res/splash.png"))
 			throw "exception ong";
 		splash.setSmooth(true);
 	}
+
 
 	void setPosition(float x, float y) {
 		for (int i = 0; i < shapes.size(); i++) {
 			shapes[i].setPosition(sf::Vector2f(x, y));
 		}
 		if (penDown) {
-			int r = rand() % 50;
-			if (r % 2 == 0)
-				r = 0;
+			int r = rand() % 5;
 			sf::CircleShape c(r);
 			RandomColor();
 			c.setFillColor(circleColor);
-			if (r % 2 != 0)
-				c.setOrigin(sf::Vector2f(rand() % r, rand() % r));
+			if (r != 0)
+				c.setOrigin(sf::Vector2f(r, r));
+			c.setRotation(rand());
 			c.setPosition(sf::Vector2f(x, y));
-			c.setTexture(&splash);
+			//c.setTexture(&splash);
 			vertices.push_back(c);
 		}
 	}
@@ -85,6 +86,7 @@ public:
 		direction = angle;
 	}
 
+
 	void RandomColor() {
 		circleColor = sf::Color(
 			rand() % 255,
@@ -99,6 +101,10 @@ public:
 		for (int i = 0; i < shapes.size(); i++)
 			win.draw(shapes[i]);
 	}
+
+	void setPenDown(bool val) {
+		penDown = val;
+	}
 };
 
 
@@ -106,8 +112,8 @@ public:
 enum CmdType {
 	Advance,
 	Rotate,
-	//PenUp, 
-	//PenDown,
+	PenUp, 
+	PenDown,
 };
 
 struct Cmd {
@@ -123,6 +129,7 @@ public:
 	}
 
 	Cmd() {
+		type = CmdType::Rotate;
 		t = 0;
 	}
 };
@@ -150,14 +157,14 @@ public:
 				turtle->Rotate(turtle->direction + list->val.factor * dt);
 				list->val.t -= dt;
 				break;
-			//case PenUp
-			//	turtle->penDown = false;
-			//	list->val.t -= dt;
-			//	break;
-			//case PenDown:
-			//	turtle->penDown = true;
-			//	list->val.t -= dt;
-			//	break;
+			case PenUp:
+				turtle->penDown = false;
+				list->val.t -= dt;
+				break;
+			case PenDown:
+				turtle->penDown = true;
+				list->val.t -= dt;
+				break;
 			default:
 				apply();
 				break;
@@ -175,15 +182,15 @@ public:
 		list->push_back(*new Cmd(CmdType::Rotate, deltaAngle, time));
 	}
 
-	//void appendPen(bool down) {
-	//	float f = 0.0f;
-	//	CmdType t = CmdType::PenUp;
-	//	if (down) {
-	//		t = CmdType::PenDown;
-	//		f = 1.0f;
-	//	}
-	//	list->push_back(*new Cmd(t, f, 0));
-	//}
+	void appendPen(bool down) {
+		float f = 0.0f;
+		CmdType t = CmdType::PenUp;
+		if (down) {
+			t = CmdType::PenDown;
+			f = 1.0f;
+		}
+		list->push_back(*new Cmd(t, f, 0));
+	}
 
 	void apply() {
 		List<Cmd>* current = list;
