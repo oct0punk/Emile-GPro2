@@ -107,20 +107,26 @@ public:
 
 class CmdList {
 	List<Cmd>* list;
-	Turtle turtle;
+	Turtle* turtle;
 	
 public:
-	CmdList(Turtle tortue) {
+	CmdList(Turtle* tortue) {
+		list = new List<Cmd>(*new Cmd());
 		turtle = tortue;
 	};
 
-	void update() {
-		if (list->val.t > 0)
+	void update(double dt) {
+		if (!list) return;
+		if (list->val.t > 0) {
 			if (list->val.type == CmdType::Advance) {
-				turtle.forward(.03f);
+				turtle->forward(100 * dt);
+				list->val.t -= dt;
 			}
-			else
-				turtle.Rotate(turtle.direction + 1);
+			else {
+				turtle->Rotate(turtle->direction + 60 * dt);
+				list->val.t -= dt;
+			}
+		}
 		if (list->val.t <= 0)
 			apply();
 	}
@@ -131,5 +137,6 @@ public:
 
 	void apply() {
 		list = list->next;
+
 	}
 };

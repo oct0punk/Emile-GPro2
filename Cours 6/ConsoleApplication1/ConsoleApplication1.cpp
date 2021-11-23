@@ -50,16 +50,16 @@ int main()
 	Turtle turtle(carapace, head, leftEye, rightEye);
 	turtle.setPosition(400, 400);
 
-	CmdList list(turtle);
-	list.append(CmdType::Advance, 2);
-	list.append(CmdType::Forward, 2);
-	list.append(CmdType::Advance, 2);
+	CmdList list(&turtle);
+	for (int i = 0; i < 10; i++) {
+		list.append(CmdType::Forward, 2);
+		list.append(CmdType::Advance, 2);
+	}
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
 	double tExitFrame = getTimeStamp();
-	float radToDeg = 57.2958;	
-	float angle = 0;
+	float radToDeg = 57.2958;
 
 	while (window.isOpen()){
 		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
@@ -72,13 +72,14 @@ int main()
 				window.close();
 		}
 
-		list.update();
+		list.update(dt);
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			turtle.visible = !turtle.visible;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 			turtle.RandomColor();
 
+		float angle = turtle.direction;
 		sf::Vector2f move = turtle.getPosition();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
 			turtle.forward(60 * dt);
