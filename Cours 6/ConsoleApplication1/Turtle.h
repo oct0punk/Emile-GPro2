@@ -9,6 +9,7 @@
 class Turtle {
 	std::vector<sf::CircleShape> shapes;
 	std::vector<sf::CircleShape> vertices;
+	sf::Texture splash;
 public:
 	sf::Color circleColor = sf::Color(100, 50, 0);
 	float direction = 90;
@@ -42,6 +43,9 @@ public:
 		shapes.push_back(carapace);
 		
 		penDown = true;
+		if (!splash.loadFromFile("res/splash.png"))
+			throw "exception ong";
+		splash.setSmooth(true);
 	}
 
 	void setPosition(float x, float y) {
@@ -49,13 +53,16 @@ public:
 			shapes[i].setPosition(sf::Vector2f(x, y));
 		}
 		if (penDown) {
-			int r = rand() % 20 - 10;
-			if (r < 0)
+			int r = rand() % 50;
+			if (r % 2 == 0)
 				r = 0;
-			sf::CircleShape c(-r);
+			sf::CircleShape c(r);
+			RandomColor();
 			c.setFillColor(circleColor);
-			c.setOrigin(sf::Vector2f(r, r));
+			if (r % 2 != 0)
+				c.setOrigin(sf::Vector2f(rand() % r, rand() % r));
 			c.setPosition(sf::Vector2f(x, y));
+			c.setTexture(&splash);
 			vertices.push_back(c);
 		}
 	}
