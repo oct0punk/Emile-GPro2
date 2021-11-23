@@ -8,8 +8,9 @@
 
 class Turtle {
 	std::vector<sf::CircleShape> shapes;
-	sf::VertexArray arr;
+	std::vector<sf::CircleShape> vertices;
 public:
+	sf::Color circleColor = sf::Color(100, 50, 0);
 	float direction = 90;
 	bool visible = true;
 	bool penDown = true;
@@ -39,7 +40,7 @@ public:
 		shapes.push_back(leftE);
 		shapes.push_back(rightE);
 		shapes.push_back(carapace);
-		arr.setPrimitiveType(sf::PrimitiveType::LinesStrip);
+		
 		penDown = true;
 	}
 
@@ -47,8 +48,16 @@ public:
 		for (int i = 0; i < shapes.size(); i++) {
 			shapes[i].setPosition(sf::Vector2f(x, y));
 		}
-		if (penDown)
-			arr.append(sf::Vertex(sf::Vector2f(x, y), sf::Color::Blue));
+		if (penDown) {
+			int r = rand() % 20 - 10;
+			if (r < 0)
+				r = 0;
+			sf::CircleShape c(-r);
+			c.setFillColor(circleColor);
+			c.setOrigin(sf::Vector2f(r, r));
+			c.setPosition(sf::Vector2f(x, y));
+			vertices.push_back(c);
+		}
 	}
 
 	void forward(float speed) {
@@ -70,13 +79,16 @@ public:
 	}
 
 	void RandomColor() {
-		for (int i = 0; i < shapes.size(); i++)
-			shapes[i].setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
+		circleColor = sf::Color(
+			rand() % 255,
+			rand() % 255,
+			rand() % 255);
 	}
 
 	void draw(sf::RenderWindow& win) {
 		if (!visible) return;
-		win.draw(arr);
+		for (auto c : vertices)
+			win.draw(c);
 		for (int i = 0; i < shapes.size(); i++)
 			win.draw(shapes[i]);
 	}
