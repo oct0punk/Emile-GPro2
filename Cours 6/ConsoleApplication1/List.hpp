@@ -45,9 +45,9 @@ public:
 		return this;
 	}
 
-	int Count(List<Type>* node) {
-		if (node)
-			return 1 + Count(node->next);
+	int Count() {
+		if (next)
+			return 1 + next->Count();
 		return 0;
 	}
 };

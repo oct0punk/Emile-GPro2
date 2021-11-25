@@ -49,6 +49,11 @@ public:
 		splash.setSmooth(true);
 	}
 
+	void Reset(sf::RenderWindow& win) {
+		clear();
+		setPosition(win.getSize().x / 2, win.getSize().y / 2);
+		Rotate(-90);
+	}
 
 	void setPosition(float x, float y) {
 		for (int i = 0; i < shapes.size(); i++) {
@@ -63,7 +68,7 @@ public:
 				c.setOrigin(sf::Vector2f(r, r));
 			c.setRotation(rand());
 			c.setPosition(sf::Vector2f(x, y));
-			//c.setTexture(&splash);
+			c.setTexture(&splash);
 			vertices.push_back(c);
 		}
 	}
@@ -92,6 +97,10 @@ public:
 			rand() % 255,
 			rand() % 255,
 			rand() % 255);
+	}
+
+	void clear() {
+		vertices.clear();
 	}
 
 	void draw(sf::RenderWindow& win) {
@@ -134,15 +143,21 @@ public:
 	}
 };
 
+
 class CmdList {
-	List<Cmd>* list;
-	Turtle* turtle;
+	List<Cmd>*	list = nullptr;
+	Turtle*		turtle = nullptr;
 	
 public:
 	CmdList(Turtle* tortue) {
-		list = new List<Cmd>(*new Cmd());
+		list = nullptr;
 		turtle = tortue;
 	};
+
+	void clear() {
+		delete list;
+		list = nullptr;
+	}
 
 	void update(double dt) {
 		if (!list) return;
@@ -174,12 +189,19 @@ public:
 			apply();
 	}
 
+	void addCmd(Cmd cmd) {
+		if (!list)
+			list = new List<Cmd>(cmd);
+		else
+			list = list->push_back(cmd);
+	}
+
 	void appendTranslation(float speed, float time) {
-		list->push_back(*new Cmd(CmdType::Advance, speed, time));
+		addCmd(Cmd(CmdType::Advance, speed, time));
 	}
 
 	void appendRotation(float deltaAngle, float time) {
-		list->push_back(*new Cmd(CmdType::Rotate, deltaAngle, time));
+		addCmd(Cmd(CmdType::Rotate, deltaAngle, time));
 	}
 
 	void appendPen(bool down) {
@@ -189,13 +211,17 @@ public:
 			t = CmdType::PenDown;
 			f = 1.0f;
 		}
-		list->push_back(*new Cmd(t, f, 0));
+		addCmd(Cmd(t, f, 0));
 	}
 
 	void apply() {
 		List<Cmd>* current = list;
 		list = list->next;
 		delete current;
+	}
+
+	int Count() {
+		return !list?0:list->Count();
 	}
 };
 #pragma endregion
