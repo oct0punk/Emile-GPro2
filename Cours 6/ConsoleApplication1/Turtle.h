@@ -204,14 +204,12 @@ public:
 		addCmd(Cmd(CmdType::Rotate, deltaAngle, time));
 	}
 
-	void appendPen(bool down) {
-		float f = 0.0f;
-		CmdType t = CmdType::PenUp;
-		if (down) {
-			t = CmdType::PenDown;
-			f = 1.0f;
-		}
-		addCmd(Cmd(t, f, 0));
+	void appendPenUp() {
+		addCmd(Cmd(CmdType::PenUp, 0, .01f));
+	}
+
+	void appendPenDown() {
+		addCmd(Cmd(CmdType::PenDown, 1, .01f));
 	}
 
 	void apply() {

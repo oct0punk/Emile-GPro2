@@ -32,10 +32,10 @@ void ReadFile(CmdList& list) {
 				list.appendTranslation(nb, 1);
 			}
 			if (s == "PenUp") {
-				list.appendPen(false);
+				list.appendPenUp();
 			}
 			if (s == "PenDown") {
-				list.appendPen(true);
+				list.appendPenDown();
 			}
 			if (feof(file))
 				break;
