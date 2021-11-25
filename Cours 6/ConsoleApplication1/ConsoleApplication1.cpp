@@ -56,6 +56,14 @@ void WriteFile(CmdList& list) {
 	fclose(file);
 }
 
+void clearFile(const char* fileName) {
+	FILE* f = nullptr;
+	fopen_s(&f, fileName, "wb");
+	if (f)
+		fwrite("", sizeof(char), 0, f);
+	fclose(f);
+}
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1240, 720), "Turtle");
@@ -119,7 +127,7 @@ int main()
 	list.appendRotation(144, 1);
 	list.appendPenUp();
 	WriteFile(list);
-
+	clearFile("Res/command.txt");
 	while (window.isOpen()) {
 		sf::Event event;
 		double dt = tExitFrame - tEnterFrame;
