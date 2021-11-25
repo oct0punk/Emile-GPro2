@@ -1,5 +1,12 @@
-PenUp 0
-Forward -100
-Rotate 90
-PenDown 10
-Forward 200
+PenDown
+Forward 50
+Rotate 144
+Forward 50
+Rotate 144
+Forward 50
+Rotate 144
+Forward 50
+Rotate 144
+Forward 50
+Rotate 144
+PenUp

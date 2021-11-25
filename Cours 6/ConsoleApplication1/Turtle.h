@@ -141,14 +141,34 @@ public:
 		type = CmdType::Rotate;
 		t = 0;
 	}
+
+	void print(FILE* f) {
+		switch (type)
+		{
+		case CmdType::Advance:
+			fprintf(f, "Forward %i\n", (int)factor);
+			break;
+		case CmdType::Rotate:
+			fprintf(f, "Rotate %i\n", (int)factor);
+			break;
+		case CmdType::PenDown:
+			fprintf(f, "PenDown\n");
+			break;
+		case CmdType::PenUp:
+			fprintf(f, "PenUp\n");
+			break;
+		default:
+			break;
+		}
+	}
 };
 
 
 class CmdList {
+public:
 	List<Cmd>*	list = nullptr;
 	Turtle*		turtle = nullptr;
 	
-public:
 	CmdList(Turtle* tortue) {
 		list = nullptr;
 		turtle = tortue;

@@ -15,15 +15,14 @@
 
 void ReadFile(CmdList& list) {
 	FILE* file = nullptr;
-	int count = list.Count();
-	cout << count;
 	fopen_s(&file, "res/command.txt", "rb");
 	if (file && !feof(file)) {
 		char line[256]{};
 
 		for (;;) {
 			int64_t nb = 0;
-			fscanf_s(file, "%s %lli\n", line, 256, &nb);
+			line[0] = 0;
+			int nbRead = fscanf_s(file, "%s %lli\n", line, 256, &nb);
 			std::string s = line;
 			if (s == "Rotate") {
 				list.appendRotation(nb, 1);
@@ -42,8 +41,19 @@ void ReadFile(CmdList& list) {
 		}
 	}
 	fclose(file);
-	count = list.Count();
-	cout << count;
+}
+
+void WriteFile(CmdList& list) {
+	FILE* file = nullptr;
+	fopen_s(&file, "res/command.txt", "wb");
+	fwrite("", sizeof(char), 0, file);
+	
+	List<Cmd>* node = list.list;
+	while (node) {
+		node->val.print(file);
+		node = node->next;
+	}
+	fclose(file);
 }
 
 int main()
@@ -96,7 +106,19 @@ int main()
 	float radToDeg = 57.2958f;
 	bool enterWasPressed = false;
 
-	ReadFile(list);
+	list.appendPenDown();
+	list.appendTranslation(50, 1);
+	list.appendRotation(144, 1);
+	list.appendTranslation(50, 1);
+	list.appendRotation(144, 1);
+	list.appendTranslation(50, 1);
+	list.appendRotation(144, 1);
+	list.appendTranslation(50, 1);
+	list.appendRotation(144, 1);
+	list.appendTranslation(50, 1);
+	list.appendRotation(144, 1);
+	list.appendPenUp();
+	WriteFile(list);
 
 	while (window.isOpen()) {
 		sf::Event event;
