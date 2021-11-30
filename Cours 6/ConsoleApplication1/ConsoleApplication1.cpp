@@ -116,25 +116,15 @@ int main()
 	double tEnterFrame	= getTimeStamp();
 	double tExitFrame	= getTimeStamp();
 	float radToDeg = 57.2958f;
-	bool enterWasPressed = false;
 
 	list.appendPenDown();
-	list.appendTranslation(50, 1);
-	list.appendRotation(144, 1);
-	list.appendTranslation(50, 1);
-	list.appendRotation(144, 1);
-	list.appendTranslation(50, 1);
-	list.appendRotation(144, 1);
-	list.appendTranslation(50, 1);
-	list.appendRotation(144, 1);
-	list.appendTranslation(50, 1);
-	list.appendRotation(144, 1);
-	list.appendPenUp();
 	WriteFile(list);
 	clearFile("Res/command.txt");
 
 	ImGui::SFML::Init(window);
 	sf::Clock deltaClock;
+	int addAngle = 0;
+	sf::Color clearColor(20, 20, 20, 20);
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -154,16 +144,39 @@ int main()
 			ReadFile(list);
 			date = buf.st_mtime;
 		}
-
-
 		list.update(dt);
+		
+
+		{ using namespace ImGui;
+			Begin("Commands");
+			Button("Move Forward");
+			if (IsItemActive())
+				turtle.forward(10);
+			
+			Button("Move BackWard");
+			if (IsItemActive())
+				turtle.forward(-10);
+
+			if (Button("Turn"))
+				list.appendRotation(addAngle, 1);
+			InputInt("", &addAngle);
+
+			Checkbox("Pen", &turtle.penDown);
+
+			float col[4]{ clearColor.r, clearColor.g, clearColor.b, clearColor.a };
+			ColorPicker4("ClearColor", col);
+
+			End();			
+		}
+		
 
 		float angle = turtle.direction;
+
 		sf::Vector2f move = turtle.getPosition();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
 			turtle.forward(60 * dt);
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) /*|| sf::Keyboard::isKeyPressed(sf::Keyboard::S)*/) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 			turtle.forward(-60 * dt);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
@@ -177,7 +190,7 @@ int main()
 		tDt.setString(to_string(dt) + " FPS:" + to_string((int)(1.0f / dt)));
 		world.update(dt);
 
-		window.clear(sf::Color(20, 20, 20));
+		window.clear(clearColor);
 		window.draw(tDt);
 		turtle.draw(window);
 		ImGui::SFML::Render(window);
