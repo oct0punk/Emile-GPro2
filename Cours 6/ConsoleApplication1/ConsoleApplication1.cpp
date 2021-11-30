@@ -13,6 +13,10 @@
 #include "World.h"
 #include "Turtle.h"
 
+#include "imgui.h"
+#include "imgui-SFML.h"
+
+
 void ReadFile(CmdList& list) {
 	FILE* file = nullptr;
 	fopen_s(&file, "res/command.txt", "rb");
@@ -128,14 +132,21 @@ int main()
 	list.appendPenUp();
 	WriteFile(list);
 	clearFile("Res/command.txt");
+
+	ImGui::SFML::Init(window);
+	sf::Clock deltaClock;
+
 	while (window.isOpen()) {
 		sf::Event event;
 		double dt = tExitFrame - tEnterFrame;
 		tEnterFrame = getTimeStamp();
 		while (window.pollEvent(event)) {
+			ImGui::SFML::ProcessEvent(event);
 			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				window.close();
 		}
+		ImGui::SFML::Update(window, deltaClock.restart());
+		ImGui::ShowDemoWindow();
 
 		_stat("res/command.txt", &buf);
 		if (date != buf.st_mtime) {
@@ -169,10 +180,12 @@ int main()
 		window.clear(sf::Color(20, 20, 20));
 		window.draw(tDt);
 		turtle.draw(window);
+		ImGui::SFML::Render(window);
 		window.display();
 
 		tExitFrame = getTimeStamp();
 	}
+	ImGui::SFML::Shutdown();
 
 	return 0;
 }
