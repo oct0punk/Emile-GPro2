@@ -163,8 +163,14 @@ int main()
 
 			Checkbox("Pen", &turtle.penDown);
 
-			float col[4]{ clearColor.r, clearColor.g, clearColor.b, clearColor.a };
-			ColorPicker4("ClearColor", col);
+			float col[4]{ clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f };
+			if (ColorPicker4("ClearColor", col))
+			{
+				clearColor.r = col[0] * 255.f;
+				clearColor.g = col[1] * 255.f;
+				clearColor.b = col[2] * 255.f;
+				clearColor.a = col[3] * 255.f;
+			}
 
 			End();			
 		}
