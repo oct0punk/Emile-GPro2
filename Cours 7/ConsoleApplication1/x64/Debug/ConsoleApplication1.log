@@ -1,0 +1,7 @@
+﻿  ConsoleApplication1.cpp
+C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\Entity.h(53,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
+C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\ConsoleApplication1.cpp(75,26): warning C4244: '=' : conversion de 'float' en 'sf::Uint8', perte possible de données
+C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\ConsoleApplication1.cpp(76,26): warning C4244: '=' : conversion de 'float' en 'sf::Uint8', perte possible de données
+C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\ConsoleApplication1.cpp(77,26): warning C4244: '=' : conversion de 'float' en 'sf::Uint8', perte possible de données
+C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\ConsoleApplication1.cpp(78,26): warning C4244: '=' : conversion de 'float' en 'sf::Uint8', perte possible de données
+  ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
