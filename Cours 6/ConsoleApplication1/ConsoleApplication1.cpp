@@ -62,17 +62,18 @@ int main()
 
 		{ using namespace ImGui;
 			Begin("Commands");
-			if (Button("Move Forward"))
-				turtle.translate(100);
-			
 			if (Button("Move BackWard"))
 				turtle.translate(-100);
+			SameLine();
+			if (Button("Move Forward"))
+				turtle.translate(100);
 
 			if (Button("Turn")) {
 				turtle.rotate(angle);
-			}
-			InputInt("", &angle);
+			} SameLine();
+			InputInt("", &angle);		
 
+			NewLine();
 			Checkbox("Pen", &turtle.penEnabled);
 
 			float penCol[4]{ penColor.r / 255.0f, penColor.g / 255.0f, penColor.b / 255.0f, penColor.a / 255.0f };
@@ -84,6 +85,10 @@ int main()
 				penColor.a = penCol[3] * 255.f;
 				turtle.setPenColor(sf::Color(penColor.r, penColor.g, penColor.b, penColor.a));
 			}
+			
+			NewLine();
+			Separator();
+			NewLine();
 
 			float col[4]{ clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f };
 			if (ColorPicker4("ClearColor", col))
@@ -112,12 +117,12 @@ int main()
 					PushID(idx);
 					Value("idx", idx);
 					static const char* cmdTypes[]{
+						"Clear",
 						"Advance",
 						"Rotate",
 						"PenUp",
 						"PenDown",
-						"PenColor",
-						"Clear"
+						"PenColor"
 					};
 
 					if (Combo("Cmd type", (int*)&h->type, cmdTypes, IM_ARRAYSIZE(cmdTypes))) {
@@ -130,6 +135,7 @@ int main()
 					case CmdType::Clear:
 						break;
 					case PenDown:
+						break;
 					case PenUp:
 						break;
 					case PenColor: {
@@ -163,10 +169,75 @@ int main()
 					idx++;
 					PopID();
 				}
+				Separator();
+				Cmd* tc = turtle.cmds;
+				idx = 0;
+				while (tc) {
+					PushID(idx);
+					Value("val", tc->value);
+					tc = tc->next;
+					idx++;
+					PopID();
+				}
+
+				SameLine();
+				if (Button("Run")) {
+					if (head)turtle.appendCmd(head);
+					head = nullptr;
+					//passer le head a la tortues
+				}
+				SameLine();
+				if (Button("Load")) {
+					FILE* f = nullptr;
+					fopen_s(&f, "res/manualsave.txt", "rb");
+					if (f && !feof(f)) {
+						const int maxLineSize = 256;
+						char line[maxLineSize] = {};
+						for (;;) {
+							int64_t nb = 0;
+							fscanf_s(f, "%s %lld\n", line, maxLineSize, &nb);
+							std::string s = line;
+							if (s == "Advance") {
+								turtle.translate(nb);
+							}
+							else if (s == "Rotate") {
+								turtle.rotate(nb);
+							}
+							else if (s == "PenUp") {
+								turtle.setPen(false);
+							}
+							else if (s == "PenDown") {
+								turtle.setPen(true);
+							}
+							else if (s == "PenColor") {
+								turtle.setPenColor(sf::Color((unsigned int)nb));
+							}
+							else if (s == "Clear") {
+								turtle.appendCmd(new Cmd(Clear));
+							}
+							if (feof(f))
+								break;
+						}
+						fclose(f);
+						head = turtle.cmds;
+						turtle.cmds = nullptr;
+					}
+				}
+				SameLine();
+
+				if (Button("Save")) {
+					//sauver le fichier
+					FILE* f = nullptr;
+					fopen_s(&f, "res/manualsave.txt", "wb");
+					if (f && head) {
+						turtle.write(f, head);
+						fflush(f);
+						fclose(f);
+					}
+				}
 				TreePop();
 			}
-
-			End();			
+			ImGui::End();
 		}
 		turtle.update(dt);
 		
