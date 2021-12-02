@@ -16,58 +16,6 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 
-
-void ReadFile(CmdList& list) {
-	FILE* file = nullptr;
-	fopen_s(&file, "res/command.txt", "rb");
-	if (file && !feof(file)) {
-		char line[256]{};
-
-		for (;;) {
-			int64_t nb = 0;
-			line[0] = 0;
-			int nbRead = fscanf_s(file, "%s %lli\n", line, 256, &nb);
-			std::string s = line;
-			if (s == "Rotate") {
-				list.appendRotation(nb, 1);
-			}
-			if (s == "Forward") {
-				list.appendTranslation(nb, 1);
-			}
-			if (s == "PenUp") {
-				list.appendPenUp();
-			}
-			if (s == "PenDown") {
-				list.appendPenDown();
-			}
-			if (feof(file))
-				break;
-		}
-	}
-	fclose(file);
-}
-
-void WriteFile(CmdList& list) {
-	FILE* file = nullptr;
-	fopen_s(&file, "res/command.txt", "wb");
-	fwrite("", sizeof(char), 0, file);
-	
-	List<Cmd>* node = list.list;
-	while (node) {
-		node->val.print(file);
-		node = node->next;
-	}
-	fclose(file);
-}
-
-void clearFile(const char* fileName) {
-	FILE* f = nullptr;
-	fopen_s(&f, fileName, "wb");
-	if (f)
-		fwrite("", sizeof(char), 0, f);
-	fclose(f);
-}
-
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1240, 720), "Turtle");
@@ -75,7 +23,7 @@ int main()
 
 	World world;
 
-#pragma region SFML
+
 	sf::Font fArial;
 	if (!fArial.loadFromFile("res/arial.ttf"))
 		cout << "font not loaded" << endl;
@@ -84,32 +32,7 @@ int main()
 	tDt.setFillColor(sf::Color::White);
 	tDt.setCharacterSize(45);
 
-
-	sf::Texture shellTexture;
-	shellTexture.loadFromFile("res/shellTexture.jpg");
-	shellTexture.setSmooth(true);
-
-	sf::CircleShape carapace(60);
-	carapace.setTexture(&shellTexture);
-	sf::CircleShape head(20);
-	head.setFillColor(sf::Color(100, 0, 0));
-	sf::CircleShape leftEye(2);
-	sf::CircleShape rightEye(2);
-
-	leftEye.setOrigin(-80, 4);
-	rightEye.setOrigin(-80, -4);
-	carapace.setOrigin(60, 60);
-	head.setOrigin(-50, 20);
-	Turtle turtle(carapace, head, leftEye, rightEye);
-	turtle.setPosition(400, 400);
-#pragma endregion
-
-
-	CmdList list(&turtle);
-	struct _stat buf;
-	_stat("res/command.txt", &buf);
-	auto date = buf.st_mtime;
-
+	Turtle turtle(0);
 
 
 	double tStart		= getTimeStamp();
@@ -117,14 +40,12 @@ int main()
 	double tExitFrame	= getTimeStamp();
 	float radToDeg = 57.2958f;
 
-	list.appendPenDown();
-	WriteFile(list);
-	clearFile("Res/command.txt");
 
 	ImGui::SFML::Init(window);
 	sf::Clock deltaClock;
-	int addAngle = 0;
+	int angle = 0;
 	sf::Color clearColor(20, 20, 20, 20);
+	sf::Color penColor(20, 20, 20, 20);
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -138,30 +59,31 @@ int main()
 		ImGui::SFML::Update(window, deltaClock.restart());
 		ImGui::ShowDemoWindow();
 
-		_stat("res/command.txt", &buf);
-		if (date != buf.st_mtime) {
-			turtle.Reset(window);	
-			ReadFile(list);
-			date = buf.st_mtime;
-		}
-		list.update(dt);
-		
 
 		{ using namespace ImGui;
 			Begin("Commands");
-			Button("Move Forward");
-			if (IsItemActive())
-				turtle.forward(10);
+			if (Button("Move Forward"))
+				turtle.translate(100);
 			
-			Button("Move BackWard");
-			if (IsItemActive())
-				turtle.forward(-10);
+			if (Button("Move BackWard"))
+				turtle.translate(-100);
 
-			if (Button("Turn"))
-				list.appendRotation(addAngle, 1);
-			InputInt("", &addAngle);
+			if (Button("Turn")) {
+				turtle.rotate(angle);
+			}
+			InputInt("", &angle);
 
-			Checkbox("Pen", &turtle.penDown);
+			Checkbox("Pen", &turtle.penEnabled);
+
+			float penCol[4]{ penColor.r / 255.0f, penColor.g / 255.0f, penColor.b / 255.0f, penColor.a / 255.0f };
+			if (ColorPicker4("Pen Color", penCol))
+			{
+				penColor.r = penCol[0] * 255.f;
+				penColor.g = penCol[1] * 255.f;
+				penColor.b = penCol[2] * 255.f;
+				penColor.a = penCol[3] * 255.f;
+				turtle.setPenColor(sf::Color(penColor.r, penColor.g, penColor.b, penColor.a));
+			}
 
 			float col[4]{ clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f };
 			if (ColorPicker4("ClearColor", col))
@@ -172,26 +94,82 @@ int main()
 				clearColor.a = col[3] * 255.f;
 			}
 
+			static Cmd* head = nullptr;
+			//
+			if (TreeNode("Commands")) {
+				if (Button("+")) {
+					auto p = new Cmd(Advance);
+					p->value = p->originalValue = 50;
+					if (nullptr == head)
+						head = p;
+					else
+						head = head->append(p);
+				}
+
+				int idx = 0;
+				auto h = head;
+				while (h) {
+					PushID(idx);
+					Value("idx", idx);
+					static const char* cmdTypes[]{
+						"Advance",
+						"Rotate",
+						"PenUp",
+						"PenDown",
+						"PenColor",
+						"Clear"
+					};
+
+					if (Combo("Cmd type", (int*)&h->type, cmdTypes, IM_ARRAYSIZE(cmdTypes))) {
+						if (h->type == Rotate)
+							h->value = h->originalValue = 0;
+					}
+					Value("timer", h->timer);
+					switch (h->type)
+					{
+					case CmdType::Clear:
+						break;
+					case PenDown:
+					case PenUp:
+						break;
+					case PenColor: {
+						auto& col = h->col;
+						float fcol[4] = { col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, col.a / 255.0f };
+						if (ImGui::ColorEdit4("col", fcol)) {
+							col.r = fcol[0] * 255.0f;
+							col.g = fcol[1] * 255.0f;
+							col.b = fcol[2] * 255.0f;
+							col.a = fcol[3] * 255.0f;
+						}
+						break;
+					}
+					case Rotate: {
+						float degToRad = 0.0174533;
+						float deg = h->originalValue * degToRad;
+						if (SliderAngle("value", &deg)) {
+							h->value = h->originalValue = deg / degToRad;
+						}
+						break;
+					}
+					default:
+						if (DragFloat("value", &h->originalValue)) {
+							h->value = h->originalValue;
+						}
+						break;
+					}
+					NewLine();
+					ImGui::Separator();
+					h = h->next;
+					idx++;
+					PopID();
+				}
+				TreePop();
+			}
+
 			End();			
 		}
+		turtle.update(dt);
 		
-
-		float angle = turtle.direction;
-
-		sf::Vector2f move = turtle.getPosition();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-			turtle.forward(60 * dt);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			turtle.forward(-60 * dt);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-			angle -= 60 * dt;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			angle += 60 * dt;
-		}
-		turtle.Rotate(angle);
 
 		tDt.setString(to_string(dt) + " FPS:" + to_string((int)(1.0f / dt)));
 		world.update(dt);
