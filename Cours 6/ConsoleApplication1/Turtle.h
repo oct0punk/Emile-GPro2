@@ -134,9 +134,11 @@ public:
 			write(f, cmd->next);
 	}
 
-	void translate(float value) { appendCmd(new Cmd(Advance, value)); };
+	void translate(float value) {
+		appendCmd(new Cmd(Advance, value));
+	};
 
-	void rotate(float value) { appendCmd(new Cmd(Rotate, value)); };
+	void rotate(float value) { trs.rotate(value); };
 
 	void setPen(bool value) {
 		if (value)
