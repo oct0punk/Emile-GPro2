@@ -20,9 +20,24 @@ public:
 	EType			type;
 
 	bool visible = true;
+	bool simulated = true;
+
+	int gridSize = 1;
+
+	int cx = 0;
+	int cy = 0;
+
+	float rx = 0.0f;
+	float ry = 0.0f;
+
 	float dx = 0.0f;
 	float dy = 0.0f;
 		
+	Entity(sf::Shape* _spr, int _cx, int _cy, int gridSize) {
+		spr = _spr;
+		this->gridSize = gridSize;
+		setPosition(_cx, _cy);
+	}
 
 	Entity(EType type, sf::Shape* _spr) {
 		this->type = type;
@@ -42,6 +57,22 @@ public:
 	}
 
 	void setPosition(float x, float y) {
+		
+		rx = (x - (1.0f * cx));
+		while (rx > gridSize) {
+			cx++;
+			rx -= gridSize;
+		}
+		ry = (y - (1.0f * cy));
+		while (ry > gridSize) {
+			cy++;
+			ry -= gridSize;
+		}
+
+		cx = x / gridSize;
+		cy = y / gridSize;
+
+
 		spr->setPosition(sf::Vector2f(x, y));
 	}
 
@@ -60,9 +91,11 @@ public:
 
 class PlayerPad : public Entity {
 public:
+
+	Entity* currentBall = nullptr;
+
 	PlayerPad(EType type, sf::Shape* _spr) : Entity(type, _spr) {
-		this->type = type;
-		this->spr = _spr;
+		
 	}
 
 	virtual void update(double dt);

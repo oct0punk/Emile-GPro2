@@ -1,17 +1,13 @@
 #include "Entity.h"
 
 void Entity::update(double dt) {
-	sf::Vector2f move = getPosition();
-	move.x += dx * dt;
-	move.y += dy * dt;
-	setPosition(move.x, move.y);
-
+	if (simulated)
+		dy += 9.81f * dt;
+	setPosition(cx + dx, cy + dy);
 }
 
 void Entity::draw(sf::RenderWindow& win) {
 	if (visible) {
-		if (spr->getOutlineColor() == sf::Color::White)
-			visible = false;
 		win.draw(*spr);
 	}
 }
@@ -42,7 +38,6 @@ bool Entity::CheckCollision(Entity* wall, Entity* ball) {
 }
 
 void PlayerPad::update(double dt) {
-	
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {

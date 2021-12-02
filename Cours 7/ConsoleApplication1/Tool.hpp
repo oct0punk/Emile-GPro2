@@ -24,7 +24,3 @@ inline float catmull(float p0, float p1, float p2, float p3, float t) {
 
 	return 0.5f * q;
 }
-
-float Rad2Deg() {
-	return 57.2958f;
-}

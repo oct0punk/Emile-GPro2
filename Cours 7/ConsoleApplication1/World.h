@@ -12,6 +12,10 @@ public:
 
 class World {
 public:
+	int winW = 1240;
+	int winH = 720;
+	int gridSize = 8;
+
 	Audio* audio = nullptr;
 	std::vector<Entity*>	data;
 
