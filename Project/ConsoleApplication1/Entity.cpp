@@ -71,10 +71,11 @@ void Particle::draw(sf::RenderWindow& win) {
 }
 
 
-void LaserShot::create(float _px, float _py, float dir) {
-	float angle = 90 - dir;
-	float dx = cos(angle) * 57.2958f;
-	float dy = sin(angle) * 57.2958f;
+void LaserShot::create(float _px, float _py, float _dx, float _dy) {
+	if (reloading > 0.0f) return;
+	reloading = reloadTime;
+	float dx = _dx * 1000.0f;
+	float dy = _dy * 1000.0f;
 	for (int i = 0; i < px.size(); ++i) {
 		if (!alive[i]) {
 			px[i] = _px;
@@ -93,6 +94,9 @@ void LaserShot::create(float _px, float _py, float dir) {
 }
 
 void LaserShot::update(double dt) {
+	if (reloading > 0.0f) {
+		reloading -= dt;
+	}
 	for (int i = 0; i < px.size(); ++i) {
 		if (alive[i]) {		// Move each shape into (dx ; dy)
 			px[i] += dx[i] * dt;

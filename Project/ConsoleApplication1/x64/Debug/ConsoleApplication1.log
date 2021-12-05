@@ -1,28 +1,29 @@
 ﻿  Entity.cpp
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.h(53,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(5,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.h(53,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(5,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
           with
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(6,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(6,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
           with
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(60,55): warning C4244: 'argument' : conversion de 'float' en 'sf::Uint8', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(61,58): warning C4244: 'argument' : conversion de 'float' en 'sf::Uint8', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(63,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(98,23): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(60,55): warning C4244: 'argument' : conversion de 'float' en 'sf::Uint8', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(61,58): warning C4244: 'argument' : conversion de 'float' en 'sf::Uint8', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(63,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(98,18): warning C4244: '-=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(102,23): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
           with
           [
               _Ty=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(99,23): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(103,23): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
           with
           [
               _Ty=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(112,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(112,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'const int', perte possible de données
-  ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(116,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(116,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'const int', perte possible de données
+  ConsoleApplication1.vcxproj -> C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe

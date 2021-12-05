@@ -16,6 +16,12 @@
 #include "imgui-SFML.h"
 
 using namespace sf;
+
+void Normalize(Vector2f* v) {
+	float magnitude = sqrt((v->x * v->x) + (v->y * v->y));
+	*v = Vector2f(v->x / magnitude, v->y / magnitude);
+}
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Asteroid");
@@ -97,12 +103,13 @@ int main()
 		Vector2f pToMouse = Vector2f(
 			Mouse::getPosition(window).x - p.getPosition().x, 
 			Mouse::getPosition(window).y - p.getPosition().y);
+		Normalize(&pToMouse);
 		float intoMouse = atan2(pToMouse.y, pToMouse.x) * RadToDeg();
 		p.setRotation(intoMouse);
 
 		// Shoot
 		if (Mouse::isButtonPressed(Mouse::Left)) {
-			laser.create(pPos.x, pPos.y, intoMouse);
+			laser.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
 		}
 
 		#pragma endregion
@@ -113,8 +120,15 @@ int main()
 		Begin("Edit");
 		DragFloat("Speed", &speed, 1.0f, 0.0f, 1000.0f);
 		Separator();
-		DragFloat("Bullets width", &bWidth, .1f, 0.1f, 50.0f);
-		DragFloat("Bullets height", &bHeight, .1f, 0.1f, 50.0f);
+		if (DragFloat("Bullets width", &bWidth, .1f, 0.1f, 50.0f)) {
+			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
+			laser.spr = bShape;
+		}
+		if (DragFloat("Bullets height", &bHeight, .1f, 0.1f, 50.0f)) {
+			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
+			laser.spr = bShape;
+		}
+		DragFloat("Reload time", &laser.reloadTime, .05f, 0.0f, 1.0f);
 		Separator();
 		float col[4]{ clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f };
 		if (ColorPicker4("ClearColor", col))

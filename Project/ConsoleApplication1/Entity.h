@@ -69,8 +69,11 @@ public:
 	virtual void draw(sf::RenderWindow& win);
 };
 
-class LaserShot : public Entity {
+class LaserShot : public Entity {	
+	float reloading = 0.0f;
 public:
+	float reloadTime = .3f;
+
 	std::vector<float>	px;
 	std::vector<float>	py;
 
@@ -80,9 +83,8 @@ public:
 	std::vector<bool>	alive;
 
 	LaserShot(EType type, sf::Shape* _spr) : Entity(type, _spr) {
-
 	}
-	void create(float _px, float _py, float dir);
+	void create(float _px, float _py, float _dx, float _dy);
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 };
