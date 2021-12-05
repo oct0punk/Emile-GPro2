@@ -12,31 +12,38 @@ void World::update(double dt) {
 			break;
 		}
 	}
-	for (auto e : data) {
-		e->update(dt * timeScale);
-		if (e->type == Wall) {
-			if (LengthBtw(e->getPosition().x, e->getPosition().y, p->getPosition().x, p->getPosition().y)
-				< e->spr->getGlobalBounds().width / 2)
-				p->visible = false;
+	for (auto c : data) {
+		c->update(dt * timeScale);
+		if (c->type == Wall) {
+			// Contact with player
+			float distanceToP = LengthBtw(p->getPosition().x, p->getPosition().y, c->getPosition().x, c->getPosition().y);
+			float radius = c->spr->getGlobalBounds().width / 2;
+			if (distanceToP < radius) {
+				sf::Vector2f moveP(p->getPosition() - c->getPosition());
+				moveP.x *= radius / distanceToP;
+				moveP.y *= radius / distanceToP;
+				p->setPosition(c->getPosition().x + moveP.x, c->getPosition().y + moveP.y);
+			}
 
+			// Contact with ball
 			for (auto b : data) { // Rebound
 				if (b->type == Bullet) {
 					Laser* l = (Laser*)b;
 					for (int i = 1; i <= l->px.size(); i++) {
 						sf::Vector2f bPos = sf::Vector2f(l->px[i - 1], l->py[i - 1]);
-						float distance = LengthBtw(e->getPosition().x, e->getPosition().y, bPos.x, bPos.y);
-						if (distance < e->spr->getGlobalBounds().width / 3)
+						float distance = LengthBtw(c->getPosition().x, c->getPosition().y, bPos.x, bPos.y);
+						if (distance < c->spr->getGlobalBounds().width / 3)
 						{
 							l->alive[i - 1] = false;
 							continue;
 						}
 
-						if (distance < e->spr->getGlobalBounds().width / 2) {
-							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - e->getPosition());
+						if (distance < c->spr->getGlobalBounds().width / 2) {
+							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - c->getPosition());
 
-							l->px[i - 1] -= l->dx[i - 1] * dt * 1.2f;			// Move back the bullet
+							l->px[i - 1] -= l->dx[i - 1] * dt * 1.2f;			// Move the bullet to previous good position
 							l->py[i - 1] -= l->dy[i - 1] * dt * 1.2f;
-							l->dx[i - 1] = rebound.x * 500.0f;		// Apply new direction to bullet
+							l->dx[i - 1] = rebound.x * 500.0f;					// Apply new direction to bullet
 							l->dy[i - 1] = rebound.y * 500.0f;
 							return;
 						}
@@ -44,6 +51,8 @@ void World::update(double dt) {
 					}
 				}
 			}
+
+
 		}
 	}
 }
