@@ -12,13 +12,18 @@ public:
 
 class World {
 public:
+
+	sf::RenderWindow* window = nullptr;;
 	float timeScale = 1.0f;
 	Audio* audio = nullptr;
 	std::vector<Entity*>	data;
+	
+	World(sf::RenderWindow* win) {
+		window = win;
+	}
 
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 
-	std::vector<Particle*> particles;
 };
 

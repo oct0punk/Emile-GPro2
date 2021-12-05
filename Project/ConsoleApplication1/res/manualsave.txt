@@ -1,4 +1,0 @@
-Advance 12
-Rotate -86
-PenColor 1943397631
-PenDown

@@ -55,8 +55,11 @@ public:
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
-	bool CheckCollision(Entity* wall, Entity* ball);
+
 };
+bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2);
+
+
 
 class PlayerPad : public Entity {
 public:
@@ -69,7 +72,7 @@ public:
 	virtual void draw(sf::RenderWindow& win);
 };
 
-class LaserShot : public Entity {	
+class Laser : public Entity {	
 	float reloading = 0.0f;
 public:
 	float reloadTime = .3f;
@@ -82,24 +85,9 @@ public:
 
 	std::vector<bool>	alive;
 
-	LaserShot(EType type, sf::Shape* _spr) : Entity(type, _spr) {
+	Laser(EType type, sf::Shape* _spr) : Entity(type, _spr) {
 	}
 	void create(float _px, float _py, float _dx, float _dy);
-	virtual void update(double dt);
-	virtual void draw(sf::RenderWindow& win);
-};
-
-class Particle : public Entity {
-
-	float timeLeft;
-
-public:
-	Particle(EType type, sf::CircleShape* _spr, float time) : Entity(type, _spr){
-		this->type = type;
-		spr = _spr;
-		timeLeft = time;
-	}
-
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 };

@@ -9,37 +9,10 @@ void Entity::update(double dt) {
 }
 
 void Entity::draw(sf::RenderWindow& win) {
-	if (visible) {
-		if (spr->getOutlineColor() == sf::Color::White)
-			visible = false;
+	if (visible) 
 		win.draw(*spr);
-	}
 }
 
-bool Entity::CheckCollision(Entity* wall, Entity* ball) {
-	if (wall->spr->getGlobalBounds().contains(ball->getPosition())) {
-		float x = ball->getPosition().x - wall->getPosition().x;
-		float y = ball->getPosition().y - wall->getPosition().y;
-		float magnitude = sqrt(x * x + y * y);
-		x /= magnitude;
-		y /= magnitude;
-
-		float w = wall->spr->getGlobalBounds().width / 2;
-		float h = wall->spr->getGlobalBounds().height / 2;
-		magnitude = sqrt(w * w + h * h);
-		w /= magnitude;
-		h /= magnitude;
-
-		if (abs(x) > w)		ball->dx *= -1;
-		else if (abs(y) > h)	ball->dy *= -1;
-		ball->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		wall->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		ball->setPosition(ball->lastGoodPos.x, ball->lastGoodPos.y);
-		return true;
-	}
-	ball->lastGoodPos = ball->getPosition();
-	return false;
-}
 
 
 void PlayerPad::update(double dt) {
@@ -52,26 +25,7 @@ void PlayerPad::draw(sf::RenderWindow& win) {
 }
 
 
-void Particle::update(double dt) {
-	Entity::update(dt);
-	dy += 9.81f;
-
-	sf::Color c = spr->getFillColor();
-	spr->setFillColor(sf::Color(c.r, c.g, c.b, (timeLeft * 255)));
-	spr->setOutlineColor(sf::Color(c.r, c.g, c.b, (timeLeft * 255)));
-	
-	timeLeft = timeLeft - dt;
-	if (timeLeft < 0)
-		visible = false;
-}
-
-void Particle::draw(sf::RenderWindow& win) {
-	if (visible)
-		win.draw(*spr);
-}
-
-
-void LaserShot::create(float _px, float _py, float _dx, float _dy) {
+void Laser::create(float _px, float _py, float _dx, float _dy) {
 	if (reloading > 0.0f) return;
 	reloading = reloadTime;
 	float dx = _dx * 1000.0f;
@@ -93,7 +47,7 @@ void LaserShot::create(float _px, float _py, float _dx, float _dy) {
 	alive.push_back(true);
 }
 
-void LaserShot::update(double dt) {
+void Laser::update(double dt) {
 	if (reloading > 0.0f) {
 		reloading -= dt;
 	}
@@ -111,7 +65,7 @@ void LaserShot::update(double dt) {
 	}
 }
 
-void LaserShot::draw(sf::RenderWindow& win) {
+void Laser::draw(sf::RenderWindow& win) {
 	int idx = 0;
 	const int sz = px.size();
 	while (idx < sz) {
@@ -123,4 +77,29 @@ void LaserShot::draw(sf::RenderWindow& win) {
 		}
 		idx++;
 	}
+}
+
+bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2) {
+	if (rect1->spr->getGlobalBounds().contains(rect2->getPosition())) {
+		float x = rect2->getPosition().x - rect1->getPosition().x;
+		float y = rect2->getPosition().y - rect1->getPosition().y;
+		float magnitude = sqrt(x * x + y * y);
+		x /= magnitude;
+		y /= magnitude;
+
+		float w = rect1->spr->getGlobalBounds().width / 2;
+		float h = rect1->spr->getGlobalBounds().height / 2;
+		magnitude = sqrt(w * w + h * h);
+		w /= magnitude;
+		h /= magnitude;
+
+		if (abs(x) > w)			rect2->dx *= -1;
+		else if (abs(y) > h)	rect2->dy *= -1;
+		rect2->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
+		rect1->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
+		rect2->setPosition(rect2->lastGoodPos.x, rect2->lastGoodPos.y);
+		return true;
+	}
+	rect2->lastGoodPos = rect2->getPosition();
+	return false;
 }

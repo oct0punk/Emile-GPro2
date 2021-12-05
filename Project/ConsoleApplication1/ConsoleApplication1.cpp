@@ -11,38 +11,28 @@
 #include <SFML/Window.hpp>
 #include "Entity.h"
 #include "World.h"
+#include "Game.h"
 
 #include "imgui.h"
 #include "imgui-SFML.h"
 
 using namespace sf;
 
-void Normalize(Vector2f* v) {
-	float magnitude = sqrt((v->x * v->x) + (v->y * v->y));
-	*v = Vector2f(v->x / magnitude, v->y / magnitude);
-}
 
-Vector2f Reflect(Vector2f incident, Vector2f normal) {
-	// => For a given incident vector I and surface normal N reflect returns the reflection direction calculated as I - 2.0 * dot(N, I) * N.
-	float x = incident.x - 2.0f * DotProduct(normal, incident) * normal.x;
-	float y = incident.y - 2.0f * DotProduct(normal, incident) * normal.y;
-	return Vector2f(x, y);
-}
-
-float DotProduct(Vector2f u, Vector2f v) {
-	float uNorm = sqrt(u.x * u.x + u.y * u.y);
-	float vNorm = sqrt(v.x * v.x + v.y * v.y);
-	return uNorm * vNorm * cos(atan2(0, u.x) - atan2(0, v.x));
-}
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Asteroid");
 	window.setFramerateLimit(60);
 
-	World world;
+	World world(&window);
+	Font font;
+	font.loadFromFile("res/arial.ttf");
+	Text text;
+	text.setFont(font);
 
-#pragma region player	
+
+	#pragma region player	
 	float speed = 300.0f;
 	ConvexShape* pShape = new ConvexShape(4);
 	pShape->setPoint(0, Vector2f(0, 0));
@@ -57,16 +47,26 @@ int main()
 	PlayerPad p(EType::Player, pShape);
 	world.data.push_back(&p);
 #pragma endregion
-
-#pragma region Bullet
+	
+	#pragma region Bullet
 	float bWidth = 10.0f;
 	float bHeight = 1.0f;
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
-	LaserShot laser(EType::Bullet, bShape);
-	world.data.push_back(&laser);
+	Laser b(EType::Bullet, bShape);
+	world.data.push_back(&b);
 #pragma endregion
 
-	sf::RectangleShape rect(Vector2f(pShape->getGlobalBounds().width, pShape->getGlobalBounds().height));
+	#pragma region Wall
+	int minRadius = 100;
+	int maxRadius = 300;
+	CircleShape* wShape = new CircleShape(minRadius + (rand() % (maxRadius - minRadius)));
+	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
+	Entity w(EType::Wall, wShape);
+	w.setPosition(400, 400);
+	world.data.push_back(&w);
+	#pragma endregion
+
+	sf::RectangleShape rect(Vector2f(wShape->getGlobalBounds().width, wShape->getGlobalBounds().height));
 	rect.setFillColor(Color::Transparent);
 	rect.setOutlineThickness(1.0f);
 	rect.setOutlineColor(Color::Green);
@@ -80,6 +80,7 @@ int main()
 	sf::Clock deltaClock;
 	sf::Color clearColor(20, 20, 20, 20);
 
+	Game game(&world, &p);
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -93,7 +94,7 @@ int main()
 
 
 
-#pragma region PlayerControls
+		#pragma region PlayerControls
 		// Move
 		bool keyHit = false;
 		Vector2f pPos = p.getPosition();
@@ -126,13 +127,15 @@ int main()
 
 		// Shoot
 		if (Mouse::isButtonPressed(Mouse::Left)) {
-			laser.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
+			b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
 		}
 
 #pragma endregion
-		rect.setSize(Vector2f(pShape->getGlobalBounds().width * 0.8f, pShape->getGlobalBounds().height * 0.8f));
+		
+		rect.setSize(Vector2f(pShape->getGlobalBounds().width, pShape->getGlobalBounds().height));
 		rect.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
 		rect.setPosition(p.getPosition());
+		
 		{	using namespace ImGui;
 		SFML::Update(window, deltaClock.restart());
 		ShowDemoWindow();
@@ -142,13 +145,13 @@ int main()
 
 		if (DragFloat("bWidth", &bWidth, .1f, 0.1f, 50.0f)) {
 			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
-			laser.spr = bShape;
+			b.spr = bShape;
 		}
 		if (DragFloat("bHeight", &bHeight, .1f, 0.1f, 50.0f)) {
 			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
-			laser.spr = bShape;
+			b.spr = bShape;
 		}
-		DragFloat("Reload time", &laser.reloadTime, .05f, 0.0f, 1.0f);
+		DragFloat("Reload time", &b.reloadTime, .05f, 0.0f, 1.0f);
 		Separator();
 
 		//background color
@@ -165,11 +168,17 @@ int main()
 		}
 
 		world.update(dt);
+		int count = 0;
+		for (auto b : b.alive)
+			if (b)
+				count++;
+		text.setString(to_string(count));
 
 		window.clear(clearColor);
 		world.draw(window);
 		ImGui::SFML::Render(window);
 		window.draw(rect);
+		window.draw(text);
 		window.display();
 		tExitFrame = getTimeStamp();
 	}
