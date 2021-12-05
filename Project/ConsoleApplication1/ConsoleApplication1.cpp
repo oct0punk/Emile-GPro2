@@ -143,6 +143,7 @@ int main()
 		DragFloat("Speed", &speed, 1.0f, 0.0f, 1000.0f);
 		Separator();
 
+		DragFloat("bSpeed", &b.speed, 5.0f, 100.0f, 10000.0f);
 		if (DragFloat("bWidth", &bWidth, .1f, 0.1f, 50.0f)) {
 			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 			b.spr = bShape;

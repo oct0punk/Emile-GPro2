@@ -4,6 +4,7 @@
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/RenderTexture.hpp"
+#include "SFML/Graphics/Sprite.hpp"
 
 enum CmdType {
 	Clear,

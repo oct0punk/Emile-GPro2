@@ -1,6 +1,9 @@
 #include "Entity.h"
+#include "Tool.hpp"
 
 void Entity::update(double dt) {
+	if (cmds) applyCmdInterp(cmds, dt);
+
 	sf::Vector2f move = getPosition();
 	move.x += dx * dt;
 	move.y += dy * dt;
@@ -11,6 +14,34 @@ void Entity::update(double dt) {
 void Entity::draw(sf::RenderWindow& win) {
 	if (visible) 
 		win.draw(*spr);
+}
+
+Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
+	dt = 1.0f / 60.0f * 0.1;
+	float ratio = cmd->timer / cmd->maxDuration;
+	float speed = 1.0f / cmd->maxDuration;
+	bool destroy = false;
+	switch (cmd->type) {
+	case Translate:
+		break;
+	case Rotate:
+		break;
+	default:
+		destroy = true;
+		break;
+	}
+
+	cmd->timer += dt;
+	if (cmd->timer >= cmd->maxDuration)
+		destroy = true;
+
+	if (!destroy) {
+		return cmd;
+	}
+	else {
+		cmd = cmd->popFirst();
+		return cmd;
+	}
 }
 
 
@@ -28,8 +59,10 @@ void PlayerPad::draw(sf::RenderWindow& win) {
 void Laser::create(float _px, float _py, float _dx, float _dy) {
 	if (reloading > 0.0f) return;
 	reloading = reloadTime;
-	float dx = _dx * 1000.0f;
-	float dy = _dy * 1000.0f;
+	sf::Vector2f dir(_dx, _dy);
+	Normalize(&dir);
+	float dx = dir.x;
+	float dy = dir.y;
 	for (int i = 0; i < px.size(); ++i) {
 		if (!alive[i]) {
 			px[i] = _px;
@@ -47,14 +80,21 @@ void Laser::create(float _px, float _py, float _dx, float _dy) {
 	alive.push_back(true);
 }
 
+void Laser::ChangeDirection(int idx, float x, float y) {
+	sf::Vector2f dir(x, y);
+	Normalize(&dir);
+	dx[idx] = dir.x;
+	dy[idx] = dir.y;
+}
+
 void Laser::update(double dt) {
 	if (reloading > 0.0f) {
 		reloading -= dt;
 	}
 	for (int i = 0; i < px.size(); ++i) {
 		if (alive[i]) {		// Move each shape into (dx ; dy)
-			px[i] += dx[i] * dt;
-			py[i] += dy[i] * dt;
+			px[i] += dx[i] * speed * dt;
+			py[i] += dy[i] * speed * dt;
 			if (	// Check id f outside screen
 				(px[i] > 3000) || (px[i] < -100) ||
 				(py[i] > 3000) || (py[i] < -100)

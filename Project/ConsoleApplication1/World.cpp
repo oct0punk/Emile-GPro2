@@ -32,7 +32,7 @@ void World::update(double dt) {
 					for (int i = 1; i <= l->px.size(); i++) {
 						sf::Vector2f bPos = sf::Vector2f(l->px[i - 1], l->py[i - 1]);
 						float distance = LengthBtw(c->getPosition().x, c->getPosition().y, bPos.x, bPos.y);
-						if (distance < c->spr->getGlobalBounds().width / 3)
+						if (distance < c->spr->getGlobalBounds().width / 3)		// if rebound failed
 						{
 							l->alive[i - 1] = false;
 							continue;
@@ -40,12 +40,9 @@ void World::update(double dt) {
 
 						if (distance < c->spr->getGlobalBounds().width / 2) {
 							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - c->getPosition());
-
-							l->px[i - 1] -= l->dx[i - 1] * dt * 1.2f;			// Move the bullet to previous good position
-							l->py[i - 1] -= l->dy[i - 1] * dt * 1.2f;
-							l->dx[i - 1] = rebound.x * 500.0f;					// Apply new direction to bullet
-							l->dy[i - 1] = rebound.y * 500.0f;
-							return;
+							l->px[i - 1] -= l->dx[i - 1] * dt * l->speed * 1.2f;			// Move the bullet to previous good position
+							l->py[i - 1] -= l->dy[i - 1] * dt * l->speed * 1.2f;
+							l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new direction to bullet							
 						}
 
 					}

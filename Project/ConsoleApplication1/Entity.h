@@ -4,6 +4,42 @@
 #include "SFML/Graphics/Rect.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 
+enum CmdType {
+	Translate,
+	Rotate,
+};
+
+struct Cmd {
+	CmdType				type = Translate;
+	float				maxDuration = 0.333f;
+	float				timer = 0.0f;
+	float				value = 0.0f;
+	float				originalValue = 0.0f;
+	sf::Color			col;
+	Cmd* next = nullptr;
+
+	Cmd(CmdType t, float _value = 0.0) {
+		type = t;
+		value = _value;
+		originalValue = value;
+	};
+
+	Cmd* append(Cmd* nu) {
+		if (next == nullptr)
+			next = nu;
+		else
+			next = next->append(nu);
+		return this;
+	};
+
+	Cmd* popFirst() {
+		Cmd* nu = next;
+		delete this;
+		return nu;
+	};
+};
+
+
 enum EType {
 	Player,
 	Brick,
@@ -22,6 +58,7 @@ public:
 	bool visible = true;
 	float dx = 0.0f;
 	float dy = 0.0f;
+
 		
 
 	Entity(EType type, sf::Shape* _spr) {
@@ -55,7 +92,11 @@ public:
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
+	
 
+protected:
+	Cmd* cmds = nullptr;
+	Cmd* applyCmdInterp(Cmd* cmd, double dt);
 };
 bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2);
 
@@ -77,6 +118,8 @@ class Laser : public Entity {
 public:
 	float reloadTime = .3f;
 
+	float speed = 500.0f;
+
 	std::vector<float>	px;
 	std::vector<float>	py;
 
@@ -88,6 +131,7 @@ public:
 	Laser(EType type, sf::Shape* _spr) : Entity(type, _spr) {
 	}
 	void create(float _px, float _py, float _dx, float _dy);
+	void ChangeDirection(int idx, float x, float y);
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 };
