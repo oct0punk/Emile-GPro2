@@ -139,24 +139,21 @@ public:
 		
 	}
 
-
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 };
 
+
 class Enemy : public Entity {
 public :
+	PlayerPad* p = nullptr;
 	Laser* l = nullptr;
 
 	Enemy(sf::Shape* _spr, sf::Shape* lSpr) : Entity(EType::Bot, _spr) {
 		l = new Laser(lSpr, _spr->getFillColor());
 	}
 
-	virtual void update(double dt) {
-		Entity::update(dt);
-	}
 
-	virtual void draw(sf::RenderWindow& win) {
-		Entity::draw(win);
-	}
+	virtual void update(double dt);
+	virtual void draw(sf::RenderWindow& win);
 };

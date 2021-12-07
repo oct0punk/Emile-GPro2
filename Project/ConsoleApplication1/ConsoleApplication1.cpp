@@ -81,6 +81,7 @@ int main()
 	eShape->setFillColor(Color::Transparent);
 	eShape->setOutlineThickness(3);
 	Enemy e(eShape, bShape);
+	e.p = &p;
 	world.data.push_back(&e);
 	#pragma endregion
 
@@ -146,7 +147,6 @@ int main()
 		// Shoot
 		if (Mouse::isButtonPressed(Mouse::Left)) {
 			b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
-			e.Translate((Vector2f)Mouse::getPosition(), 300.0f);
 		}
 
 #pragma endregion

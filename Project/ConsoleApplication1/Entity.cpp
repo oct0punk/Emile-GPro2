@@ -125,6 +125,8 @@ void Laser::draw(sf::RenderWindow& win) {
 	}
 }
 
+
+
 bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2) {
 	if (rect1->spr->getGlobalBounds().contains(rect2->getPosition())) {
 		float x = rect2->getPosition().x - rect1->getPosition().x;
@@ -148,4 +150,18 @@ bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2) {
 	}
 	rect2->lastGoodPos = rect2->getPosition();
 	return false;
+}
+
+void Enemy::update(double dt)
+{
+	Entity::update(dt);
+	if (p) {
+		sf::Vector2f intoP = p->getPosition() - getPosition();
+		setRotation(atan2(intoP.y, intoP.x) * RadToDeg());
+	}
+}
+
+void Enemy::draw(sf::RenderWindow& win)
+{
+	Entity::draw(win);
 }
