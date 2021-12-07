@@ -33,24 +33,28 @@ int main()
 
 
 	#pragma region player	
-	float speed = 300.0f;
-	ConvexShape* pShape = new ConvexShape(4);
-	pShape->setPoint(0, Vector2f(0, 0));
-	pShape->setPoint(1, Vector2f(80, 20));
-	pShape->setPoint(2, Vector2f(0, 40));
+	float speed = 800.0f;
+	ConvexShape* pShape = new ConvexShape(10);
+	pShape->setPoint(0, Vector2f(40, 0));
+	pShape->setPoint(1, Vector2f(30, 10));
+	pShape->setPoint(2, Vector2f(100, 15));
 	pShape->setPoint(3, Vector2f(20, 20));
-	pShape->setOrigin(Vector2f(20, 20));
+	pShape->setPoint(4, Vector2f(-10, 45));
+	pShape->setPoint(5, Vector2f(-50, 0));
+	pShape->setPoint(6, Vector2f(-10, -45));
+	pShape->setPoint(7, Vector2f(20, -20));
+	pShape->setPoint(8, Vector2f(100, -15));
+	pShape->setPoint(9, Vector2f(30, -10));
 	pShape->setFillColor(Color::Transparent);
-	pShape->setOutlineThickness(2);
-
+	pShape->setOutlineThickness(5);
 
 	PlayerPad p(EType::Player, pShape);
 	world.data.push_back(&p);
-#pragma endregion
+	#pragma endregion
 	
 	#pragma region Bullet
-	float bWidth = 10.0f;
-	float bHeight = 1.0f;
+	float bWidth = 50.0f;
+	float bHeight = 2.0f;
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 	Laser b(EType::Bullet, bShape);
 	world.data.push_back(&b);
@@ -64,6 +68,17 @@ int main()
 	Entity w(EType::Wall, wShape);
 	w.setPosition(400, 400);
 	world.data.push_back(&w);
+	#pragma endregion
+
+	#pragma region Enemy
+	ConvexShape* eShape = new ConvexShape(4);
+	eShape->setPoint(0, Vector2f(0, 0));
+	eShape->setPoint(1, Vector2f(80, 20));
+	eShape->setPoint(2, Vector2f(0, 40));
+	eShape->setPoint(3, Vector2f(20, 20));
+	eShape->setOrigin(Vector2f(20, 20));
+	eShape->setFillColor(Color::Transparent);
+	eShape->setOutlineThickness(2);
 	#pragma endregion
 
 	sf::RectangleShape rect(Vector2f(wShape->getGlobalBounds().width, wShape->getGlobalBounds().height));

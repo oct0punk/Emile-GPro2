@@ -116,9 +116,9 @@ public:
 class Laser : public Entity {	
 	float reloading = 0.0f;
 public:
-	float reloadTime = .3f;
+	float reloadTime = .05f;
 
-	float speed = 500.0f;
+	float speed = 1000.0f;
 
 	std::vector<float>	px;
 	std::vector<float>	py;
