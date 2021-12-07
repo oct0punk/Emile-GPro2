@@ -35,6 +35,10 @@ inline float DegToRad() {
 	return 0.0174533f;
 }
 
+inline float Magnitude(sf::Vector2f v) {
+	return sqrt(v.x * v.x + v.y * v.y);
+}
+
 inline void Normalize(sf::Vector2f* v) {
 	float magnitude = sqrt(v->x * v->x + v->y * v->y);
 	*v = sf::Vector2f(v->x / magnitude, v->y / magnitude);

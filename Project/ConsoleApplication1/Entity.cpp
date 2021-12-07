@@ -17,12 +17,21 @@ void Entity::draw(sf::RenderWindow& win) {
 }
 
 Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
-	dt = 1.0f / 60.0f * 0.1;
-	float ratio = cmd->timer / cmd->maxDuration;
-	float speed = 1.0f / cmd->maxDuration;
+	//dt = 1.0f / 60.0f * 0.1;
 	bool destroy = false;
 	switch (cmd->type) {
-	case Translate:
+	case Move:
+		{
+			sf::Vector2f dir = sf::Vector2f(targetPos - getPosition());
+			if (Magnitude(dir) < cmds->value * dt) {
+				destroy = true;
+				break;
+			}
+			Normalize(&dir);
+			dir *= cmds->value * (float)dt;
+			dir += getPosition();
+			setPosition(dir.x, dir.y);
+		}
 		break;
 	case Rotate:
 		break;
@@ -31,9 +40,6 @@ Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 		break;
 	}
 
-	cmd->timer += dt;
-	if (cmd->timer >= cmd->maxDuration)
-		destroy = true;
 
 	if (!destroy) {
 		return cmd;

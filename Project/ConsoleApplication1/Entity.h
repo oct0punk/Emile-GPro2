@@ -5,23 +5,19 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 
 enum CmdType {
-	Translate,
+	Move,
 	Rotate,
 };
 
 struct Cmd {
-	CmdType				type = Translate;
-	float				maxDuration = 0.333f;
-	float				timer = 0.0f;
+	CmdType				type = Move;
 	float				value = 0.0f;
-	float				originalValue = 0.0f;
 	sf::Color			col;
 	Cmd* next = nullptr;
 
 	Cmd(CmdType t, float _value = 0.0) {
 		type = t;
 		value = _value;
-		originalValue = value;
 	};
 
 	Cmd* append(Cmd* nu) {
@@ -33,16 +29,17 @@ struct Cmd {
 	};
 
 	Cmd* popFirst() {
-		Cmd* nu = next;
-		delete this;
-		return nu;
+		if (&next)
+			return next;
+		else
+			return nullptr;
 	};
 };
 
 
 enum EType {
 	Player,
-	Brick,
+	Bot,
 	Wall,
 	Bullet,
 	FX,
@@ -77,41 +74,38 @@ public:
 	sf::Vector2f getPosition() {
 		return spr->getPosition();
 	}
-
 	void setPosition(float x, float y) {
 		spr->setPosition(sf::Vector2f(x, y));
 	}
-
 	void setRotation(float angle) {
 		return spr->setRotation(angle);
 	}
-
 	int getRotation() {
 		return spr->getRotation();
 	}
 
+	//ajoute les cmds a la fin de la liste courante
+	void appendCmd(Cmd* cmd) {
+		if (cmds)
+			cmds = cmds->append(cmd);
+		else
+			cmds = cmd;
+	}
+
+	void Translate(sf::Vector2f pos, float speed) { 
+		targetPos = pos;
+		appendCmd(new Cmd(CmdType::Move, speed)); 
+	}
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 	
 
 protected:
+	sf::Vector2f targetPos;
 	Cmd* cmds = nullptr;
 	Cmd* applyCmdInterp(Cmd* cmd, double dt);
 };
 bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2);
-
-
-
-class PlayerPad : public Entity {
-public:
-
-	PlayerPad(EType type, sf::Shape* _spr) : Entity(type, _spr) {
-		
-	}
-
-	virtual void update(double dt);
-	virtual void draw(sf::RenderWindow& win);
-};
 
 class Laser : public Entity {	
 	float reloading = 0.0f;
@@ -128,10 +122,41 @@ public:
 
 	std::vector<bool>	alive;
 
-	Laser(EType type, sf::Shape* _spr) : Entity(type, _spr) {
-	}
+	Laser(sf::Shape* _spr, sf::Color color = sf::Color::White) : Entity(EType::Bullet, _spr) {
+		//spr->setFillColor(color);
+	};
 	void create(float _px, float _py, float _dx, float _dy);
 	void ChangeDirection(int idx, float x, float y);
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
+};
+
+
+class PlayerPad : public Entity {
+public:
+
+	PlayerPad(sf::Shape* _spr) : Entity(EType::Player, _spr) {
+		
+	}
+
+
+	virtual void update(double dt);
+	virtual void draw(sf::RenderWindow& win);
+};
+
+class Enemy : public Entity {
+public :
+	Laser* l = nullptr;
+
+	Enemy(sf::Shape* _spr, sf::Shape* lSpr) : Entity(EType::Bot, _spr) {
+		l = new Laser(lSpr, _spr->getFillColor());
+	}
+
+	virtual void update(double dt) {
+		Entity::update(dt);
+	}
+
+	virtual void draw(sf::RenderWindow& win) {
+		Entity::draw(win);
+	}
 };

@@ -46,9 +46,9 @@ int main()
 	pShape->setPoint(8, Vector2f(100, -15));
 	pShape->setPoint(9, Vector2f(30, -10));
 	pShape->setFillColor(Color::Transparent);
-	pShape->setOutlineThickness(5);
+	pShape->setOutlineThickness(4);
 
-	PlayerPad p(EType::Player, pShape);
+	PlayerPad p(pShape);
 	world.data.push_back(&p);
 	#pragma endregion
 	
@@ -56,9 +56,10 @@ int main()
 	float bWidth = 50.0f;
 	float bHeight = 2.0f;
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
-	Laser b(EType::Bullet, bShape);
+	Color bc = Color::Blue;
+	Laser b(bShape, bc);
 	world.data.push_back(&b);
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Wall
 	int minRadius = 100;
@@ -78,7 +79,9 @@ int main()
 	eShape->setPoint(3, Vector2f(20, 20));
 	eShape->setOrigin(Vector2f(20, 20));
 	eShape->setFillColor(Color::Transparent);
-	eShape->setOutlineThickness(2);
+	eShape->setOutlineThickness(3);
+	Enemy e(eShape, bShape);
+	world.data.push_back(&e);
 	#pragma endregion
 
 	sf::RectangleShape rect(Vector2f(wShape->getGlobalBounds().width, wShape->getGlobalBounds().height));
@@ -143,6 +146,7 @@ int main()
 		// Shoot
 		if (Mouse::isButtonPressed(Mouse::Left)) {
 			b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
+			e.Translate((Vector2f)Mouse::getPosition(), 300.0f);
 		}
 
 #pragma endregion
