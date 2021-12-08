@@ -9,6 +9,10 @@ void World::update(double dt) {
 	for (auto e : data) {
 		if (e->type == Player) {
 			p = (PlayerPad*)e;
+			sf::Vector2f pPos = p->getPosition();
+			pPos.x = clamp(pPos.x, 10.0f, window->getSize().x - 10);
+			pPos.y = clamp(pPos.y, 10.0f, window->getSize().y - 10);
+			p->setPosition(pPos.x, pPos.y);
 			break;
 		}
 	}
@@ -58,7 +62,7 @@ void World::update(double dt) {
 			}	}	}	}
 			
 			//if (enemy->p)
-				enemy->LookForPlayer(p, Capture(window));
+				enemy->p = enemy->LookForPlayer(p, Capture(window));
 			break;
 		}
 	}

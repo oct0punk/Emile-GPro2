@@ -46,7 +46,7 @@ int main()
 	pShape->setPoint(7, Vector2f(20, -20));
 	pShape->setPoint(8, Vector2f(100, -15));
 	pShape->setPoint(9, Vector2f(30, -10));
-	pShape->setFillColor(Color::Transparent);
+	//pShape->setFillColor(Color::Transparent);
 	pShape->setOutlineThickness(4);
 
 	PlayerPad p(pShape);
@@ -195,7 +195,7 @@ int main()
 		for (auto b : b.alive)
 			if (b)
 				count++;
-		text.setString(sf::String(sf::Uint32(screen.getPixel(p.getPosition().x, p.getPosition().y).toInteger())));
+		text.setString(to_string(count));
 
 		window.clear(clearColor);
 		world.draw(window);

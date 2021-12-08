@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Tool.hpp"
+#include <iostream>
 
 void Entity::update(double dt) {
 	if (cmds) applyCmdInterp(cmds, dt);
@@ -161,17 +162,15 @@ void Enemy::update(double dt)
 	}
 }
 
-void Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt) {
-	sf::Vector2f raycast(pp->getPosition() - getPosition());
-	for (int i = 0; i < Magnitude(raycast); i++) {
-		sf::Vector2f point;
-		point.x = raycast.x * i;
-		point.y = raycast.y * i;
-		point += getPosition();
-		if (rt.getPixel(raycast.x, raycast.y) == pp->spr->getOutlineColor())
-			p = pp;
-	}
-	p = nullptr;
+PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt) {
+
+	if (pp->getPosition().x < 0
+		|| pp->getPosition().y < 0
+		|| pp->getPosition().x > rt.getSize().x - 1
+		|| pp->getPosition().y > rt.getSize().y - 1)
+		return nullptr;
+	else
+		return pp;
 }
 
 void Enemy::draw(sf::RenderWindow& win)

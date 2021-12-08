@@ -8,15 +8,21 @@
 using namespace std;
 using namespace std::chrono;
 
-inline double pi() {
-	return 3.14159265359;
-}
 
 inline double getTimeStamp() //retourne le temps actuel en seconde
 {
 	std::chrono::nanoseconds ns =
 		duration_cast<std::chrono::nanoseconds>(system_clock::now().time_since_epoch());
 	return ns.count() / 1000000000.0;
+}
+
+
+inline float clamp(float val, float min, float max) {
+	if (val < min)
+		return min;
+	if (val > max)
+		return max;
+	return val;
 }
 
 inline float catmull(float p0, float p1, float p2, float p3, float t) {
@@ -30,6 +36,10 @@ inline float catmull(float p0, float p1, float p2, float p3, float t) {
 	return 0.5f * q;
 }
 
+inline double pi() {
+	return 3.14159265359;
+}
+
 inline float RadToDeg() {
 	return 57.2958f;
 }
@@ -37,6 +47,7 @@ inline float RadToDeg() {
 inline float DegToRad() {
 	return 0.0174533f;
 }
+
 
 inline float Magnitude(sf::Vector2f v) {
 	return sqrt(v.x * v.x + v.y * v.y);
@@ -66,6 +77,7 @@ inline float LengthBtw(float ux, float uy, float vx, float vy) {
 	sf::Vector2f dir = sf::Vector2f(vx - ux, vy - uy);
 	return sqrt(dir.x * dir.x + dir.y * dir.y);
 }
+
 
 // Screenshot to sf::Image
 inline sf::Image Capture(sf::Window* w) {
