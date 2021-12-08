@@ -1,6 +1,9 @@
 #include <chrono>
 #include <ctime>
 #include "SFML/System/Vector2.hpp"
+#include "SFML/Graphics/Image.hpp"
+#include "SFML/Graphics/Texture.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
 
 using namespace std;
 using namespace std::chrono;
@@ -62,4 +65,12 @@ inline sf::Vector2f Reflect(sf::Vector2f incident, sf::Vector2f normal) {
 inline float LengthBtw(float ux, float uy, float vx, float vy) {
 	sf::Vector2f dir = sf::Vector2f(vx - ux, vy - uy);
 	return sqrt(dir.x * dir.x + dir.y * dir.y);
+}
+
+inline sf::Image Capture(sf::Window* w) {
+	sf::Vector2u windowSize = w->getSize();
+	sf::Texture texture;
+	texture.create(windowSize.x, windowSize.y);
+	texture.update(*w);
+	return texture.copyToImage();
 }

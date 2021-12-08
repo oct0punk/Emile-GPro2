@@ -81,7 +81,7 @@ int main()
 	eShape->setFillColor(Color::Transparent);
 	eShape->setOutlineThickness(3);
 	Enemy e(eShape, bShape);
-	e.p = &p;
+	e.setPosition(1600, 600);
 	world.data.push_back(&e);
 	#pragma endregion
 

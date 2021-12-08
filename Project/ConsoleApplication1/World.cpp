@@ -55,6 +55,8 @@ void World::update(double dt) {
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
 							e->visible = false;
 			}	}	}	}
+			Enemy* enemy = (Enemy*)e;
+			enemy->LookForPlayer(p, Capture(window));
 			break;
 		}
 	}
