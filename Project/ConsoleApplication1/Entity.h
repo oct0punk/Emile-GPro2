@@ -153,10 +153,7 @@ public :
 		l = new Laser(lSpr, _spr->getFillColor());
 	}
 
-	void LookForPlayer(PlayerPad* pp, sf::Image rt) {
-		if (rt.getPixel(getPosition().x, getPosition().y) == pp->spr->getOutlineColor())
-			p = pp;
-	}
+	void LookForPlayer(PlayerPad* pp, sf::Image rt);
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);

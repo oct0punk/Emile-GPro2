@@ -39,8 +39,9 @@ int main()
 
 	Entity g(ground, 400, 700, world.gridSize);
 	Entity p(rect, 400, 400, world.gridSize);
-
+	p.simulated = false;
 	g.simulated = false;
+
 	world.data.push_back(&p);
 	world.data.push_back(&g);
 

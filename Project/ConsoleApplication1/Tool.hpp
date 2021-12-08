@@ -67,6 +67,7 @@ inline float LengthBtw(float ux, float uy, float vx, float vy) {
 	return sqrt(dir.x * dir.x + dir.y * dir.y);
 }
 
+// Screenshot to sf::Image
 inline sf::Image Capture(sf::Window* w) {
 	sf::Vector2u windowSize = w->getSize();
 	sf::Texture texture;

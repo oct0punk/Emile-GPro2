@@ -58,12 +58,12 @@ public:
 
 	void setPosition(float x, float y) {
 		
-		rx = (x - (1.0f * cx));
+		rx = x;
 		while (rx > gridSize) {
 			cx++;
 			rx -= gridSize;
 		}
-		ry = (y - (1.0f * cy));
+		ry = y;
 		while (ry > gridSize) {
 			cy++;
 			ry -= gridSize;

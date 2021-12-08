@@ -161,6 +161,19 @@ void Enemy::update(double dt)
 	}
 }
 
+void Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt) {
+	sf::Vector2f raycast(pp->getPosition() - getPosition());
+	for (int i = 0; i < Magnitude(raycast); i++) {
+		sf::Vector2f point;
+		point.x = raycast.x * i;
+		point.y = raycast.y * i;
+		point += getPosition();
+		if (rt.getPixel(raycast.x, raycast.y) == pp->spr->getOutlineColor())
+			p = pp;
+	}
+	p = nullptr;
+}
+
 void Enemy::draw(sf::RenderWindow& win)
 {
 	Entity::draw(win);

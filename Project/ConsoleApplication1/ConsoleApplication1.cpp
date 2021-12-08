@@ -31,6 +31,7 @@ int main()
 	Text text;
 	text.setFont(font);
 
+	sf::Image screen;
 
 	#pragma region player	
 	float speed = 800.0f;
@@ -49,6 +50,7 @@ int main()
 	pShape->setOutlineThickness(4);
 
 	PlayerPad p(pShape);
+	p.setPosition(450, 1400);
 	world.data.push_back(&p);
 	#pragma endregion
 	
@@ -102,6 +104,7 @@ int main()
 	Game game(&world, &p);
 
 	while (window.isOpen()) {
+		screen = Capture(world.window);
 		sf::Event event;
 		double dt = tExitFrame - tEnterFrame;
 		tEnterFrame = getTimeStamp();
@@ -192,7 +195,7 @@ int main()
 		for (auto b : b.alive)
 			if (b)
 				count++;
-		text.setString(to_string(count));
+		text.setString(sf::String(sf::Uint32(screen.getPixel(p.getPosition().x, p.getPosition().y).toInteger())));
 
 		window.clear(clearColor);
 		world.draw(window);

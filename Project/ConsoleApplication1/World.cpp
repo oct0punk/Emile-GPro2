@@ -48,6 +48,7 @@ void World::update(double dt) {
 		}
 		break;
 		case EType::Bot:
+			Enemy* enemy = (Enemy*)e;
 			for (auto b : data) {
 				if (b->type == EType::Bullet) {
 					Laser* l = (Laser*)b;
@@ -55,8 +56,9 @@ void World::update(double dt) {
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
 							e->visible = false;
 			}	}	}	}
-			Enemy* enemy = (Enemy*)e;
-			enemy->LookForPlayer(p, Capture(window));
+			
+			//if (enemy->p)
+				enemy->LookForPlayer(p, Capture(window));
 			break;
 		}
 	}
