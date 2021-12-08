@@ -62,7 +62,7 @@ void World::update(double dt) {
 			}	}	}	}
 			
 			//if (enemy->p)
-				enemy->p = enemy->LookForPlayer(p, Capture(window));
+				enemy->p = enemy->LookForPlayer(p, Capture(window), *clearColor);
 			break;
 		}
 	}
@@ -70,6 +70,7 @@ void World::update(double dt) {
 
 
 void World::draw(sf::RenderWindow& window) {
+	window.clear(*clearColor);
 	for (auto e : data) {
 		e->draw(window);
 	}

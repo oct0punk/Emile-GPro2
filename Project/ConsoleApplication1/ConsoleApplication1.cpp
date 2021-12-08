@@ -99,7 +99,7 @@ int main()
 
 	ImGui::SFML::Init(window);
 	sf::Clock deltaClock;
-	sf::Color clearColor(20, 20, 20, 20);
+	world.clearColor = new Color(20, 20, 20, 20);
 
 	Game game(&world, &p);
 
@@ -178,13 +178,13 @@ int main()
 		Separator();
 
 		//background color
-		float col[4]{ clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f };
+		float col[4]{ world.clearColor->r / 255.0f, world.clearColor->g / 255.0f, world.clearColor->b / 255.0f, world.clearColor->a / 255.0f };
 		if (ColorPicker4("ClearColor", col))
 		{
-			clearColor.r = col[0] * 255.f;
-			clearColor.g = col[1] * 255.f;
-			clearColor.b = col[2] * 255.f;
-			clearColor.a = col[3] * 255.f;
+			world.clearColor->r = col[0] * 255.f;
+			world.clearColor->g = col[1] * 255.f;
+			world.clearColor->b = col[2] * 255.f;
+			world.clearColor->a = col[3] * 255.f;
 		}
 
 		ImGui::End();
@@ -197,7 +197,6 @@ int main()
 				count++;
 		text.setString(to_string(count));
 
-		window.clear(clearColor);
 		world.draw(window);
 		ImGui::SFML::Render(window);
 		window.draw(rect);

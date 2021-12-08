@@ -162,15 +162,24 @@ void Enemy::update(double dt)
 	}
 }
 
-PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt) {
+PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor) {
 
-	if (pp->getPosition().x < 0
-		|| pp->getPosition().y < 0
-		|| pp->getPosition().x > rt.getSize().x - 1
-		|| pp->getPosition().y > rt.getSize().y - 1)
-		return nullptr;
-	else
-		return pp;
+	sf::Vector2f ray = pp->getPosition() - getPosition();
+	float distance = Magnitude(ray);
+	Normalize(&ray);
+	for (int i = 100; i < distance; i+=10) {
+		sf::Vector2f point;
+		point.x = getPosition().x + ray.x * i;
+		point.y = getPosition().y + ray.y * i;
+		sf::Color rtc = rt.getPixel(point.x, point.y);
+		if (rtc.toInteger() != clearColor.toInteger()) {
+			if (pp->spr->getGlobalBounds().contains(point))
+				return pp;
+			else
+				return nullptr;
+		}
+	}
+	return nullptr;
 }
 
 void Enemy::draw(sf::RenderWindow& win)

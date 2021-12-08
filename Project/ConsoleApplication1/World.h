@@ -14,6 +14,7 @@ class World {
 public:
 
 	sf::RenderWindow* window = nullptr;;
+	sf::Color* clearColor;
 	float timeScale = 1.0f;
 	Audio* audio = nullptr;
 	std::vector<Entity*>	data;
