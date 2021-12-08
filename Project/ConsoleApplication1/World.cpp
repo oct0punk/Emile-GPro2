@@ -9,6 +9,7 @@ void World::update(double dt) {
 	for (auto e : data) {
 		if (e->type == Player) {
 			p = (PlayerPad*)e;
+			// Keep the player on screen
 			sf::Vector2f pPos = p->getPosition();
 			pPos.x = clamp(pPos.x, 10.0f, window->getSize().x - 10);
 			pPos.y = clamp(pPos.y, 10.0f, window->getSize().y - 10);
@@ -53,6 +54,7 @@ void World::update(double dt) {
 		break;
 		case EType::Bot:
 			Enemy* enemy = (Enemy*)e;
+			// Collision with lasers
 			for (auto b : data) {
 				if (b->type == EType::Bullet) {
 					Laser* l = (Laser*)b;
@@ -61,8 +63,8 @@ void World::update(double dt) {
 							e->visible = false;
 			}	}	}	}
 			
-			//if (enemy->p)
-				enemy->p = enemy->LookForPlayer(p, Capture(window), *clearColor);
+			// Enemy look for player
+			enemy->p = enemy->LookForPlayer(p, Capture(window), *clearColor);
 			break;
 		}
 	}

@@ -33,37 +33,38 @@ int main()
 
 	sf::Image screen;
 
-	#pragma region player	
+#pragma region player	
 	float speed = 800.0f;
-	ConvexShape* pShape = new ConvexShape(10);
-	pShape->setPoint(0, Vector2f(40, 0));
-	pShape->setPoint(1, Vector2f(30, 10));
-	pShape->setPoint(2, Vector2f(100, 15));
-	pShape->setPoint(3, Vector2f(20, 20));
-	pShape->setPoint(4, Vector2f(-10, 45));
-	pShape->setPoint(5, Vector2f(-50, 0));
-	pShape->setPoint(6, Vector2f(-10, -45));
-	pShape->setPoint(7, Vector2f(20, -20));
-	pShape->setPoint(8, Vector2f(100, -15));
-	pShape->setPoint(9, Vector2f(30, -10));
-	//pShape->setFillColor(Color::Transparent);
+	ConvexShape* pShape = new ConvexShape(11);
+	pShape->setPoint(0, Vector2f(30, 0));						  /*		7 ----- 8				  */
+	pShape->setPoint(1, Vector2f(13, 30));						  /*	  /				    	9	  */
+	pShape->setPoint(2, Vector2f(60, 35));						  /*	 /				10			  */
+	pShape->setPoint(3, Vector2f(18, 55));						  /*	6				  \			  */
+	pShape->setPoint(4, Vector2f(-20, 30));						  /* 	|				   \		  */
+	pShape->setPoint(5, Vector2f(-45, 20));						  /*	|		 X			0		  */
+	pShape->setPoint(6, Vector2f(-45, -20));					  /*	5				  /			  */
+	pShape->setPoint(7, Vector2f(-20, -30));					  /*	 \				 1			  */
+	pShape->setPoint(8, Vector2f(18, -55));						  /*	  \						2	  */
+	pShape->setPoint(9, Vector2f(60, -35));						  /*		4 ----- 3				  */
+	pShape->setPoint(10, Vector2f(13, -30));			
+	pShape->setFillColor(Color::Transparent);			
 	pShape->setOutlineThickness(4);
 
 	PlayerPad p(pShape);
-	p.setPosition(450, 1400);
+	p.setPosition(450, 400);
 	world.data.push_back(&p);
-	#pragma endregion
-	
-	#pragma region Bullet
+#pragma endregion
+
+#pragma region Bullet
 	float bWidth = 50.0f;
 	float bHeight = 2.0f;
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 	Color bc = Color::Blue;
 	Laser b(bShape, bc);
 	world.data.push_back(&b);
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Wall
+#pragma region Wall
 	int minRadius = 100;
 	int maxRadius = 300;
 	CircleShape* wShape = new CircleShape(minRadius + (rand() % (maxRadius - minRadius)));
@@ -71,9 +72,9 @@ int main()
 	Entity w(EType::Wall, wShape);
 	w.setPosition(400, 400);
 	world.data.push_back(&w);
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Enemy
+#pragma region Enemy
 	ConvexShape* eShape = new ConvexShape(4);
 	eShape->setPoint(0, Vector2f(0, 0));
 	eShape->setPoint(1, Vector2f(80, 20));
@@ -85,7 +86,7 @@ int main()
 	Enemy e(eShape, bShape);
 	e.setPosition(1600, 600);
 	world.data.push_back(&e);
-	#pragma endregion
+#pragma endregion
 
 	sf::RectangleShape rect(Vector2f(wShape->getGlobalBounds().width, wShape->getGlobalBounds().height));
 	rect.setFillColor(Color::Transparent);
@@ -115,9 +116,9 @@ int main()
 		}
 
 
-
-		#pragma region PlayerControls
-		// Move
+		// UPDATE
+#pragma region PlayerControls
+// Move
 		bool keyHit = false;
 		Vector2f pPos = p.getPosition();
 		if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Z)) {
@@ -153,11 +154,20 @@ int main()
 		}
 
 #pragma endregion
-		
+
 		rect.setSize(Vector2f(pShape->getGlobalBounds().width, pShape->getGlobalBounds().height));
 		rect.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
 		rect.setPosition(p.getPosition());
-		
+
+
+		world.update(dt);
+		int count = 0;
+		for (auto b : b.alive)
+			if (b)
+				count++;
+		text.setString(to_string(count));
+
+		// IMGUI
 		{	using namespace ImGui;
 		SFML::Update(window, deltaClock.restart());
 		ShowDemoWindow();
@@ -190,13 +200,8 @@ int main()
 		ImGui::End();
 		}
 
-		world.update(dt);
-		int count = 0;
-		for (auto b : b.alive)
-			if (b)
-				count++;
-		text.setString(to_string(count));
 
+		// RENDERING
 		world.draw(window);
 		ImGui::SFML::Render(window);
 		window.draw(rect);

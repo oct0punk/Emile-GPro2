@@ -13,7 +13,7 @@ void Entity::update(double dt) {
 }
 
 void Entity::draw(sf::RenderWindow& win) {
-	if (visible) 
+	if (visible)
 		win.draw(*spr);
 }
 
@@ -22,18 +22,18 @@ Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 	bool destroy = false;
 	switch (cmd->type) {
 	case Move:
-		{
-			sf::Vector2f dir = sf::Vector2f(targetPos - getPosition());
-			if (Magnitude(dir) < cmds->value * dt) {
-				destroy = true;
-				break;
-			}
-			Normalize(&dir);
-			dir *= cmds->value * (float)dt;
-			dir += getPosition();
-			setPosition(dir.x, dir.y);
+	{
+		sf::Vector2f dir = sf::Vector2f(targetPos - getPosition());
+		if (Magnitude(dir) < cmds->value * dt) {
+			destroy = true;
+			break;
 		}
-		break;
+		Normalize(&dir);
+		dir *= cmds->value * (float)dt;
+		dir += getPosition();
+		setPosition(dir.x, dir.y);
+	}
+	break;
 	case Rotate:
 		break;
 	default:
@@ -102,7 +102,7 @@ void Laser::update(double dt) {
 		if (alive[i]) {		// Move each shape into (dx ; dy)
 			px[i] += dx[i] * speed * dt;
 			py[i] += dy[i] * speed * dt;
-			if (	// Check id f outside screen
+			if (	// Check if outside screen
 				(px[i] > 3000) || (px[i] < -100) ||
 				(py[i] > 3000) || (py[i] < -100)
 				) {
@@ -157,6 +157,7 @@ void Enemy::update(double dt)
 {
 	Entity::update(dt);
 	if (p) {
+		// Look at player
 		sf::Vector2f intoP = p->getPosition() - getPosition();
 		setRotation(atan2(intoP.y, intoP.x) * RadToDeg());
 	}
@@ -164,22 +165,24 @@ void Enemy::update(double dt)
 
 PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor) {
 
-	sf::Vector2f ray = pp->getPosition() - getPosition();
+	sf::Vector2f ray = pp->getPosition() - getPosition();	// Raycast from enemy to player
 	float distance = Magnitude(ray);
+	if (distance < 100)
+		return pp;
 	Normalize(&ray);
-	for (int i = 100; i < distance; i+=10) {
+	for (int i = 100; i < distance; i += 5) {
 		sf::Vector2f point;
 		point.x = getPosition().x + ray.x * i;
 		point.y = getPosition().y + ray.y * i;
-		sf::Color rtc = rt.getPixel(point.x, point.y);
+		sf::Color rtc = rt.getPixel(point.x, point.y);		// Check pixel's color along the ray
 		if (rtc.toInteger() != clearColor.toInteger()) {
-			if (pp->spr->getGlobalBounds().contains(point))
-				return pp;
+			if (pp->spr->getGlobalBounds().contains(point))	// if pixel in player's bounds
+				return pp;									// Player found
 			else
-				return nullptr;
+				return nullptr;								// Else obstacle
 		}
 	}
-	return nullptr;
+	return nullptr;											// Nothing hit
 }
 
 void Enemy::draw(sf::RenderWindow& win)
