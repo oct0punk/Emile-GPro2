@@ -156,10 +156,36 @@ bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2) {
 void Enemy::update(double dt)
 {
 	Entity::update(dt);
+
 	if (p) {
 		// Look at player
 		sf::Vector2f intoP = p->getPosition() - getPosition();
-		setRotation(atan2(intoP.y, intoP.x) * RadToDeg());
+		float targetAngle = atan2(intoP.y, intoP.x) * RadToDeg();
+		setRotation(targetAngle);
+		Normalize(&intoP);
+		// Move into player
+		float angle = atan2(dy, dx) * RadToDeg();
+		dx += intoP.x * *interpSpeed * dt;
+		if (Sign(dx) != Sign(intoP.x))
+			dx -= 200 * dt;
+		dy += intoP.y * *interpSpeed * dt;
+		if (Sign(dy) != Sign(intoP.y))
+			dy -= 200 * dt;
+	}
+	else
+	{	// Slow down
+		if (abs(dx) > 0)
+		{
+			dx = dx < 0 ? dx + 1000 * dt : dx - 1000 * dt;
+			if (abs(dx) < 100 * dt)
+				dx = 0;
+		}
+		if (abs(dy) > 0)
+		{
+			dy = dy < 0 ? dy + 200 * dt : dy - 200 * dt;
+			if (abs(dy) < 100 * dt)
+				dy = 0;
+		}
 	}
 }
 
@@ -171,6 +197,7 @@ PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColo
 		return pp;
 	Normalize(&ray);
 	for (int i = 100; i < distance; i += 5) {
+
 		sf::Vector2f point;
 		point.x = getPosition().x + ray.x * i;
 		point.y = getPosition().y + ray.y * i;

@@ -75,6 +75,7 @@ int main()
 #pragma endregion
 
 #pragma region Enemy
+	int* interp = new int(500);
 	ConvexShape* eShape = new ConvexShape(4);
 	eShape->setPoint(0, Vector2f(0, 0));
 	eShape->setPoint(1, Vector2f(80, 20));
@@ -83,15 +84,11 @@ int main()
 	eShape->setOrigin(Vector2f(20, 20));
 	eShape->setFillColor(Color::Transparent);
 	eShape->setOutlineThickness(3);
-	Enemy e(eShape, bShape);
+	Enemy e(eShape, bShape, interp);
 	e.setPosition(1600, 600);
 	world.data.push_back(&e);
 #pragma endregion
 
-	sf::RectangleShape rect(Vector2f(wShape->getGlobalBounds().width, wShape->getGlobalBounds().height));
-	rect.setFillColor(Color::Transparent);
-	rect.setOutlineThickness(1.0f);
-	rect.setOutlineColor(Color::Green);
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
@@ -155,16 +152,12 @@ int main()
 
 #pragma endregion
 
-		rect.setSize(Vector2f(pShape->getGlobalBounds().width, pShape->getGlobalBounds().height));
-		rect.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
-		rect.setPosition(p.getPosition());
 
 
 		world.update(dt);
 		int count = 0;
-		for (auto b : b.alive)
-			if (b)
-				count++;
+		if (e.visible)
+			count = 1;
 		text.setString(to_string(count));
 
 		// IMGUI
@@ -175,6 +168,8 @@ int main()
 		DragFloat("Speed", &speed, 1.0f, 0.0f, 1000.0f);
 		Separator();
 
+		if (DragInt("InterpSpeed", interp, 100, 100, 10000))
+			e.interpSpeed = interp;
 		DragFloat("bSpeed", &b.speed, 5.0f, 100.0f, 10000.0f);
 		if (DragFloat("bWidth", &bWidth, .1f, 0.1f, 50.0f)) {
 			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
@@ -204,7 +199,6 @@ int main()
 		// RENDERING
 		world.draw(window);
 		ImGui::SFML::Render(window);
-		window.draw(rect);
 		window.draw(text);
 		window.display();
 		tExitFrame = getTimeStamp();

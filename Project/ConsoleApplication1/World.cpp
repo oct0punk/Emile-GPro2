@@ -9,11 +9,7 @@ void World::update(double dt) {
 	for (auto e : data) {
 		if (e->type == Player) {
 			p = (PlayerPad*)e;
-			// Keep the player on screen
-			sf::Vector2f pPos = p->getPosition();
-			pPos.x = clamp(pPos.x, 10.0f, window->getSize().x - 10);
-			pPos.y = clamp(pPos.y, 10.0f, window->getSize().y - 10);
-			p->setPosition(pPos.x, pPos.y);
+			KeepEntityOnScreen(p);
 			break;
 		}
 	}
@@ -63,6 +59,7 @@ void World::update(double dt) {
 							e->visible = false;
 			}	}	}	}
 			
+			KeepEntityOnScreen(e);
 			// Enemy look for player
 			enemy->p = enemy->LookForPlayer(p, Capture(window), *clearColor);
 			break;
@@ -76,6 +73,14 @@ void World::draw(sf::RenderWindow& window) {
 	for (auto e : data) {
 		e->draw(window);
 	}
+}
+
+void World::KeepEntityOnScreen(Entity* e) {
+	// Keep the entity inside screen's bounds
+	sf::Vector2f pPos = e->getPosition();
+	pPos.x = clamp(pPos.x, 10.0f, window->getSize().x - 10);
+	pPos.y = clamp(pPos.y, 10.0f, window->getSize().y - 10);
+	e->setPosition(pPos.x, pPos.y);
 }
 
 Audio::Audio() {

@@ -148,9 +148,11 @@ class Enemy : public Entity {
 public :
 	PlayerPad* p = nullptr;
 	Laser* l = nullptr;
+	int* interpSpeed;
 
-	Enemy(sf::Shape* _spr, sf::Shape* lSpr) : Entity(EType::Bot, _spr) {
+	Enemy(sf::Shape* _spr, sf::Shape* lSpr, int* interp) : Entity(EType::Bot, _spr) {
 		l = new Laser(lSpr, _spr->getFillColor());
+		interpSpeed = interp;
 	}
 
 	PlayerPad* LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor);

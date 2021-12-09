@@ -18,7 +18,7 @@ public:
 	float timeScale = 1.0f;
 	Audio* audio = nullptr;
 	std::vector<Entity*>	data;
-	
+
 	World(sf::RenderWindow* win) {
 		window = win;
 	}
@@ -26,5 +26,7 @@ public:
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 
+	void KeepEntityOnScreen(Entity* e);
 };
+
 

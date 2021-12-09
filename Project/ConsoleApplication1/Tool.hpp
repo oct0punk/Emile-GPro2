@@ -17,6 +17,12 @@ inline double getTimeStamp() //retourne le temps actuel en seconde
 }
 
 
+inline int Sign(float val) {
+	if (val < 0)
+		return -1;
+	return 1;
+}
+
 inline float clamp(float val, float min, float max) {
 	if (val < min)
 		return min;
