@@ -5,4 +5,6 @@ C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\Entity.h(61,10): warning C4
 C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\Entity.h(62,10): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
 C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\Entity.h(81,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
 C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\Entity.cpp(12,20): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\Entity.cpp(62,10): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\Entity.cpp(70,10): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
   ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\Cours 7\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe

@@ -84,7 +84,7 @@ public:
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 	bool isColliding(int _cx, int _cy);
-	void CollisionWithWorld(std::vector<sf::Vector2f> vecs);
+	bool CollisionWithWorld(std::vector<sf::Vector2f> vecs);
 };
 
 class PlayerPad : public Entity {

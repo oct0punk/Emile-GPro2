@@ -4,7 +4,10 @@
 
 void World::update(double dt) {
 	for (auto e : data) {
-		e->CollisionWithWorld(vecs);
+		if (e->CollisionWithWorld(vecs))
+			e->simulated = false;
+		else
+			e->simulated = true;
 		e->update(dt);
 	}
 	float arrSize = *gridSize * *gridSize;
