@@ -37,13 +37,9 @@ int main()
 	sf::RectangleShape* ground = new sf::RectangleShape(sf::Vector2f(5050, 50));
 	ground->setFillColor(sf::Color::Cyan);
 
-	Entity g(ground, 0, 10, world.gridSize);
 	Entity p(rect, 5, 6, world.gridSize);
-	p.simulated = false;
-	g.simulated = false;
 
 	world.data.push_back(&p);
-	world.data.push_back(&g);
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
@@ -79,6 +75,7 @@ int main()
 		ImGui::Value("cy", p.cy);
 		ImGui::Value("rx", p.rx); ImGui::SameLine();
 		ImGui::Value("ry", p.ry);
+		ImGui::Value("acceleration", p.dy);
 		ImGui::Separator();
 		ImGui::InputFloat("Speed", &speed, 0.0f, 100.0f);
 		ImGui::DragInt("GridSize", world.gridSize , 1.0f, 1.0f, 2000);

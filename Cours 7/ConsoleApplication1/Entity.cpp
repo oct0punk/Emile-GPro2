@@ -7,6 +7,11 @@ void Entity::update(double dt) {
 		float y = clamp(getPosition().y, 0, 670);
 		setPosition(x, y);
 	}
+	else
+		if (simulated)
+			dy += 9.81f * dt;
+
+	setPosition(getPosition().x + dx, getPosition().y + dy);
 }
 
 void Entity::draw(sf::RenderWindow& win) {
@@ -16,14 +21,22 @@ void Entity::draw(sf::RenderWindow& win) {
 }
 
 bool Entity::isColliding(int _cx, int _cy) {
-	if (_cx < 0)
+	if (_cx < 0) {
+		dx = 0;
 		return true;
-	if (_cy < 0)
+	}
+	if (_cy < 0) {
+		dy = 0;
 		return true;
-	if (_cx > *gridSize - 1)
+	}
+	if (_cx > 1190 / *gridSize ) {
+		dx = 0;
 		return true;
-	if (_cy > *gridSize - 1)
+	}
+	if (_cy > 670 / *gridSize) {
+		dy = 0;
 		return true;
+	}
 
 	return false;
 }
@@ -33,21 +46,25 @@ void Entity::CollisionWithWorld(std::vector<sf::Vector2f> vecs) {
 		if (cx + 3 == v.x && cy == v.y)
 			if (rx > * gridSize * 0.7f) {
 				setPosition(getPosition().x - *gridSize * 0.1f, getPosition().y);
+				dx = 0;
 			}
 
 		if (cy + 3 == v.y && cx == v.x)
 			if (ry > * gridSize * 0.7f) {
 				setPosition(getPosition().x, getPosition().y - *gridSize * 0.1f);
+				dy = 0;
 			}
 
 		if (cx - 1 == v.x && cy == v.y)
 			if (rx < *gridSize * 0.3f) {
 				setPosition(getPosition().x + *gridSize * 0.1f, getPosition().y);
+				dx = 0;
 			}
 
 		if (cy - 1 == v.y && cx == v.x)
 			if (ry < *gridSize * 0.3f) {
 				setPosition(getPosition().x, getPosition().y + *gridSize * 0.1f);
+				dy = 0;
 			}
 
 	}
