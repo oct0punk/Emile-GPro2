@@ -89,6 +89,9 @@ int main()
 	world.data.push_back(&e);
 #pragma endregion
 
+	ConvexShape test(*eShape);
+	float* rotate = 0;
+	test.setPosition(600, 1000);
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
@@ -191,7 +194,7 @@ int main()
 			world.clearColor->b = col[2] * 255.f;
 			world.clearColor->a = col[3] * 255.f;
 		}
-
+		DragFloat("rot", rotate, 1.0f, -180, 180);
 		ImGui::End();
 		}
 
@@ -200,6 +203,7 @@ int main()
 		world.draw(window);
 		ImGui::SFML::Render(window);
 		window.draw(text);
+		window.draw(test);
 		window.display();
 		tExitFrame = getTimeStamp();
 	}

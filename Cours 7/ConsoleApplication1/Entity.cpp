@@ -1,9 +1,12 @@
 #include "Entity.h"
+#include "Tool.hpp"
 
 void Entity::update(double dt) {
-	if (simulated)
-		dy += 9.81f * dt;
-	setPosition(cx + dx, cy + dy);
+	if (isColliding(cx, cy)) {
+		float x = clamp(getPosition().x, 0,  1190);
+		float y = clamp(getPosition().y, 0, 670);
+		setPosition(x, y);
+	}
 }
 
 void Entity::draw(sf::RenderWindow& win) {
@@ -12,54 +15,51 @@ void Entity::draw(sf::RenderWindow& win) {
 	}
 }
 
-bool Entity::CheckCollision(Entity* wall, Entity* ball) {
-	if (wall->spr->getGlobalBounds().contains(ball->getPosition())) {
-		float x = ball->getPosition().x - wall->getPosition().x;
-		float y = ball->getPosition().y - wall->getPosition().y;
-		float magnitude = sqrt(x * x + y * y);
-		x /= magnitude;
-		y /= magnitude;
-
-		float w = wall->spr->getGlobalBounds().width / 2;
-		float h = wall->spr->getGlobalBounds().height / 2;
-		magnitude = sqrt(w * w + h * h);
-		w /= magnitude;
-		h /= magnitude;
-
-		if (abs(x) > w)		ball->dx *= -1;
-		else if (abs(y) > h)	ball->dy *= -1;
-		ball->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		wall->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		ball->setPosition(ball->lastGoodPos.x, ball->lastGoodPos.y);
+bool Entity::isColliding(int _cx, int _cy) {
+	if (_cx < 0)
 		return true;
-	}
-	ball->lastGoodPos = ball->getPosition();
+	if (_cy < 0)
+		return true;
+	if (_cx > *gridSize - 1)
+		return true;
+	if (_cy > *gridSize - 1)
+		return true;
+
 	return false;
 }
 
+void Entity::CollisionWithWorld(std::vector<sf::Vector2f> vecs) {
+	for (auto v : vecs) {
+		if (cx + 3 == v.x && cy == v.y)
+			if (rx > * gridSize * 0.7f) {
+				setPosition(getPosition().x - *gridSize * 0.1f, getPosition().y);
+			}
+
+		if (cy + 3 == v.y && cx == v.x)
+			if (ry > * gridSize * 0.7f) {
+				setPosition(getPosition().x, getPosition().y - *gridSize * 0.1f);
+			}
+
+		if (cx - 1 == v.x && cy == v.y)
+			if (rx < *gridSize * 0.3f) {
+				setPosition(getPosition().x + *gridSize * 0.1f, getPosition().y);
+			}
+
+		if (cy - 1 == v.y && cx == v.x)
+			if (ry < *gridSize * 0.3f) {
+				setPosition(getPosition().x, getPosition().y + *gridSize * 0.1f);
+			}
+
+	}
+
+}
+
 void PlayerPad::update(double dt) {
+
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {
 	if (visible)
 		win.draw(*spr);
 
-}
-
-void Particle::update(double dt) {
-	Entity::update(dt);
-	dy += 9.81f;
-
-	sf::Color c = spr->getFillColor();
-	spr->setFillColor(sf::Color(c.r, c.g, c.b, (timeLeft * 255)));
-	spr->setOutlineColor(sf::Color(c.r, c.g, c.b, (timeLeft * 255)));
-	
-	timeLeft = timeLeft - dt;
-	if (timeLeft < 0)
-		visible = false;
-}
-
-void Particle::draw(sf::RenderWindow& win) {
-	if (visible)
-		win.draw(*spr);
 }

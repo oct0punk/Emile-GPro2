@@ -22,7 +22,7 @@ public:
 	bool visible = true;
 	bool simulated = true;
 
-	int gridSize = 1;
+	int* gridSize;
 
 	int cx = 0;
 	int cy = 0;
@@ -33,10 +33,10 @@ public:
 	float dx = 0.0f;
 	float dy = 0.0f;
 		
-	Entity(sf::Shape* _spr, int _cx, int _cy, int gridSize) {
+	Entity(sf::Shape* _spr, int _cx, int _cy, int* gridSize) {
 		spr = _spr;
 		this->gridSize = gridSize;
-		setPosition(_cx, _cy);
+		setPosition(_cx * *gridSize, _cy * *gridSize);
 	}
 
 	Entity(EType type, sf::Shape* _spr) {
@@ -57,21 +57,18 @@ public:
 	}
 
 	void setPosition(float x, float y) {
-		
+
+		cx = x / *gridSize;
+		cy = y / *gridSize;
+
 		rx = x;
-		while (rx > gridSize) {
-			cx++;
-			rx -= gridSize;
+		while (rx > *gridSize) {
+			rx -= *gridSize;
 		}
 		ry = y;
-		while (ry > gridSize) {
-			cy++;
-			ry -= gridSize;
+		while (ry > *gridSize) {
+			ry -= *gridSize;
 		}
-
-		cx = x / gridSize;
-		cy = y / gridSize;
-
 
 		spr->setPosition(sf::Vector2f(x, y));
 	}
@@ -86,7 +83,8 @@ public:
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
-	bool CheckCollision(Entity* wall, Entity* ball);
+	bool isColliding(int _cx, int _cy);
+	void CollisionWithWorld(std::vector<sf::Vector2f> vecs);
 };
 
 class PlayerPad : public Entity {

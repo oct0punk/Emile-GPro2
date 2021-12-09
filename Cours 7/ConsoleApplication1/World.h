@@ -14,7 +14,9 @@ class World {
 public:
 	int winW = 1240;
 	int winH = 720;
-	int gridSize = 8;
+	int* gridSize;
+	sf::VertexArray arr;
+	std::vector<sf::Vector2f> vecs;
 
 	Audio* audio = nullptr;
 	std::vector<Entity*>	data;
@@ -22,6 +24,6 @@ public:
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 
-	std::vector<Particle*> particles;
+	void AppendBlock(sf::Vector2i pos);
 };
 

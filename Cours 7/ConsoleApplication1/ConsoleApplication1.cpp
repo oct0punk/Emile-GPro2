@@ -22,7 +22,7 @@ int main()
 	window.setFramerateLimit(60);
 
 	World world;
-	world.gridSize = 16;
+	world.gridSize = new int(16);
 
 	sf::Font fArial;
 	if (!fArial.loadFromFile("res/arial.ttf"))
@@ -37,8 +37,8 @@ int main()
 	sf::RectangleShape* ground = new sf::RectangleShape(sf::Vector2f(5050, 50));
 	ground->setFillColor(sf::Color::Cyan);
 
-	Entity g(ground, 400, 700, world.gridSize);
-	Entity p(rect, 400, 400, world.gridSize);
+	Entity g(ground, 0, 10, world.gridSize);
+	Entity p(rect, 5, 6, world.gridSize);
 	p.simulated = false;
 	g.simulated = false;
 
@@ -75,44 +75,36 @@ int main()
 		ImGui::ShowDemoWindow();
 		ImGui::Begin("Commands");
 
-		//float col[4]{ clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f };
-		//if (ColorPicker4("ClearColor", col))
-		//{
-		//	clearColor.r = col[0] * 255.f;
-		//	clearColor.g = col[1] * 255.f;
-		//	clearColor.b = col[2] * 255.f;
-		//	clearColor.a = col[3] * 255.f;
-		//}
 		ImGui::Value("cx", p.cx); ImGui::SameLine();
 		ImGui::Value("cy", p.cy);
 		ImGui::Value("rx", p.rx); ImGui::SameLine();
 		ImGui::Value("ry", p.ry);
-		ImGui::Value("acceleration", p.dy);
-		ImGui::DragFloat("Speed", &speed, 0.01f, 0.0f, 100.0f, "%f", 1);
-		ImGui::DragInt("GridSize", &p.gridSize , 1, 1, 2000, "%i", 1);
+		ImGui::Separator();
+		ImGui::InputFloat("Speed", &speed, 0.0f, 100.0f);
+		ImGui::DragInt("GridSize", world.gridSize , 1.0f, 1.0f, 2000);
+		ImGui::End();
 		
 		float x = p.getPosition().x;
 		float y = p.getPosition().y;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			x -= 1.1f * speed;
+			x -= speed;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			x += 1.1f * speed;
+			x += speed;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			y -= 1.1f * speed;
+			y -= speed;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			y += 1.1f * speed;
+			y += speed;
+		p.setPosition(x, y);
 
-		p.cx = x;
-		p.cy = y;
-
-		ImGui::End();
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			world.AppendBlock(sf::Mouse::getPosition(window));
+			
 		world.update(dt);
 
 
-		window.clear(sf::Color::Black);
+		world.draw(window);
 		ImGui::SFML::Render(window);
 		window.draw(tDt);
-		world.draw(window);
 		window.display();
 
 		tExitFrame = getTimeStamp();

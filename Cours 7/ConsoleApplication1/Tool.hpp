@@ -24,3 +24,11 @@ inline float catmull(float p0, float p1, float p2, float p3, float t) {
 
 	return 0.5f * q;
 }
+
+inline float clamp(float val, float a, float b) {
+	if (val < a)
+		val = a;
+	if (val > b)
+		val = b;
+	return val;
+}
