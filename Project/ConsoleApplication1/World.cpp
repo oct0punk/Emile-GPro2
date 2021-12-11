@@ -59,9 +59,16 @@ void World::update(double dt) {
 							e->visible = false;
 			}	}	}	}
 			
-			KeepEntityOnScreen(e);
 			// Enemy look for player
 			enemy->p = enemy->LookForPlayer(p, Capture(window), *clearColor);
+
+			if (p->visible)
+				KeepEntityOnScreen(e);
+			else
+				enemy->p = nullptr;
+
+			if (LengthBtw(p->getPosition().x, p->getPosition().y, e->getPosition().x, e->getPosition().y) < 150)
+				p->visible = false;
 			break;
 		}
 	}
