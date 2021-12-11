@@ -160,14 +160,26 @@ void Enemy::update(double dt)
 	if (p) {
 		// Look at player
 		sf::Vector2f intoP = p->getPosition() - getPosition();
-		float angle = atan2(dy, dx) * RadToDeg();
 		float targetAngle = atan2(intoP.y, intoP.x) * RadToDeg();
-		if (targetAngle - angle < 0) {
-			clamp(targetAngle, angle - 1, targetAngle - 0.1f * dt);
-		}
 		setRotation(targetAngle);
-		Normalize(&intoP);
 
+		// Move into player
+		int speed = 500;
+		Normalize(&intoP);
+		dx = intoP.x * speed;
+		dy = intoP.y * speed;
+		//dx += Sign(intoP.x) * speed * dt;
+		//dy += Sign(intoP.y) * speed * dt;
+	}
+	else
+	{
+		int speed = 1000;
+		dx = Sign(dx) < 0 ?
+			clamp(dx, dx + speed * dt, 0) :
+			clamp(dx, 0, dx - speed * dt);
+		dy = Sign(dy) < 0 ?
+			clamp(dy, dy + speed * dt, 0) :
+			clamp(dy, 0, dy - speed * dt);
 	}
 }
 

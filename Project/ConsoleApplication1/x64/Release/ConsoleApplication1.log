@@ -1,44 +1,46 @@
 ﻿  Entity.cpp
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.h(84,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Tool.hpp(70,23): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(9,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.h(84,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Tool.hpp(74,23): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(9,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
           with
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(10,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(10,19): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
           with
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(99,18): warning C4244: '-=' : conversion de 'double' en 'float', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(103,31): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(99,18): warning C4244: '-=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(103,31): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
           with
           [
               _Ty=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(104,31): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(104,31): warning C4244: '+=' : conversion de 'double' en '_Ty', perte possible de données
           with
           [
               _Ty=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(117,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(117,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'const int', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(166,46): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(170,42): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(190,45): warning C4244: 'argument' : conversion de 'T' en 'unsigned int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(117,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(117,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'const int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(178,17): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(179,20): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(181,17): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(182,20): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(198,45): warning C4244: 'argument' : conversion de 'T' en 'unsigned int', perte possible de données
           with
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(190,36): warning C4244: 'argument' : conversion de 'T' en 'unsigned int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\Entity.cpp(198,36): warning C4244: 'argument' : conversion de 'T' en 'unsigned int', perte possible de données
           with
           [
               T=float
           ]
   Génération de code en cours
-  1 of 2439 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 2478 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     70 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
-  ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\x64\Release\ConsoleApplication1.exe
+  ConsoleApplication1.vcxproj -> C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\x64\Release\ConsoleApplication1.exe
