@@ -12,15 +12,22 @@ public:
 
 class World {
 public:
-
+	
 	sf::RenderWindow* window = nullptr;;
 	sf::Color* clearColor;
 	float timeScale = 1.0f;
 	Audio* audio = nullptr;
 	std::vector<Entity*>	data;
+	int eCount = 0;
 
 	World(sf::RenderWindow* win) {
 		window = win;
+	}
+
+	void PushEntity(Entity* e) {
+		data.push_back(e);
+		if (e->type == EType::Bot)
+			eCount++;
 	}
 
 	void update(double dt);

@@ -56,6 +56,8 @@ void World::update(double dt) {
 					Laser* l = (Laser*)b;
 					for (int i = 0; i < l->px.size(); i++) {
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
+							if (e->visible)
+								eCount--;
 							e->visible = false;
 			}	}	}	}
 			

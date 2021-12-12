@@ -11,7 +11,6 @@
 #include <SFML/Window.hpp>
 #include "Entity.h"
 #include "World.h"
-#include "Game.h"
 
 #include "imgui.h"
 #include "imgui-SFML.h"
@@ -52,7 +51,7 @@ int main()
 
 	PlayerPad p(pShape);
 	p.setPosition(450, 400);
-	world.data.push_back(&p);
+	world.PushEntity(&p);
 #pragma endregion
 
 #pragma region Bullet
@@ -61,7 +60,7 @@ int main()
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 	Color bc = Color::Blue;
 	Laser b(bShape, bc);
-	world.data.push_back(&b);
+	world.PushEntity(&b);
 #pragma endregion
 
 #pragma region Wall
@@ -71,7 +70,7 @@ int main()
 	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
 	Entity w(EType::Wall, wShape);
 	w.setPosition(400, 400);
-	world.data.push_back(&w);
+	world.PushEntity(&w);
 #pragma endregion
 
 #pragma region Enemy
@@ -86,7 +85,7 @@ int main()
 	eShape->setOutlineThickness(3);
 	Enemy e(eShape, bShape, interp);
 	e.setPosition(1600, 600);
-	world.data.push_back(&e);
+	world.PushEntity(&e);
 #pragma endregion
 
 
@@ -99,7 +98,6 @@ int main()
 	sf::Clock deltaClock;
 	world.clearColor = new Color(20, 20, 20, 20);
 
-	Game game(&world, &p);
 
 	while (window.isOpen()) {
 		screen = Capture(world.window);
@@ -155,7 +153,7 @@ int main()
 
 
 		world.update(dt);
-		text.setString(to_string(e.getRotation()));
+		text.setString(to_string(world.eCount));
 
 		// IMGUI
 		{	using namespace ImGui;
