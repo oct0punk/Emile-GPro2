@@ -1,17 +1,34 @@
 #pragma once
-#include "Entity.h"
 #include "World.h"
-#include "SFML/Graphics/RenderWindow.hpp"
 
 class Game {
+private:
+	int wave = 0;
+	float time = 0.0f;
+	bool spawned = false;
 public:
-	World* world = nullptr;
-	PlayerPad* player = nullptr;
+	int enemyCount = 0;
 
-	Game(World* w, PlayerPad* p) {
+	World* world = nullptr;
+
+	Game(World* w) {
 		world = w;
-		player = p;
 	}
 
-	// ReadFileAndSpawnEntiies()
+	void update(double dt) {
+		world->update(dt);
+		if (enemyCount < 1) return;
+
+		if (time > 0) {
+			spawned = false;
+			time -= dt;
+		} else {
+			if (!spawned) {
+				time = rand() % 2;
+				world->SpawnEnemy(sf::Vector2f(rand() % 1000, rand() % 100));
+				enemyCount--;
+				spawned = true;
+			}
+		}
+	}
 };

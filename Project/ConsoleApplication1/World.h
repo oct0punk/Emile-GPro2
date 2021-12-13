@@ -25,15 +25,14 @@ public:
 		window = win;
 	}
 
-	void PushEntity(Entity* e) {
+	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0)) {
 		bool inserted = false;
 		for (auto entity : data) {
 			if (entity->type == e->type)
-				if (entity->visible)
-					continue;
-				else {
+				if (!entity->visible) {
 					inserted = true;
 					entity->visible = true;
+					entity->setPosition(pos.x, pos.y);
 					break;
 				}
 		}
@@ -51,10 +50,10 @@ public:
 				}
 			}
 		}
-		e->setPosition(599, 500);
+		e->setPosition(pos.x, pos.y);
 	}
 
-	void SpawnEnemy();
+	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
 
 	void update(double dt);
 	void draw(sf::RenderWindow& win);

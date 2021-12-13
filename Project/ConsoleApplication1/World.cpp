@@ -2,7 +2,7 @@
 #include"Tool.hpp"
 #include "SFML/Graphics/Texture.hpp"
 
-void World::SpawnEnemy() {
+void World::SpawnEnemy(sf::Vector2f pos) {
 	using namespace sf;
 	ConvexShape* eShape = new ConvexShape(4);
 	eShape->setPoint(0, Vector2f(0, 0));
@@ -13,7 +13,7 @@ void World::SpawnEnemy() {
 	eShape->setFillColor(Color::Transparent);
 	eShape->setOutlineThickness(3);
 
-	PushEntity(new Enemy(eShape));
+	PushEntity(new Enemy(eShape), pos);
 
 }
 

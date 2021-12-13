@@ -174,12 +174,12 @@ void Enemy::update(double dt)
 		}
 		else
 		{
-			SlowDown(300 * dt);
+			SlowDown(200 * dt);
 		}
 	}
 	else
 	{
-		SlowDown(300 * dt);
+		SlowDown(200 * dt);
 	}
 }
 

@@ -11,6 +11,7 @@
 #include <SFML/Window.hpp>
 #include "Entity.h"
 #include "World.h"
+#include "Game.h"
 
 #include "imgui.h"
 #include "imgui-SFML.h"
@@ -20,8 +21,6 @@ using namespace sf;
 
 int main()
 {
-	
-	float t = 1;
 
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Asteroid");
 	window.setVerticalSyncEnabled(true);
@@ -73,11 +72,11 @@ int main()
 	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
 	Entity w(EType::Wall, wShape);
 	w.setPosition(400, 400);
-	world.PushEntity(&w);
+	world.PushEntity(&w, sf::Vector2f(100, 750));
 #pragma endregion
 
-	world.SpawnEnemy();
-
+	Game game(&world);
+	game.enemyCount = 5;
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
@@ -142,16 +141,9 @@ int main()
 
 #pragma endregion
 
+		
 
-		if (t >= 0) {
-			t -= dt;
-		}
-		else {
-			t = 1;
-			world.SpawnEnemy();
-		}
-
-		world.update(dt);
+		game.update(dt);
 		text.setString(to_string(dt * 60));
 
 		// IMGUI
