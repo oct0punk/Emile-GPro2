@@ -2,6 +2,21 @@
 #include"Tool.hpp"
 #include "SFML/Graphics/Texture.hpp"
 
+void World::SpawnEnemy() {
+	using namespace sf;
+	ConvexShape* eShape = new ConvexShape(4);
+	eShape->setPoint(0, Vector2f(0, 0));
+	eShape->setPoint(1, Vector2f(80, 20));
+	eShape->setPoint(2, Vector2f(0, 40));
+	eShape->setPoint(3, Vector2f(20, 20));
+	eShape->setOrigin(Vector2f(20, 20));
+	eShape->setFillColor(Color::Transparent);
+	eShape->setOutlineThickness(3);
+
+	PushEntity(new Enemy(eShape));
+
+}
+
 void World::update(double dt) {
 
 	bool coll = false;
@@ -14,7 +29,7 @@ void World::update(double dt) {
 		}
 	}
 	for (auto e : data) {
-		e->update(dt * timeScale);
+		e->update(dt);
 		switch (e->type) {
 		case EType::Wall:
 		{
@@ -55,22 +70,21 @@ void World::update(double dt) {
 				if (b->type == EType::Bullet) {
 					Laser* l = (Laser*)b;
 					for (int i = 0; i < l->px.size(); i++) {
+						if (!l->alive[i]) break;
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
 							if (e->visible)
 								eCount--;
 							e->visible = false;
+							l->alive[i] = false;
 			}	}	}	}
 			
-			// Enemy look for player
-			enemy->p = enemy->LookForPlayer(p, Capture(window), *clearColor);
 
 			if (p->visible)
 				KeepEntityOnScreen(e);
-			else
-				enemy->p = nullptr;
 
 			if (LengthBtw(p->getPosition().x, p->getPosition().y, e->getPosition().x, e->getPosition().y) < 150)
-				p->visible = false;
+				if (e->visible)
+					p->visible = false;
 			break;
 		}
 	}

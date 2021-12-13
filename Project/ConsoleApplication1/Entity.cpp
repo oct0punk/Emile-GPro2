@@ -1,8 +1,8 @@
 #include "Entity.h"
 #include "Tool.hpp"
-#include <iostream>
 
 void Entity::update(double dt) {
+	if (!visible) return;
 	if (cmds) applyCmdInterp(cmds, dt);
 
 	sf::Vector2f move = getPosition();
@@ -158,28 +158,28 @@ void Enemy::update(double dt)
 	Entity::update(dt);
 
 	if (p) {
-		// Look at player
-		sf::Vector2f intoP = p->getPosition() - getPosition();
-		float targetAngle = atan2(intoP.y, intoP.x) * RadToDeg();
-		setRotation(targetAngle);
+		if (p->visible) {
+			// Look at player
+			sf::Vector2f intoP = p->getPosition() - getPosition();
+			float targetAngle = atan2(intoP.y, intoP.x) * RadToDeg();
+			setRotation(targetAngle);
 
-		// Move into player
-		int speed = 500;
-		Normalize(&intoP);
-		dx = intoP.x * speed;
-		dy = intoP.y * speed;
-		//dx += Sign(intoP.x) * speed * dt;
-		//dy += Sign(intoP.y) * speed * dt;
+			// Move into player
+			int speed = 300;
+			Normalize(&intoP);
+			dx = intoP.x * speed;
+			dy = intoP.y * speed;
+			//dx += Sign(intoP.x) * speed * dt;
+			//dy += Sign(intoP.y) * speed * dt;
+		}
+		else
+		{
+			SlowDown(300 * dt);
+		}
 	}
 	else
 	{
-		int speed = 1000;
-		dx = Sign(dx) < 0 ?
-			clamp(dx, dx + speed * dt, 0) :
-			clamp(dx, 0, dx - speed * dt);
-		dy = Sign(dy) < 0 ?
-			clamp(dy, dy + speed * dt, 0) :
-			clamp(dy, 0, dy - speed * dt);
+		SlowDown(300 * dt);
 	}
 }
 
@@ -195,6 +195,7 @@ PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColo
 		sf::Vector2f point;
 		point.x = getPosition().x + ray.x * i;
 		point.y = getPosition().y + ray.y * i;
+		if (!visible) return nullptr;
 		sf::Color rtc = rt.getPixel(point.x, point.y);		// Check pixel's color along the ray
 		if (rtc.toInteger() != clearColor.toInteger()) {
 			if (pp->spr->getGlobalBounds().contains(point))	// if pixel in player's bounds
@@ -204,6 +205,16 @@ PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColo
 		}
 	}
 	return nullptr;											// Nothing hit
+}
+
+void Enemy::SlowDown(int speed) {
+	float zero = 0;
+	dx = Sign(dx) < 0 ?
+		clamp(zero, dx, dx + speed) :
+		clamp(zero, dx - speed, dx);
+	dy = Sign(dy) < 0 ?
+		clamp(zero, dy, dy + speed) :
+		clamp(zero, dy - speed, dy);
 }
 
 void Enemy::draw(sf::RenderWindow& win)

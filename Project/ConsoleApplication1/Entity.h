@@ -147,15 +147,12 @@ public:
 class Enemy : public Entity {
 public :
 	PlayerPad* p = nullptr;
-	Laser* l = nullptr;
-	int* interpSpeed;
 
-	Enemy(sf::Shape* _spr, sf::Shape* lSpr, int* interp) : Entity(EType::Bot, _spr) {
-		l = new Laser(lSpr, _spr->getFillColor());
-		interpSpeed = interp;
+	Enemy(sf::Shape* _spr) : Entity(EType::Bot, _spr) {
 	}
 
 	PlayerPad* LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor);
+	void SlowDown(int speed);
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);

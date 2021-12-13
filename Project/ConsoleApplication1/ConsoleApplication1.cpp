@@ -18,10 +18,13 @@
 using namespace sf;
 
 
-
 int main()
 {
+	
+	float t = 1;
+
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Asteroid");
+	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 
 	World world(&window);
@@ -50,8 +53,8 @@ int main()
 	pShape->setOutlineThickness(4);
 
 	PlayerPad p(pShape);
-	p.setPosition(450, 400);
-	world.PushEntity(&p);
+	p.setPosition(950, 400);
+	world.data.push_back(&p);
 #pragma endregion
 
 #pragma region Bullet
@@ -60,7 +63,7 @@ int main()
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 	Color bc = Color::Blue;
 	Laser b(bShape, bc);
-	world.PushEntity(&b);
+	world.data.push_back(&b);
 #pragma endregion
 
 #pragma region Wall
@@ -73,20 +76,7 @@ int main()
 	world.PushEntity(&w);
 #pragma endregion
 
-#pragma region Enemy
-	int* interp = new int(500);
-	ConvexShape* eShape = new ConvexShape(4);
-	eShape->setPoint(0, Vector2f(0, 0));
-	eShape->setPoint(1, Vector2f(80, 20));
-	eShape->setPoint(2, Vector2f(0, 40));
-	eShape->setPoint(3, Vector2f(20, 20));
-	eShape->setOrigin(Vector2f(20, 20));
-	eShape->setFillColor(Color::Transparent);
-	eShape->setOutlineThickness(3);
-	Enemy e(eShape, bShape, interp);
-	e.setPosition(1600, 600);
-	world.PushEntity(&e);
-#pragma endregion
+	world.SpawnEnemy();
 
 
 	double tStart = getTimeStamp();
@@ -100,10 +90,9 @@ int main()
 
 
 	while (window.isOpen()) {
-		screen = Capture(world.window);
-		sf::Event event;
 		double dt = tExitFrame - tEnterFrame;
 		tEnterFrame = getTimeStamp();
+		sf::Event event;
 		while (window.pollEvent(event)) {
 			ImGui::SFML::ProcessEvent(event);
 			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -112,59 +101,67 @@ int main()
 
 
 		// UPDATE
-#pragma region PlayerControls
-// Move
-		bool keyHit = false;
-		Vector2f pPos = p.getPosition();
-		if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Z)) {
-			pPos.y -= speed * dt;
-			keyHit = true;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
-			pPos.y += speed * dt;
-			keyHit = true;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Q)) {
-			pPos.x -= speed * dt;
-			keyHit = true;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
-			pPos.x += speed * dt;
-			keyHit = true;
-		}
-		if (keyHit)
-			p.setPosition(pPos.x, pPos.y);
+		#pragma region PlayerControls
+		// Move
+		if (p.visible)
+		{
+			bool keyHit = false;
+			Vector2f pPos = p.getPosition();
+			if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Z)) {
+				pPos.y -= speed * dt;
+				keyHit = true;
+			}
+			if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
+				pPos.y += speed * dt;
+				keyHit = true;
+			}
+			if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Q)) {
+				pPos.x -= speed * dt;
+				keyHit = true;
+			}
+			if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
+				pPos.x += speed * dt;
+				keyHit = true;
+			}
+			if (keyHit)
+				p.setPosition(pPos.x, pPos.y);
 
 
-		Vector2f pToMouse = Vector2f(
-			Mouse::getPosition(window).x - p.getPosition().x,
-			Mouse::getPosition(window).y - p.getPosition().y);
-		Normalize(&pToMouse);
-		float intoMouse = atan2(pToMouse.y, pToMouse.x) * RadToDeg();
-		p.setRotation(intoMouse);
+			Vector2f pToMouse = Vector2f(
+				Mouse::getPosition(window).x - p.getPosition().x,
+				Mouse::getPosition(window).y - p.getPosition().y);
+			Normalize(&pToMouse);
+			float intoMouse = atan2(pToMouse.y, pToMouse.x) * RadToDeg();
+			p.setRotation(intoMouse);
 
-		// Shoot
-		if (Mouse::isButtonPressed(Mouse::Left)) {
-			b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
+			// Shoot
+			if (Mouse::isButtonPressed(Mouse::Left)) {
+				b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
+			}
 		}
 
 #pragma endregion
 
 
+		if (t >= 0) {
+			t -= dt;
+		}
+		else {
+			t = 1;
+			world.SpawnEnemy();
+		}
 
 		world.update(dt);
-		text.setString(to_string(world.eCount));
+		text.setString(to_string(dt * 60));
 
 		// IMGUI
 		{	using namespace ImGui;
-		SFML::Update(window, deltaClock.restart());
+		ImGui::SFML::Update(window, sf::milliseconds((int)(dt * 1000.0)));
 		ShowDemoWindow();
 		Begin("Edit");
 		DragFloat("Speed", &speed, 1.0f, 0.0f, 1000.0f);
 		Separator();
 
-		if (DragInt("InterpSpeed", interp, 100, 100, 10000))
-			e.interpSpeed = interp;
 		DragFloat("bSpeed", &b.speed, 5.0f, 100.0f, 10000.0f);
 		if (DragFloat("bWidth", &bWidth, .1f, 0.1f, 50.0f)) {
 			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
