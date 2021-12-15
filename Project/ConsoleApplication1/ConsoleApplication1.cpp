@@ -57,8 +57,8 @@ int main()
 #pragma endregion
 
 #pragma region Bullet
-	float bWidth = 50.0f;
-	float bHeight = 2.0f;
+	float bWidth = 35.0f;
+	float bHeight = 3.0f;
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 	Color bc = Color::Blue;
 	Laser b(bShape, bc);
@@ -144,7 +144,7 @@ int main()
 		
 
 		game.update(dt);
-		text.setString(to_string(dt * 60));
+		text.setString(to_string(world.eCount));
 
 		// IMGUI
 		{	using namespace ImGui;

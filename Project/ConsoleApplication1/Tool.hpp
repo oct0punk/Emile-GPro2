@@ -83,7 +83,7 @@ inline sf::Vector2f Reflect(sf::Vector2f incident, sf::Vector2f normal) {
 	return v;
 }
 
-inline float LengthBtw(float ux, float uy, float vx, float vy) {
+inline float Magnitude(float ux, float uy, float vx, float vy) {
 	sf::Vector2f dir = sf::Vector2f(vx - ux, vy - uy);
 	return sqrt(dir.x * dir.x + dir.y * dir.y);
 }

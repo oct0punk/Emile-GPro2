@@ -174,12 +174,9 @@ void Enemy::update(double dt)
 		}
 		else
 		{
-			SlowDown(200 * dt);
+			if (abs(dx + dy) > 0)
+				SlowDown(200 * dt);
 		}
-	}
-	else
-	{
-		SlowDown(200 * dt);
 	}
 }
 
@@ -208,13 +205,8 @@ PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColo
 }
 
 void Enemy::SlowDown(int speed) {
-	float zero = 0;
-	dx = Sign(dx) < 0 ?
-		clamp(zero, dx, dx + speed) :
-		clamp(zero, dx - speed, dx);
-	dy = Sign(dy) < 0 ?
-		clamp(zero, dy, dy + speed) :
-		clamp(zero, dy - speed, dy);
+	dx = clamp(0.0f, dx - speed, dx + speed);
+	dy = clamp(0.0f, dy - speed, dy + speed);
 }
 
 void Enemy::draw(sf::RenderWindow& win)

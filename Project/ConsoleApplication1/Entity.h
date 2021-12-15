@@ -110,9 +110,9 @@ bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2);
 class Laser : public Entity {	
 	float reloading = 0.0f;
 public:
-	float reloadTime = .05f;
+	float reloadTime = .1f;
 
-	float speed = 1000.0f;
+	float speed = 3000.0f;
 
 	std::vector<float>	px;
 	std::vector<float>	py;

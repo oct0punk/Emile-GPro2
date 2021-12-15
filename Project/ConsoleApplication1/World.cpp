@@ -34,7 +34,7 @@ void World::update(double dt) {
 		case EType::Wall:
 		{
 			// Contact with player
-			float distanceToP = LengthBtw(p->getPosition().x, p->getPosition().y, e->getPosition().x, e->getPosition().y);
+			float distanceToP = Magnitude(p->getPosition().x, p->getPosition().y, e->getPosition().x, e->getPosition().y);
 			float radius = e->spr->getGlobalBounds().width / 2;
 			if (distanceToP < radius) {
 				sf::Vector2f moveP(p->getPosition() - e->getPosition());
@@ -48,7 +48,7 @@ void World::update(double dt) {
 					Laser* l = (Laser*)b;
 					for (int i = 1; i <= l->px.size(); i++) {
 						sf::Vector2f bPos = sf::Vector2f(l->px[i - 1], l->py[i - 1]);
-						float distance = LengthBtw(e->getPosition().x, e->getPosition().y, bPos.x, bPos.y);
+						float distance = Magnitude(e->getPosition().x, e->getPosition().y, bPos.x, bPos.y);
 						if (distance < e->spr->getGlobalBounds().width / 3)		// if rebound failed
 						{
 							l->alive[i - 1] = false;
@@ -72,17 +72,20 @@ void World::update(double dt) {
 					for (int i = 0; i < l->px.size(); i++) {
 						if (!l->alive[i]) break;
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
-							if (e->visible)
+							if (e->visible) {
 								eCount--;
-							e->visible = false;
-							l->alive[i] = false;
-			}	}	}	}
-			
+								e->visible = false;
+								l->alive[i] = false;
+								if (eCount < 0) {
+
+								}
+							}
+			}	}	}	}			
 
 			if (p->visible)
 				KeepEntityOnScreen(e);
 
-			if (LengthBtw(p->getPosition().x, p->getPosition().y, e->getPosition().x, e->getPosition().y) < 150)
+			if (Magnitude(e->getPosition() - p->getPosition()) < 150)
 				if (e->visible)
 					p->visible = false;
 			break;
