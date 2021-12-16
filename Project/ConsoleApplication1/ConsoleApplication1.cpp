@@ -78,6 +78,7 @@ int main()
 	Game game(&world);
 	game.enemyCount = 5;
 
+
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
 	double tExitFrame = getTimeStamp();

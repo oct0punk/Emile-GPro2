@@ -1,5 +1,7 @@
 #include "Entity.h"
 #include "Tool.hpp"
+#include "World.h"
+#include "Audio.h"
 
 void Entity::update(double dt) {
 	if (!visible) return;
@@ -66,6 +68,8 @@ void PlayerPad::draw(sf::RenderWindow& win) {
 void Laser::create(float _px, float _py, float _dx, float _dy) {
 	if (reloading > 0.0f) return;
 	reloading = reloadTime;
+	Audio::GetInstance()->Play();
+
 	sf::Vector2f dir(_dx, _dy);
 	Normalize(&dir);
 	float dx = dir.x;

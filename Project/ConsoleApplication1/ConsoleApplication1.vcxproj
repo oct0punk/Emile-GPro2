@@ -163,6 +163,7 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="Bullet.hpp" />
     <ClInclude Include="Curve.hpp" />
     <ClInclude Include="Entity.h" />

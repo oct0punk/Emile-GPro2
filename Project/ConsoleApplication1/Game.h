@@ -5,7 +5,6 @@ class Game {
 private:
 	int wave = 0;
 	float time = 0.0f;
-	float timelaps = 0.0f;
 public:
 	int enemyCount = 0;
 
@@ -28,14 +27,8 @@ public:
 			}
 		
 		} else {
-			if (timelaps > 0) {
-				timelaps -= dt;
-				if (timelaps <= 0)
-					NextWave();
-			}
-			else if (world->eCount < 1) {
-				timelaps = 2.2f;
-			}
+			if (world->eCount < 1)
+				NextWave(); 
 		}
 	}
 

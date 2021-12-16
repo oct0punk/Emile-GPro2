@@ -6,19 +6,13 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/ConvexShape.hpp"
 
-class Audio {
-public:
-	Audio();
-};
-
 class World {
 public:
 	
 	sf::RenderWindow* window = nullptr;;
 	std::vector<Entity*>	data;
 	sf::Color* clearColor;
-	Audio* audio = nullptr;
-
+	
 	int eCount = 0;
 
 	World(sf::RenderWindow* win) {

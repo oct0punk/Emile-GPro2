@@ -2,6 +2,7 @@
 #include"Tool.hpp"
 #include "SFML/Graphics/Texture.hpp"
 
+
 void World::SpawnEnemy(sf::Vector2f pos) {
 	using namespace sf;
 	ConvexShape* eShape = new ConvexShape(4);
@@ -107,7 +108,4 @@ void World::KeepEntityOnScreen(Entity* e) {
 	pPos.x = clamp(pPos.x, 10.0f, window->getSize().x - 10);
 	pPos.y = clamp(pPos.y, 10.0f, window->getSize().y - 10);
 	e->setPosition(pPos.x, pPos.y);
-}
-
-Audio::Audio() {
 }
