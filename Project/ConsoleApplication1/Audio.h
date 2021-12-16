@@ -2,31 +2,21 @@
 #include "SFML/Audio/Sound.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
 
-class Audio {
+extern class Audio {
 	sf::Sound sound;
 	sf::SoundBuffer buffer;
 
 private:
-	Audio() {
-		buffer.loadFromFile("res/blipSelect.wav");
-		sound.setBuffer(buffer);
-	}
-
+	Audio();
+	
 	static Audio* instance;
 
 
 public:
 
-	static Audio* GetInstance() {
-		if (!instance)
-			instance = new Audio();
-		return instance;
-	}
+	static Audio* GetInstance();
 
-	void Play() {
-		sound.play();
-	}
+	void Play();
 
 };
 
-Audio* Audio::instance = nullptr;
