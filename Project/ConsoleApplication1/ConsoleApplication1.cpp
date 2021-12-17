@@ -19,18 +19,9 @@
 
 using namespace sf;
 
-Entity EntityWall(int radius) {
-	CircleShape* wShape = new CircleShape(radius);
-	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
-	wShape->setFillColor(Color::Transparent);
-	wShape->setOutlineThickness(radius / 7);
-	wShape->setOutlineColor(Color::Cyan);
-	return Entity(EType::Wall, wShape);
-}
-
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Astro Neon");
+	RenderWindow window(VideoMode(1820, 950), "Astro Neon");
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 
@@ -40,10 +31,14 @@ int main()
 	Text text;
 	text.setFont(font);
 
-	CircleShape cursor(10);
+	CircleShape cursor(20);
 	cursor.setFillColor(Color::Red);
-	cursor.setOrigin(10, 10);
+	cursor.setOrigin(20, 20);
+	sf:Texture target;
+	target.loadFromFile("res/target.png");
+	cursor.setTexture(&target);
 
+	window.setMouseCursorVisible(false);
 
 #pragma region player	
 	float speed = 800.0f;
@@ -143,10 +138,10 @@ int main()
 				b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
 			}
 
-			cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 		}
-
 #pragma endregion
+		
+		cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 
 		
 
@@ -188,9 +183,9 @@ int main()
 
 		// RENDERING
 		world.draw(window);
-		ImGui::SFML::Render(window);
 		window.draw(text);
 		window.draw(cursor);
+		ImGui::SFML::Render(window);
 		window.display();
 		tExitFrame = getTimeStamp();
 	}
