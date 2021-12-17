@@ -22,6 +22,7 @@ public:
 
 	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
+	void SpawnObstacle(int radius);
 
 	void update(double dt);
 	void draw(sf::RenderWindow& win);

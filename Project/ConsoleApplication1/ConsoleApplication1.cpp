@@ -40,6 +40,10 @@ int main()
 	Text text;
 	text.setFont(font);
 
+	CircleShape cursor(10);
+	cursor.setFillColor(Color::Red);
+	cursor.setOrigin(10, 10);
+
 
 #pragma region player	
 	float speed = 800.0f;
@@ -72,9 +76,7 @@ int main()
 	world.data.push_back(&b);
 #pragma endregion
 
-	Entity* w = new Entity(EntityWall(100));
-	w->setPosition(500, 500);
-	world.data.push_back(w);
+	world.SpawnObstacle(100);
 
 	Game game(&world);
 	game.enemyCount = 5;
@@ -140,6 +142,8 @@ int main()
 			if (Mouse::isButtonPressed(Mouse::Left)) {
 				b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
 			}
+
+			cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 		}
 
 #pragma endregion
@@ -186,6 +190,7 @@ int main()
 		world.draw(window);
 		ImGui::SFML::Render(window);
 		window.draw(text);
+		window.draw(cursor);
 		window.display();
 		tExitFrame = getTimeStamp();
 	}

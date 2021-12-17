@@ -150,3 +150,14 @@ void World::SpawnEnemy(sf::Vector2f pos) {
 
 }
 
+void World::SpawnObstacle(int radius) {
+	sf::CircleShape* wShape = new sf::CircleShape(radius);
+	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
+	wShape->setFillColor(sf::Color::Transparent);
+	wShape->setOutlineThickness(radius / 7);
+	wShape->setOutlineColor(sf::Color::Cyan);
+	Entity* w = new Entity(EType::Wall, wShape);
+	w->setPosition(-radius, -radius);
+	data.push_back(w);
+}
+
