@@ -12,17 +12,25 @@
 #include "Entity.h"
 #include "World.h"
 #include "Game.h"
+#include "Audio.h"
 
 #include "imgui.h"
 #include "imgui-SFML.h"
 
 using namespace sf;
 
+Entity EntityWall(int radius) {
+	CircleShape* wShape = new CircleShape(radius);
+	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
+	wShape->setFillColor(Color::Transparent);
+	wShape->setOutlineThickness(radius / 7);
+	wShape->setOutlineColor(Color::Cyan);
+	return Entity(EType::Wall, wShape);
+}
 
 int main()
 {
-
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Asteroid");
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Astro Neon");
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 
@@ -32,7 +40,6 @@ int main()
 	Text text;
 	text.setFont(font);
 
-	sf::Image screen;
 
 #pragma region player	
 	float speed = 800.0f;
@@ -65,19 +72,14 @@ int main()
 	world.data.push_back(&b);
 #pragma endregion
 
-#pragma region Wall
-	int minRadius = 100;
-	int maxRadius = 300;
-	CircleShape* wShape = new CircleShape(minRadius + (rand() % (maxRadius - minRadius)));
-	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
-	Entity w(EType::Wall, wShape);
-	w.setPosition(400, 400);
-	world.PushEntity(&w, sf::Vector2f(100, 750));
-#pragma endregion
+	Entity* w = new Entity(EntityWall(100));
+	w->setPosition(500, 500);
+	world.data.push_back(w);
 
 	Game game(&world);
 	game.enemyCount = 5;
 
+	Audio::GetInstance();
 
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();

@@ -4,6 +4,7 @@
 #include "Audio.h"
 
 void Entity::update(double dt) {
+	timeSinceLevelStart += dt;
 	if (!visible) return;
 	if (cmds) applyCmdInterp(cmds, dt);
 
@@ -12,11 +13,27 @@ void Entity::update(double dt) {
 	move.y += dy * dt;
 	setPosition(move.x, move.y);
 
+	if (type == EType::Wall) {
+		// Change Radius
+		//sf::CircleShape* wShape = new sf::CircleShape(30 + sin(timeSinceLevelStart * .3f) * 100);
+		//wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
+		//wShape->setFillColor(sf::Color::Transparent);
+		//wShape->setOutlineThickness(10);
+		//wShape->setOutlineColor(sf::Color::Cyan);
+		//wShape->setPosition(spr->getPosition());
+		//spr = wShape;
+		Movement(dt * 5);
+	}
 }
 
 void Entity::draw(sf::RenderWindow& win) {
 	if (visible)
 		win.draw(*spr);
+}
+
+void Entity::Movement(double dt) {
+	dx = sin(timeSinceLevelStart * dt) * 600 * dt;
+	dy = cos(timeSinceLevelStart * .2f * dt) * 600 * dt;
 }
 
 Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {

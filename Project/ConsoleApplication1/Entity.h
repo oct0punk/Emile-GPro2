@@ -47,6 +47,8 @@ enum EType {
 
 
 class Entity {
+	double timeSinceLevelStart = 0.0;
+
 public:
 	sf::Shape* spr = nullptr;
 	sf::Vector2f lastGoodPos;
@@ -98,6 +100,8 @@ public:
 	}
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
+
+	virtual void Movement(double dt);
 	
 
 protected:

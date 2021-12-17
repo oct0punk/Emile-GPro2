@@ -19,40 +19,14 @@ public:
 		window = win;
 	}
 
-	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0)) {
-		bool inserted = false;
-		for (auto entity : data) {
-			if (entity->type == e->type)
-				if (!entity->visible) {
-					inserted = true;
-					entity->visible = true;
-					entity->setPosition(pos.x, pos.y);
-					break;
-				}
-		}
-		if (!inserted) data.push_back(e);
 
-		
-
-		if (e->type == EType::Bot) {
-			eCount++;
-			Enemy* enemy = (Enemy*)e;
-			for (auto b : data) {
-				if (b->type == Player) {
-					enemy->p = (PlayerPad*)b;
-					break;
-				}
-			}
-		}
-		e->setPosition(pos.x, pos.y);
-	}
-
+	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
 
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 
-	void KeepEntityOnScreen(Entity* e);
+	void KeepEntityOnScreen(Entity* e, float value = 10.0f);
 };
 
 
