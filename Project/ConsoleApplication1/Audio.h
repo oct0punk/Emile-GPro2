@@ -2,7 +2,7 @@
 #include "SFML/Audio/Sound.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
 
-extern class Audio {
+class Audio {
 	sf::Sound sound;
 	sf::SoundBuffer buffer;
 

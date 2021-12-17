@@ -1,0 +1,57 @@
+#include "Game.h"
+
+Game::Game(World* w) {
+	world = w;
+}
+
+void Game::update(double dt) {
+	switch (state) {
+	case Playing:
+		world->update(dt);
+		if (enemyCount > 0) {
+			if (time > 0) {
+				time -= dt;
+			}
+			else {
+				time = 0.3f + static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				world->SpawnEnemy(sf::Vector2f(rand() % 1000, rand() % 100));
+				enemyCount--;
+			}
+
+		}
+		else {
+			if (world->eCount < 1)
+				NextWave();
+		}
+		break;
+	case MainMenu:
+		break;
+	case Pause:
+		break;
+	default:
+		break;
+	}
+}
+
+void Game::draw(sf::RenderWindow& win) {
+	switch (state)
+	{
+	case Playing:
+		world->draw(win);
+		break;
+	case MainMenu:
+		break;
+	case Pause:
+		break;
+	default:
+		break;
+	}
+}
+
+
+void Game::NextWave() {
+	wave++;
+	enemyCount = wave * 3;
+}
+
+Game* Game::Instance = nullptr;

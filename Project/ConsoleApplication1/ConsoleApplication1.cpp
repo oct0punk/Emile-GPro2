@@ -73,8 +73,7 @@ int main()
 
 	world.SpawnObstacle(100);
 
-	Game game(&world);
-	game.enemyCount = 5;
+	Game::create(&world);
 
 	Audio::GetInstance();
 
@@ -139,13 +138,13 @@ int main()
 			}
 
 		}
-#pragma endregion
+		#pragma endregion
 		
 		cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 
 		
 
-		game.update(dt);
+		Game::GetInstance()->update(dt);
 		text.setString(to_string(world.eCount));
 
 		// IMGUI
@@ -182,7 +181,7 @@ int main()
 
 
 		// RENDERING
-		world.draw(window);
+		Game::GetInstance()->draw(window);
 		window.draw(text);
 		window.draw(cursor);
 		ImGui::SFML::Render(window);
