@@ -1,53 +1,52 @@
-﻿  ConsoleApplication1.cpp
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Tool.hpp(74,23): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+﻿  Game.cpp
 C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.h(86,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(109,25): warning C4244: '-=' : conversion de 'double' en 'T', perte possible de données
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(15,15): warning C4244: '-=' : conversion de 'double' en 'float', perte possible de données
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(19,58): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
           with
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(113,25): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(19,43): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
           with
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(117,25): warning C4244: '-=' : conversion de 'double' en 'T', perte possible de données
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(46,73): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
           with
+          [
+              T=unsigned int
+          ]
+          and
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(121,25): warning C4244: '+=' : conversion de 'double' en 'T', perte possible de données
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(46,52): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
           with
+          [
+              T=unsigned int
+          ]
+          and
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(143,86): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(47,73): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
           with
           [
-              T=int
+              T=unsigned int
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(143,52): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
-          with
-          [
-              T=int
-          ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(174,33): warning C4244: '=' : conversion de 'float' en 'sf::Uint8', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(175,33): warning C4244: '=' : conversion de 'float' en 'sf::Uint8', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(176,33): warning C4244: '=' : conversion de 'float' en 'sf::Uint8', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(177,33): warning C4244: '=' : conversion de 'float' en 'sf::Uint8', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\ConsoleApplication1.cpp(37,4): warning C4102: 'sf' : étiquette non référencée
-  Game.cpp
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Entity.h(86,26): warning C4244: 'return' : conversion de 'float' en 'int', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(13,15): warning C4244: '-=' : conversion de 'double' en 'float', perte possible de données
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(17,58): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
-          with
+          and
           [
               T=float
           ]
-C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(17,43): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(47,52): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
           with
+          [
+              T=unsigned int
+          ]
+          and
           [
               T=float
           ]
-  Génération de code en cours...
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(84,85): warning C4244: 'argument' : conversion de 'unsigned int' en 'float', perte possible de données
+C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\Game.cpp(84,57): warning C4244: 'argument' : conversion de 'size_t' en 'float', perte possible de données
   ConsoleApplication1.vcxproj -> C:\WorkSpace\Emile-GPro2\Project\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe

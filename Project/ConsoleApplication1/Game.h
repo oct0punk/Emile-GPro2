@@ -11,7 +11,7 @@ class Game {
 private:
 	World* world = nullptr;
 	static Game* Instance;
-	GameState state = GameState::Playing;
+	GameState state = GameState::MainMenu;
 	
 	int wave = 0;
 	float time = 0.0f;
@@ -29,19 +29,9 @@ public:
 	Game(World* w);
 
 	void update(double dt);
-	void draw(sf::RenderWindow& win) {
-		switch (state)
-		{
-		case Playing:
-			world->draw(win);
-			break;
-		case MainMenu:
-			break;
-		case Pause:
-			break;
-		default:
-			break;
-		}
-	}
+	void draw(sf::RenderWindow& win);
 	void NextWave();
 };
+
+
+void Button(sf::RenderWindow& win, sf::String str, sf::Vector2f position, sf::Color buttonColor = sf::Color::White);

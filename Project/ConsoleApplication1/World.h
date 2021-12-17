@@ -25,6 +25,9 @@ public:
 	void SpawnObstacle(int radius);
 
 	void update(double dt);
+	void clear(sf::RenderWindow& win) {
+		win.clear(*clearColor);
+	}
 	void draw(sf::RenderWindow& win);
 
 	void KeepEntityOnScreen(Entity* e, float value = 10.0f);
