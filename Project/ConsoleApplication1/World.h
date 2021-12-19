@@ -25,6 +25,7 @@ public:
 		rect->setOrigin(150, 50);
 		rect->setFillColor(sf::Color(155, 25, 0));
 
+		// Create Buttons
 		sf::Font* font = new sf::Font();
 		font->loadFromFile("res/arial.ttf");
 		sf::Text* text = new sf::Text("Play", *font);

@@ -183,7 +183,7 @@ class Button : public Entity {
 public:
 	sf::Text text;
 	ButtonState state = ButtonState::Normal;
-	void (*action)(void);
+	void (*action)(void);		// The button's function
 
 	Button(sf::Shape* _spr, sf::Text* txt);
 
@@ -202,6 +202,8 @@ public:
 			spr->setFillColor(selectedColor);
 			break;
 		case Clicked:
+			if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))	// Use button function
+				action();
 			spr->setFillColor(clickedColor);
 			break;
 		default:
