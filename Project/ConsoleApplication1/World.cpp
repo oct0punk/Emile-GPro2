@@ -82,13 +82,14 @@ void World::updateGame(double dt) {
 					}
 				}
 			}
-
+			
 			if (p->visible)
 				KeepEntityOnScreen(e);
 
+			// Contact with player
 			if (Magnitude(e->getPosition() - p->getPosition()) < 150)
-				if (e->visible)
-					p->visible = false;
+				if (e->visible && p->visible)
+					p->ChangeHealth(-1);
 			break;
 		}
 		}

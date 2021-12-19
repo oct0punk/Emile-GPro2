@@ -142,6 +142,8 @@ public:
 
 class PlayerPad : public Entity {
 public:
+	bool invincible = false;
+	float invincibleTime = 1.0f;
 
 	PlayerPad(sf::Shape* _spr) : Entity(EType::Player, _spr) {
 		
@@ -150,7 +152,11 @@ public:
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 	virtual bool ChangeHealth(int amount) {
+		if (invincible) return false;
 		health += amount;
+		invincible = true;
+		invincibleTime = 1.0f;
+		spr->setFillColor(sf::Color::Red);
 		if (health < 0) {
 			visible = false;
 			return true;
@@ -177,6 +183,7 @@ public :
 	PlayerPad* LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor);
 	void SlowDown(int speed);
 
+	virtual bool ChangeHealth(int amount);
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 };
@@ -189,6 +196,7 @@ enum ButtonState {
 };
 
 
+// Button methods
 void PlayMode();
 
 class Button : public Entity {

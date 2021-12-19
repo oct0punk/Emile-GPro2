@@ -73,6 +73,13 @@ Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 
 
 void PlayerPad::update(double dt) {
+	if (invincible) {
+		invincibleTime -= dt;
+		if (invincibleTime <= 0) {
+			invincible = false;
+			spr->setFillColor(sf::Color::White);
+		}
+	}
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {
@@ -176,6 +183,15 @@ bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2) {
 
 void PlayMode() {
 	Game::GetInstance()->state = GameState::Playing;
+}
+
+bool Enemy::ChangeHealth(int amount) {
+	health += amount;
+	if (health < 0) {
+		visible = false;
+		return true;
+	}
+	return false;
 }
 
 void Enemy::update(double dt)
