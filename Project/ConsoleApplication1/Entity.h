@@ -5,6 +5,7 @@
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Window/Mouse.hpp"
 
 enum CmdType {
 	Move,
@@ -165,20 +166,29 @@ public :
 };
 
 class Button : public Entity {
+	static sf::Color baseColor;
+	static sf::Color selectedColor;
+	static sf::Color clickedColor;
 public:
 	sf::Text text;
+	bool selected = false;
+	bool clicked = false;
 
-	Button(sf::Shape* _spr, sf::Text txt) : Entity(EType::FX, _spr) {
-		text = txt;
-		spr->setOrigin(_spr->getGlobalBounds().width / 2, _spr->getGlobalBounds().height / 2);
-		text.setOrigin(txt.getCharacterSize() * txt.getString().getSize() / 4, 0);
-	}
+
+	Button(sf::Shape* _spr, sf::Text* txt);
 
 	virtual void setPosition(float x, float y) {
 		spr->setPosition(sf::Vector2f(x, y));
 		text.setPosition(x, y);
 	}
 
-	virtual void update(double dt) {}
+	virtual void update(double dt) {
+		if (clicked)
+			spr->setFillColor(clickedColor);
+		else if (selected)
+			spr->setFillColor(selectedColor);
+		else
+			spr->setFillColor(baseColor);
+	}
 	virtual void draw(sf::RenderWindow& win);
 };

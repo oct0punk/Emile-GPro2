@@ -40,12 +40,6 @@ int main()
 
 	window.setMouseCursorVisible(false);
 
-	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(300, 100));
-	rect->setFillColor(Color::Green);
-	sf::Text txt("Play", font);
-	Button button(rect, txt);
-	button.setPosition(450, 666);
-	world.data.push_back(&button);
 
 #pragma region player	
 	float speed = 800.0f;
@@ -66,7 +60,7 @@ int main()
 
 	PlayerPad p(pShape);
 	p.setPosition(950, 400);
-	world.data.push_back(&p);
+	world.dataPlay.push_back(&p);
 #pragma endregion
 
 #pragma region Bullet
@@ -75,7 +69,7 @@ int main()
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 	Color bc = Color::Blue;
 	Laser b(bShape, bc);
-	world.data.push_back(&b);
+	world.dataPlay.push_back(&b);
 #pragma endregion
 
 	world.SpawnObstacle(100);

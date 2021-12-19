@@ -6,14 +6,14 @@ void World::update(double dt) {
 
 	bool coll = false;
 	PlayerPad* p = nullptr;
-	for (auto e : data) {
+	for (auto e : dataPlay) {
 		if (e->type == Player) {
 			p = (PlayerPad*)e;
 			KeepEntityOnScreen(p);
 			break;
 		}
 	}
-	for (auto e : data) {
+	for (auto e : dataPlay) {
 		e->update(dt);
 		switch (e->type) {
 		case EType::Wall:
@@ -40,7 +40,7 @@ void World::update(double dt) {
 				p->setPosition(e->getPosition().x + moveP.x, e->getPosition().y + moveP.y);
 			}
 			// Contact with ball
-			for (auto b : data) { // Rebound
+			for (auto b : dataPlay) { // Rebound
 				if (b->type == Bullet) {
 					Laser* l = (Laser*)b;
 					for (int i = 1; i <= l->px.size(); i++) {
@@ -63,7 +63,7 @@ void World::update(double dt) {
 		case EType::Bot:
 			Enemy* enemy = (Enemy*)e;
 			// Collision with lasers
-			for (auto b : data) {
+			for (auto b : dataPlay) {
 				if (b->type == EType::Bullet) {
 					Laser* l = (Laser*)b;
 					for (int i = 0; i < l->px.size(); i++) {
@@ -92,7 +92,7 @@ void World::update(double dt) {
 
 void World::draw(sf::RenderWindow& window) {
 	window.clear(*clearColor);
-	for (auto e : data) {
+	for (auto e : dataPlay) {
 		e->draw(window);
 	}
 }
@@ -109,7 +109,7 @@ void World::KeepEntityOnScreen(Entity* e, float value) {
 
 void World::PushEntity(Entity* e, sf::Vector2f pos) {
 	bool inserted = false;
-	for (auto entity : data) {
+	for (auto entity : dataPlay) {
 		if (entity->type == e->type)
 			if (!entity->visible) {
 				inserted = true;
@@ -118,14 +118,14 @@ void World::PushEntity(Entity* e, sf::Vector2f pos) {
 				break;
 			}
 	}
-	if (!inserted) data.push_back(e);
+	if (!inserted) dataPlay.push_back(e);
 
 
 
 	if (e->type == EType::Bot) {
 		eCount++;
 		Enemy* enemy = (Enemy*)e;
-		for (auto b : data) {
+		for (auto b : dataPlay) {
 			if (b->type == Player) {
 				enemy->p = (PlayerPad*)b;
 				break;
@@ -158,6 +158,6 @@ void World::SpawnObstacle(int radius) {
 	wShape->setOutlineColor(sf::Color::Cyan);
 	Entity* w = new Entity(EType::Wall, wShape);
 	w->setPosition(-radius, -radius);
-	data.push_back(w);
+	dataPlay.push_back(w);
 }
 

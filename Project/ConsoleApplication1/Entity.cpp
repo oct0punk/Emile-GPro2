@@ -235,7 +235,15 @@ void Enemy::draw(sf::RenderWindow& win)
 	Entity::draw(win);
 }
 
+Button::Button(sf::Shape* _spr, sf::Text* txt) : Entity(EType::FX, _spr) {
+	text = *txt;
+}
+
 void Button::draw(sf::RenderWindow& win) {
 	Entity::draw(win);
 	win.draw(text);
 }
+
+sf::Color Button::baseColor = sf::Color(sf::Color::Blue);
+sf::Color Button::selectedColor = sf::Color(sf::Color::Cyan);
+sf::Color Button::clickedColor = sf::Color(sf::Color(150, 50, 0));
