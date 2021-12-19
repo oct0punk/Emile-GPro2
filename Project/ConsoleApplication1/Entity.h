@@ -51,6 +51,7 @@ enum EType {
 
 class Entity {
 	double timeSinceLevelStart = 0.0;
+	int health = 1;
 
 public:
 	sf::Shape* spr = nullptr;
@@ -148,14 +149,29 @@ public:
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
+	virtual bool ChangeHealth(int amount) {
+		health += amount;
+		if (health < 0) {
+			visible = false;
+			return true;
+		}
+		return false;
+	}
+
+	int health = 3;
+protected :
 };
 
 
-class Enemy : public Entity {
+class Enemy : public PlayerPad {
 public :
 	PlayerPad* p = nullptr;
+	bool invincible = false;
+	float invincibleTime = 1.0f;
 
-	Enemy(sf::Shape* _spr) : Entity(EType::Bot, _spr) {
+	Enemy(sf::Shape* _spr) : PlayerPad(_spr) {
+		type = EType::Bot;
+		health = 10;
 	}
 
 	PlayerPad* LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor);

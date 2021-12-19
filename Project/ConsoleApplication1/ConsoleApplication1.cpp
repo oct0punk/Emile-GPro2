@@ -165,7 +165,7 @@ int main()
 			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 			b.spr = bShape;
 		}
-		DragFloat("Reload time", &b.reloadTime, .05f, 0.0f, 1.0f);
+		DragFloat("Reload time", &b.reloadTime, .01f, 0.01f, .5f);
 		Separator();
 
 		//background color

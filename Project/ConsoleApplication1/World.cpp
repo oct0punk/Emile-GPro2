@@ -74,12 +74,9 @@ void World::updateGame(double dt) {
 						if (!l->alive[i]) break;
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
 							if (e->visible) {
-								eCount--;
-								e->visible = false;
+								if (enemy->ChangeHealth(-1))
+									eCount--;
 								l->alive[i] = false;
-								if (eCount < 0) {
-
-								}
 							}
 						}
 					}
@@ -117,14 +114,17 @@ void World::KeepEntityOnScreen(Entity* e, float value) {
 
 void World::PushEntity(Entity* e, sf::Vector2f pos) {
 	bool inserted = false;
+	int idx = 0;
 	for (auto entity : dataPlay) {
-		if (entity->type == e->type)
+		if (entity->type == e->type) {
 			if (!entity->visible) {
 				inserted = true;
 				entity->visible = true;
 				entity->setPosition(pos.x, pos.y);
 				break;
 			}
+		}
+		idx++;
 	}
 	if (!inserted) dataPlay.push_back(e);
 
@@ -132,7 +132,9 @@ void World::PushEntity(Entity* e, sf::Vector2f pos) {
 
 	if (e->type == EType::Bot) {
 		eCount++;
-		Enemy* enemy = (Enemy*)e;
+		Enemy* enemy = (Enemy*)dataPlay[idx];
+		if (inserted) 
+			enemy->ChangeHealth(10);
 		for (auto b : dataPlay) {
 			if (b->type == Player) {
 				enemy->p = (PlayerPad*)b;
