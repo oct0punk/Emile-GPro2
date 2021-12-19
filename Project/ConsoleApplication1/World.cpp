@@ -1,6 +1,7 @@
 #include "World.h"
 #include"Tool.hpp"
 #include "SFML/Graphics/Texture.hpp"
+#include "Game.h"
 
 void World::updateGame(double dt) {
 
@@ -46,17 +47,17 @@ void World::updateGame(double dt) {
 					for (int i = 1; i <= l->px.size(); i++) {
 						sf::Vector2f bPos = sf::Vector2f(l->px[i - 1], l->py[i - 1]);
 						float distance = Magnitude(e->getPosition().x, e->getPosition().y, bPos.x, bPos.y);
-						if (distance < e->spr->getGlobalBounds().width / 3)		// if rebound failed
+						if (distance < e->spr->getGlobalBounds().width / 3)		
 						{
 							l->alive[i - 1] = false;
 							continue;
-						}
-
+						}   // if rebound failed
 						if (distance < e->spr->getGlobalBounds().width / 2) {
 							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - e->getPosition());
 							l->px[i - 1] -= l->dx[i - 1] * dt * l->speed * 1.2f;			// Move the bullet to previous good position
 							l->py[i - 1] -= l->dy[i - 1] * dt * l->speed * 1.2f;
 							l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new direction to bullet							
+							l->power[i - 1] = l->power[i - 1] * 2;
 						}
 					}
 				}
@@ -74,7 +75,7 @@ void World::updateGame(double dt) {
 						if (!l->alive[i]) break;
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
 							if (e->visible) {
-								if (enemy->ChangeHealth(-1))
+								if (enemy->ChangeHealth(-l->power[i]))
 									eCount--;
 								l->alive[i] = false;
 							}
@@ -83,8 +84,8 @@ void World::updateGame(double dt) {
 				}
 			}
 			
-			if (p->visible)
-				KeepEntityOnScreen(e);
+			//if (p->visible)
+			//	KeepEntityOnScreen(e);
 
 			// Contact with player
 			if (Magnitude(e->getPosition() - p->getPosition()) < 150)
@@ -134,8 +135,7 @@ void World::PushEntity(Entity* e, sf::Vector2f pos) {
 	if (e->type == EType::Bot) {
 		eCount++;
 		Enemy* enemy = (Enemy*)dataPlay[idx];
-		if (inserted) 
-			enemy->ChangeHealth(10);
+		enemy->SetHealth(Game::GetInstance()->EnemyHealth());
 		for (auto b : dataPlay) {
 			if (b->type == Player) {
 				enemy->p = (PlayerPad*)b;

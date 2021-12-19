@@ -14,9 +14,9 @@ private:
 	
 	int wave = 0;
 	float time = 0.0f;
-	int enemyCount = 5;
 
 public:
+	int enemyCount = 5;
 	GameState state = GameState::Menu;
 
 	static void create(World* w) {
@@ -32,7 +32,8 @@ public:
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 	void NextWave();
+	int EnemyHealth() {
+		return wave * 3;
+	}
 };
 
-//
-//void Button(sf::RenderWindow& win, sf::String str, sf::Vector2f position, sf::Color buttonColor = sf::Color::White);

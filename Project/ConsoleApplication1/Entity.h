@@ -113,7 +113,9 @@ protected:
 	Cmd* cmds = nullptr;
 	Cmd* applyCmdInterp(Cmd* cmd, double dt);
 };
+
 bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2);
+
 
 class Laser : public Entity {	
 	float reloading = 0.0f;
@@ -129,6 +131,7 @@ public:
 	std::vector<float>	dy;
 
 	std::vector<bool>	alive;
+	std::vector<int>	power;
 
 	Laser(sf::Shape* _spr, sf::Color color = sf::Color::White) : Entity(EType::Bullet, _spr) {
 		//spr->setFillColor(color);
@@ -162,6 +165,9 @@ public:
 			return true;
 		}
 		return false;
+	}
+	void SetHealth(int value) {
+		health = value;
 	}
 
 	int health = 3;

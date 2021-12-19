@@ -24,13 +24,19 @@ int main()
 	RenderWindow window(VideoMode(1820, 950), "Astro Neon");
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
-
 	World world(&window);
+	Game::create(&world);
+	Audio::GetInstance();
+	world.clearColor = new Color(20, 20, 20, 20);
+
+	double tStart = getTimeStamp();
+	double tEnterFrame = getTimeStamp();
+	double tExitFrame = getTimeStamp();
+
 	Font font;
 	font.loadFromFile("res/arial.ttf");
 	Text text;
 	text.setFont(font);
-
 
 	// Target cursor
 	CircleShape cursor(20);
@@ -40,7 +46,6 @@ int main()
 	target.loadFromFile("res/target.png");
 	cursor.setTexture(&target);
 	window.setMouseCursorVisible(false);
-
 
 
 #pragma region player	
@@ -75,17 +80,10 @@ int main()
 #pragma endregion
 
 	world.SpawnObstacle(100);
-	Game::create(&world);
-	Audio::GetInstance();
 
-	double tStart = getTimeStamp();
-	double tEnterFrame = getTimeStamp();
-	double tExitFrame = getTimeStamp();
 
 
 	ImGui::SFML::Init(window);
-	sf::Clock deltaClock;
-	world.clearColor = new Color(20, 20, 20, 20);
 
 
 	while (window.isOpen()) {
@@ -144,9 +142,8 @@ int main()
 		cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 
 		
-
 		Game::GetInstance()->update(dt);
-		text.setString(to_string(world.eCount));
+		text.setString(to_string(Game::GetInstance()->EnemyHealth()));
 
 		// IMGUI
 		{	using namespace ImGui;

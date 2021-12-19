@@ -16,7 +16,7 @@ void Game::update(double dt) {
 			}
 			else {
 				time = 0.3f + static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				world->SpawnEnemy(sf::Vector2f(rand() % 1000, rand() % 100));
+				world->SpawnEnemy(sf::Vector2f(rand() % 1000, - 500 -rand() % 100));
 				enemyCount--;
 			}
 
@@ -58,6 +58,15 @@ void Game::draw(sf::RenderWindow& win) {
 void Game::NextWave() {
 	wave++;
 	enemyCount = wave * 3;
+	if (wave % 3 == 0)
+	{
+		for (auto p : world->dataPlay)
+			if (p->type == EType::Player)
+			{
+				PlayerPad* pad = (PlayerPad*)p;
+				pad->ChangeHealth(1);
+			}
+	}
 }
 
 Game* Game::Instance = nullptr;

@@ -105,6 +105,7 @@ void Laser::create(float _px, float _py, float _dx, float _dy) {
 			this->dx[i] = dx;
 			this->dy[i] = dy;
 			alive[i] = true;
+			power[i] = 1;
 			return;
 		}
 	}
@@ -113,6 +114,7 @@ void Laser::create(float _px, float _py, float _dx, float _dy) {
 	this->dx.push_back(dx);
 	this->dy.push_back(dy);
 	alive.push_back(true);
+	power.push_back(1);
 }
 
 void Laser::ChangeDirection(int idx, float x, float y) {
@@ -135,6 +137,16 @@ void Laser::update(double dt) {
 				(py[i] > 3000) || (py[i] < -100)
 				) {
 				alive[i] = false;
+			}
+			if (px[i] < 0 || px[i] > 1820) {
+				px[i] -= dx[i] * dt;
+				dx[i] *= -1.4f;
+				power[i] *= 2;
+			}
+			if (py[i] < 0 || py[i] > 950) {
+				py[i] -= dy[i] * dt;
+				dy[i] *= -1.4f;
+				power[i] *= 2;
 			}
 		}
 	}
