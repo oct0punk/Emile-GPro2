@@ -31,14 +31,16 @@ int main()
 	Text text;
 	text.setFont(font);
 
+
+	// Target cursor
 	CircleShape cursor(20);
 	cursor.setFillColor(Color::Red);
 	cursor.setOrigin(20, 20);
 	sf:Texture target;
 	target.loadFromFile("res/target.png");
 	cursor.setTexture(&target);
-
 	window.setMouseCursorVisible(false);
+
 
 
 #pragma region player	
@@ -73,9 +75,7 @@ int main()
 #pragma endregion
 
 	world.SpawnObstacle(100);
-
 	Game::create(&world);
-
 	Audio::GetInstance();
 
 	double tStart = getTimeStamp();

@@ -9,7 +9,7 @@ Game::Game(World* w) {
 void Game::update(double dt) {
 	switch (state) {
 	case Playing:
-		world->update(dt);
+		world->updateGame(dt);
 		if (enemyCount > 0) {
 			if (time > 0) {
 				time -= dt;
@@ -26,7 +26,8 @@ void Game::update(double dt) {
 				NextWave();
 		}
 		break;
-	case MainMenu:
+	case Menu:
+		world->updateMenu(dt);
 		break;
 	case Pause:
 		break;
@@ -39,13 +40,14 @@ void Game::draw(sf::RenderWindow& win) {
 	switch (state)
 	{
 	case Playing:
-		world->draw(win);
+		world->drawGame(win);
 		break;
-	case MainMenu:
+	case Menu:
 		world->clear(win);
+		world->drawMenu(win);
 		break;
 	case Pause:
-		world->draw(win);
+		world->drawGame(win);
 		break;
 	default:
 		break;

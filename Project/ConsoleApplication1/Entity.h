@@ -45,7 +45,7 @@ enum EType {
 	Bot,
 	Wall,
 	Bullet,
-	FX,
+	UI,
 };
 
 
@@ -165,15 +165,25 @@ public :
 	virtual void draw(sf::RenderWindow& win);
 };
 
+
+enum ButtonState {
+	Normal,
+	Selected,
+	Clicked,
+};
+
+
+void PlayMode();
+
 class Button : public Entity {
 	static sf::Color baseColor;
 	static sf::Color selectedColor;
 	static sf::Color clickedColor;
+
 public:
 	sf::Text text;
-	bool selected = false;
-	bool clicked = false;
-
+	ButtonState state = ButtonState::Normal;
+	void (*action)(void);
 
 	Button(sf::Shape* _spr, sf::Text* txt);
 
@@ -183,12 +193,22 @@ public:
 	}
 
 	virtual void update(double dt) {
-		if (clicked)
-			spr->setFillColor(clickedColor);
-		else if (selected)
-			spr->setFillColor(selectedColor);
-		else
+		switch (state)
+		{
+		case Normal:
 			spr->setFillColor(baseColor);
+			break;
+		case Selected:
+			spr->setFillColor(selectedColor);
+			break;
+		case Clicked:
+			spr->setFillColor(clickedColor);
+			break;
+		default:
+			spr->setFillColor(baseColor);
+			break;
+		}
 	}
 	virtual void draw(sf::RenderWindow& win);
+
 };

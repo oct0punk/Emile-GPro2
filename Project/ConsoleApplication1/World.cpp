@@ -2,7 +2,7 @@
 #include"Tool.hpp"
 #include "SFML/Graphics/Texture.hpp"
 
-void World::update(double dt) {
+void World::updateGame(double dt) {
 
 	bool coll = false;
 	PlayerPad* p = nullptr;
@@ -57,10 +57,14 @@ void World::update(double dt) {
 							l->px[i - 1] -= l->dx[i - 1] * dt * l->speed * 1.2f;			// Move the bullet to previous good position
 							l->py[i - 1] -= l->dy[i - 1] * dt * l->speed * 1.2f;
 							l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new direction to bullet							
-		}	}	}	}	
+						}
+					}
+				}
+			}
+			break;
 		}
-		break;
 		case EType::Bot:
+		{
 			Enemy* enemy = (Enemy*)e;
 			// Collision with lasers
 			for (auto b : dataPlay) {
@@ -77,7 +81,10 @@ void World::update(double dt) {
 
 								}
 							}
-			}	}	}	}			
+						}
+					}
+				}
+			}
 
 			if (p->visible)
 				KeepEntityOnScreen(e);
@@ -87,10 +94,11 @@ void World::update(double dt) {
 					p->visible = false;
 			break;
 		}
+		}
 	}
 }
 
-void World::draw(sf::RenderWindow& window) {
+void World::drawGame(sf::RenderWindow& window) {
 	window.clear(*clearColor);
 	for (auto e : dataPlay) {
 		e->draw(window);

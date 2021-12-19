@@ -12,8 +12,8 @@ public:
 	
 	sf::RenderWindow* window = nullptr;;
 	std::vector<Entity*>	dataPlay;
-	std::vector<Entity*>	dataPause;
-	std::vector<Entity*>	dataMenu;
+	std::vector<Button*>	dataPause;
+	std::vector<Button*>	dataMenu;
 	sf::Color* clearColor;
 	
 	int eCount = 0;
@@ -30,7 +30,8 @@ public:
 		sf::Text* text = new sf::Text("Play", *font);
 		Button* button = new Button(rect, text);
 		button->setPosition(450, 666);
-		dataPlay.push_back(button);
+		button->action = PlayMode;
+		dataMenu.push_back(button);
 
 	}
 
@@ -39,11 +40,32 @@ public:
 	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnObstacle(int radius);
 
-	void update(double dt);
+	void updateGame(double dt);
+	void updateMenu(double dt) {
+		for (auto e : dataMenu) {
+			e->update(dt);
+
+			sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+			if (e->spr->getGlobalBounds().contains(mPos))
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+					e->state = ButtonState::Clicked;
+				else
+					e->state = ButtonState::Selected;
+			else
+				e->state = ButtonState::Normal;
+		}
+	}
+	
+	
 	void clear(sf::RenderWindow& win) {
 		win.clear(*clearColor);
 	}
-	void draw(sf::RenderWindow& win);
+	void drawGame(sf::RenderWindow& win);
+	void drawMenu(sf::RenderWindow& win) {
+		for (auto e : dataMenu) {
+			e->draw(win);
+		}
+	}
 
 	void KeepEntityOnScreen(Entity* e, float value = 10.0f);
 };

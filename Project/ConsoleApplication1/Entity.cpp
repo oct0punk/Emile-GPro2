@@ -1,6 +1,6 @@
 #include "Entity.h"
 #include "Tool.hpp"
-#include "World.h"
+#include "Game.h"
 #include "Audio.h"
 
 void Entity::update(double dt) {
@@ -174,6 +174,10 @@ bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2) {
 	return false;
 }
 
+void PlayMode() {
+	Game::GetInstance()->state = GameState::Playing;
+}
+
 void Enemy::update(double dt)
 {
 	Entity::update(dt);
@@ -235,13 +239,15 @@ void Enemy::draw(sf::RenderWindow& win)
 	Entity::draw(win);
 }
 
-Button::Button(sf::Shape* _spr, sf::Text* txt) : Entity(EType::FX, _spr) {
+Button::Button(sf::Shape* _spr, sf::Text* txt) : Entity(EType::UI, _spr) {
 	text = *txt;
 }
 
 void Button::draw(sf::RenderWindow& win) {
 	Entity::draw(win);
 	win.draw(text);
+
+	
 }
 
 sf::Color Button::baseColor = sf::Color(sf::Color::Blue);
