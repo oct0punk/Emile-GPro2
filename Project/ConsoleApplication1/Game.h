@@ -11,7 +11,7 @@ class Game {
 private:
 	World* world = nullptr;
 	static Game* Instance;
-	GameState state = GameState::MainMenu;
+	GameState state = GameState::Playing;
 	
 	int wave = 0;
 	float time = 0.0f;
@@ -33,5 +33,5 @@ public:
 	void NextWave();
 };
 
-
-void Button(sf::RenderWindow& win, sf::String str, sf::Vector2f position, sf::Color buttonColor = sf::Color::White);
+//
+//void Button(sf::RenderWindow& win, sf::String str, sf::Vector2f position, sf::Color buttonColor = sf::Color::White);

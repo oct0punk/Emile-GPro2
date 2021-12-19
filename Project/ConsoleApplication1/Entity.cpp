@@ -234,3 +234,8 @@ void Enemy::draw(sf::RenderWindow& win)
 {
 	Entity::draw(win);
 }
+
+void Button::draw(sf::RenderWindow& win) {
+	Entity::draw(win);
+	win.draw(text);
+}

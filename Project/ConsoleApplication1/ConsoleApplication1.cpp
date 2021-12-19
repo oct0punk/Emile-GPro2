@@ -40,6 +40,13 @@ int main()
 
 	window.setMouseCursorVisible(false);
 
+	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(300, 100));
+	rect->setFillColor(Color::Green);
+	sf::Text txt("Play", font);
+	Button button(rect, txt);
+	button.setPosition(450, 666);
+	world.data.push_back(&button);
+
 #pragma region player	
 	float speed = 800.0f;
 	ConvexShape* pShape = new ConvexShape(11);

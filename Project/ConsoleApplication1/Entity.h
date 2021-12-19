@@ -2,6 +2,8 @@
 #include "SFML/Graphics/Shape.hpp"
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/Rect.hpp"
+#include "SFML/Graphics/Font.hpp"
+#include "SFML/Graphics/Text.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 
 enum CmdType {
@@ -76,7 +78,7 @@ public:
 	sf::Vector2f getPosition() {
 		return spr->getPosition();
 	}
-	void setPosition(float x, float y) {
+	virtual void setPosition(float x, float y) {
 		spr->setPosition(sf::Vector2f(x, y));
 	}
 	void setRotation(float angle) {
@@ -159,5 +161,24 @@ public :
 	void SlowDown(int speed);
 
 	virtual void update(double dt);
+	virtual void draw(sf::RenderWindow& win);
+};
+
+class Button : public Entity {
+public:
+	sf::Text text;
+
+	Button(sf::Shape* _spr, sf::Text txt) : Entity(EType::FX, _spr) {
+		text = txt;
+		spr->setOrigin(_spr->getGlobalBounds().width / 2, _spr->getGlobalBounds().height / 2);
+		text.setOrigin(txt.getCharacterSize() * txt.getString().getSize() / 4, 0);
+	}
+
+	virtual void setPosition(float x, float y) {
+		spr->setPosition(sf::Vector2f(x, y));
+		text.setPosition(x, y);
+	}
+
+	virtual void update(double dt) {}
 	virtual void draw(sf::RenderWindow& win);
 };
