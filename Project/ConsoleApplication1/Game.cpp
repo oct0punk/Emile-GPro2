@@ -30,8 +30,10 @@ void Game::update(double dt) {
 		world->updateMenu(dt);
 		break;
 	case Pause:
-		world->updatePause();
+		world->updatePause(dt);
 		break;
+	case GameOver:
+		world->updateGameOver(dt);
 	default:
 		break;
 	}
@@ -44,11 +46,13 @@ void Game::draw(sf::RenderWindow& win) {
 		world->drawGame(win);
 		break;
 	case Menu:
-		world->clear(win);
 		world->drawMenu(win);
 		break;
 	case Pause:
 		world->drawGame(win);
+		break;
+	case GameOver:
+		world->drawGameOver(win);
 		break;
 	default:
 		break;

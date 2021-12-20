@@ -14,6 +14,7 @@ public:
 	std::vector<Entity*>	dataPlay;
 	std::vector<Button*>	dataPause;
 	std::vector<Button*>	dataMenu;
+	std::vector<Button*>	dataGameOver;
 	sf::Color* clearColor;
 	
 	int eCount = 0;
@@ -30,42 +31,45 @@ public:
 		sf::Font* font = new sf::Font();
 		font->loadFromFile("res/arial.ttf");
 		sf::Text* text = new sf::Text("Play", *font);
-		Button* button = new Button(rect, text);
-		button->setPosition(450, 666);
-		button->action = PlayMode;
-		dataMenu.push_back(button);
 
+#pragma region Buttons
+		Button* menuPlay = new Button(rect, text);
+		menuPlay->setPosition(450, 666);
+		menuPlay->action = PlayMode;
+		dataMenu.push_back(menuPlay);
+
+		text->setString("Retry");
+		Button* retry = new Button(rect, text);
+		retry->setPosition(450, 666);
+		retry->action = RetryButton;
+		dataGameOver.push_back(retry);
+
+#pragma endregion
 	}
 
 
 	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnObstacle(int radius, sf::Vector2f pos);
+	void DestroyAllEnemies() {
+		for (auto e : dataPlay)
+			if (e->type == EType::Bot)
+				e->visible = false;
+		eCount = 0;
+	}
 
 	void updateGame(double dt);
-	void updateMenu(double dt) {
-		for (auto e : dataMenu) {
-			e->update(dt);
-
-			sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
-			if (e->spr->getGlobalBounds().contains(mPos))
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-					e->state = ButtonState::Clicked;
-				else
-					e->state = ButtonState::Selected;
-			else
-				e->state = ButtonState::Normal;
-		}
-	}
-	void updatePause();
+	void updateMenu(double dt);
+	void updatePause(double dt);
+	void updateGameOver(double dt);
 	
 	
-	void clear(sf::RenderWindow& win) {
-		win.clear(*clearColor);
-	}
+	void clear(sf::RenderWindow& win) { win.clear(*clearColor); }
 	void drawGame(sf::RenderWindow& win);
-	void drawMenu(sf::RenderWindow& win) {
-		for (auto e : dataMenu) {
+	void drawMenu(sf::RenderWindow& win);
+	void drawGameOver(sf::RenderWindow& win) {
+		win.clear(*clearColor);
+		for (auto e : dataGameOver) {
 			e->draw(win);
 		}
 	}

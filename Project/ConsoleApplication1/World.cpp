@@ -107,7 +107,22 @@ void World::updateGame(double dt) {
 		pauseKeyUp = true;
 }
 
-void World::updatePause() {
+void World::updateMenu(double dt) {
+	for (auto e : dataMenu) {
+		e->update(dt);
+
+		sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+		if (e->spr->getGlobalBounds().contains(mPos))
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				e->state = ButtonState::Clicked;
+			else
+				e->state = ButtonState::Selected;
+		else
+			e->state = ButtonState::Normal;
+	}
+}
+
+void World::updatePause(double dt) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		if (pauseKeyUp) {
 			Game::GetInstance()->state = GameState::Playing;
@@ -118,12 +133,35 @@ void World::updatePause() {
 		pauseKeyUp = true;
 }
 
+void World::updateGameOver(double dt) {
+	for (auto e : dataGameOver) {
+		e->update(dt);
+
+		sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+		if (e->spr->getGlobalBounds().contains(mPos))
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				e->state = ButtonState::Clicked;
+			else
+				e->state = ButtonState::Selected;
+		else
+			e->state = ButtonState::Normal;
+	}
+}
+
 void World::drawGame(sf::RenderWindow& window) {
 	window.clear(*clearColor);
 	for (auto e : dataPlay) {
 		e->draw(window);
 	}
 }
+
+void World::drawMenu(sf::RenderWindow& win) {
+	win.clear(*clearColor);
+	for (auto e : dataMenu) {
+		e->draw(win);
+	}
+}
+
 
 
 void World::KeepEntityOnScreen(Entity* e, float value) {

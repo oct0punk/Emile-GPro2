@@ -40,6 +40,7 @@ struct Cmd {
 };
 
 
+
 enum EType {
 	Player,
 	Bot,
@@ -120,7 +121,6 @@ bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2);
 class Laser : public Entity {	
 	float reloading = 0.0f;
 public:
-	float reloadTime = .1f;
 
 	float speed = 3000.0f;
 
@@ -136,7 +136,7 @@ public:
 	Laser(sf::Shape* _spr, sf::Color color = sf::Color::White) : Entity(EType::Bullet, _spr) {
 		//spr->setFillColor(color);
 	};
-	void create(float _px, float _py, float _dx, float _dy);
+	void create(float _px, float _py, float _dx, float _dy, float rTime = 0.0f);
 	void ChangeDirection(int idx, float x, float y);
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
@@ -148,6 +148,8 @@ public:
 	bool invincible = false;
 	float invincibleTime = 1.0f;
 	Laser* laser = nullptr;
+	int health = 1;
+
 	PlayerPad(sf::Shape* _spr, Laser* l) : Entity(EType::Player, _spr) {
 		laser = l;
 	}
@@ -158,8 +160,12 @@ public:
 	void SetHealth(int value) {
 		health = value;
 	}
+	virtual void Revive() {
+		SetHealth(3);
+		visible = true;
+		setPosition(800, 700);
+	}
 
-	int health = 3;
 protected :
 };
 
@@ -193,6 +199,8 @@ enum ButtonState {
 
 // Button methods
 void PlayMode();
+
+void RetryButton();
 
 class Button : public Entity {
 	static sf::Color baseColor;

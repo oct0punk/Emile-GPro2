@@ -104,15 +104,16 @@ bool PlayerPad::ChangeHealth(int amount) {
 	}
 	if (health < 0) {
 		visible = false;
+		Game::GetInstance()->state = GameState::GameOver;
 		return true;
 	}
 	return false;
 }
 
 
-void Laser::create(float _px, float _py, float _dx, float _dy) {
+void Laser::create(float _px, float _py, float _dx, float _dy, float rTime) {
 	if (reloading > 0.0f) return;
-	reloading = reloadTime;
+	reloading = rTime;
 	Audio::GetInstance()->Play();
 
 	sf::Vector2f dir(_dx, _dy);
@@ -207,6 +208,8 @@ bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2) {
 void PlayMode() {
 	Game::GetInstance()->state = GameState::Playing;
 }
+
+void RetryButton() { Game::GetInstance()->Reset(); }
 
 bool Enemy::ChangeHealth(int amount) {
 	health += amount;

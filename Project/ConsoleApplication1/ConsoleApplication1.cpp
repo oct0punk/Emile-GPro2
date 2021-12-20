@@ -25,7 +25,6 @@ int main()
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 	World world(&window);
-	Game::create(&world);
 	Audio::GetInstance();
 	world.clearColor = new Color(20, 20, 20, 20);
 
@@ -81,6 +80,7 @@ int main()
 #pragma endregion
 
 
+	Game::create(&world, &p);
 
 	ImGui::SFML::Init(window);
 
@@ -134,7 +134,7 @@ int main()
 
 			// Shoot
 			if (Mouse::isButtonPressed(Mouse::Left)) {
-				b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y);
+				b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, .1f);
 			}
 
 		}
@@ -144,7 +144,7 @@ int main()
 
 		
 		Game::GetInstance()->update(dt);
-		text.setString(to_string(Game::GetInstance()->EnemyHealth()));
+		text.setString(to_string(world.eCount));
 
 		// IMGUI
 		{	using namespace ImGui;
@@ -163,7 +163,7 @@ int main()
 			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
 			b.spr = bShape;
 		}
-		DragFloat("Reload time", &b.reloadTime, .01f, 0.01f, .5f);
+		//DragFloat("Reload time", &b.reloadTime, .01f, 0.01f, .5f);
 		Separator();
 
 		//background color
