@@ -49,7 +49,6 @@ enum EType {
 	UI,
 };
 
-
 class Entity {
 	double timeSinceLevelStart = 0.0;
 	int health = 1;
@@ -78,18 +77,10 @@ public:
 		}
 	}
 
-	sf::Vector2f getPosition() {
-		return spr->getPosition();
-	}
-	virtual void setPosition(float x, float y) {
-		spr->setPosition(sf::Vector2f(x, y));
-	}
-	void setRotation(float angle) {
-		return spr->setRotation(angle);
-	}
-	int getRotation() {
-		return spr->getRotation();
-	}
+	sf::Vector2f getPosition()					{ return spr->getPosition(); }
+	virtual void setPosition(float x, float y)	{ spr->setPosition(sf::Vector2f(x, y)); }
+	void setRotation(float angle)				{ return spr->setRotation(angle); }
+	int getRotation()							{ return spr->getRotation(); }
 
 	//ajoute les cmds a la fin de la liste courante
 	void appendCmd(Cmd* cmd) {
@@ -98,15 +89,15 @@ public:
 		else
 			cmds = cmd;
 	}
-
 	void Translate(sf::Vector2f pos, float speed) { 
 		targetPos = pos;
 		appendCmd(new Cmd(CmdType::Move, speed)); 
 	}
+	virtual void Movement(double dt);
+
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 
-	virtual void Movement(double dt);
 	
 
 protected:
@@ -114,8 +105,6 @@ protected:
 	Cmd* cmds = nullptr;
 	Cmd* applyCmdInterp(Cmd* cmd, double dt);
 };
-
-bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2);
 
 
 class Laser : public Entity {	
@@ -181,13 +170,14 @@ public :
 		health = 10;
 	}
 
-	PlayerPad* LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor);
+	// PlayerPad* LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor);
 	void SlowDown(int speed);
 
 	virtual bool ChangeHealth(int amount);
 	virtual void update(double dt);
-	virtual void draw(sf::RenderWindow& win);
 };
+
+
 
 
 enum ButtonState {
@@ -195,8 +185,6 @@ enum ButtonState {
 	Selected,
 	Clicked,
 };
-
-
 // Button methods
 void PlayMode();
 

@@ -107,6 +107,7 @@ void World::updateGame(double dt) {
 		pauseKeyUp = true;
 }
 
+
 void World::updateMenu(double dt) {
 	for (auto e : dataMenu) {
 		e->update(dt);
@@ -122,6 +123,7 @@ void World::updateMenu(double dt) {
 	}
 }
 
+
 void World::updatePause(double dt) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		if (pauseKeyUp) {
@@ -132,6 +134,7 @@ void World::updatePause(double dt) {
 	else
 		pauseKeyUp = true;
 }
+
 
 void World::updateGameOver(double dt) {
 	for (auto e : dataGameOver) {
@@ -148,12 +151,16 @@ void World::updateGameOver(double dt) {
 	}
 }
 
+
+
+
 void World::drawGame(sf::RenderWindow& window) {
 	window.clear(*clearColor);
 	for (auto e : dataPlay) {
 		e->draw(window);
 	}
 }
+
 
 void World::drawMenu(sf::RenderWindow& win) {
 	win.clear(*clearColor);
@@ -163,14 +170,15 @@ void World::drawMenu(sf::RenderWindow& win) {
 }
 
 
-
-void World::KeepEntityOnScreen(Entity* e, float value) {
-	// Keep the entity inside screen's bounds
-	sf::Vector2f pPos = e->getPosition();
-	pPos.x = clamp(pPos.x, value, window->getSize().x - value);
-	pPos.y = clamp(pPos.y, value, window->getSize().y - value);
-	e->setPosition(pPos.x, pPos.y);
+void World::drawGameOver(sf::RenderWindow& win) {
+	win.clear(*clearColor);
+	for (auto e : dataGameOver) {
+		e->draw(win);
+	}
 }
+
+
+
 
 
 void World::PushEntity(Entity* e, sf::Vector2f pos) {
@@ -205,6 +213,7 @@ void World::PushEntity(Entity* e, sf::Vector2f pos) {
 	e->setPosition(pos.x, pos.y);
 }
 
+
 void World::SpawnEnemy(sf::Vector2f pos) {
 	using namespace sf;
 	ConvexShape* eShape = new ConvexShape(4);
@@ -220,6 +229,7 @@ void World::SpawnEnemy(sf::Vector2f pos) {
 
 }
 
+
 void World::SpawnObstacle(int radius, sf::Vector2f pos) {
 	sf::CircleShape* wShape = new sf::CircleShape(radius);
 	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
@@ -231,3 +241,19 @@ void World::SpawnObstacle(int radius, sf::Vector2f pos) {
 	dataPlay.push_back(w);
 }
 
+
+void World::DestroyAllEnemies() {
+	for (auto e : dataPlay)
+		if (e->type == EType::Bot)
+			e->visible = false;
+	eCount = 0;
+}
+
+
+void World::KeepEntityOnScreen(Entity* e, float value) {
+	// Keep the entity inside screen's bounds
+	sf::Vector2f pPos = e->getPosition();
+	pPos.x = clamp(pPos.x, value, window->getSize().x - value);
+	pPos.y = clamp(pPos.y, value, window->getSize().y - value);
+	e->setPosition(pPos.x, pPos.y);
+}

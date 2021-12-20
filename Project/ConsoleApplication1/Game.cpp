@@ -2,9 +2,7 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/Text.hpp"
 
-Game::Game(World* w) {
-	world = w;
-}
+Game::Game(World* w) { world = w; }
 
 void Game::update(double dt) {
 	switch (state) {
@@ -39,6 +37,7 @@ void Game::update(double dt) {
 	}
 }
 
+
 void Game::draw(sf::RenderWindow& win) {
 	switch (state)
 	{
@@ -60,6 +59,7 @@ void Game::draw(sf::RenderWindow& win) {
 }
 
 
+
 void Game::NextWave() {
 	wave++;
 	enemyCount = wave * 3;
@@ -77,5 +77,15 @@ void Game::NextWave() {
 		}
 }
 
-Game* Game::Instance = nullptr;
 
+void Game::Reset() {
+	world->DestroyAllEnemies();
+	player->Revive();
+	state = GameState::Playing;
+	wave = 0;
+	NextWave();
+}
+
+
+
+Game* Game::Instance = nullptr;

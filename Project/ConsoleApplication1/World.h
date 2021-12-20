@@ -51,12 +51,7 @@ public:
 	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnObstacle(int radius, sf::Vector2f pos);
-	void DestroyAllEnemies() {
-		for (auto e : dataPlay)
-			if (e->type == EType::Bot)
-				e->visible = false;
-		eCount = 0;
-	}
+	void DestroyAllEnemies();
 
 	void updateGame(double dt);
 	void updateMenu(double dt);
@@ -67,12 +62,7 @@ public:
 	void clear(sf::RenderWindow& win) { win.clear(*clearColor); }
 	void drawGame(sf::RenderWindow& win);
 	void drawMenu(sf::RenderWindow& win);
-	void drawGameOver(sf::RenderWindow& win) {
-		win.clear(*clearColor);
-		for (auto e : dataGameOver) {
-			e->draw(win);
-		}
-	}
+	void drawGameOver(sf::RenderWindow& win);
 
 	void KeepEntityOnScreen(Entity* e, float value = 10.0f);
 };

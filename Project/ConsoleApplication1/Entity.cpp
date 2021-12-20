@@ -13,28 +13,22 @@ void Entity::update(double dt) {
 	move.y += dy * dt;
 	setPosition(move.x, move.y);
 
-	if (type == EType::Wall) {
-		// Change Radius
-		//sf::CircleShape* wShape = new sf::CircleShape(30 + sin(timeSinceLevelStart * .3f) * 100);
-		//wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
-		//wShape->setFillColor(sf::Color::Transparent);
-		//wShape->setOutlineThickness(10);
-		//wShape->setOutlineColor(sf::Color::Cyan);
-		//wShape->setPosition(spr->getPosition());
-		//spr = wShape;
+	if (type == EType::Wall)
 		Movement(dt * 5);
 	}
-}
+
 
 void Entity::draw(sf::RenderWindow& win) {
 	if (visible)
 		win.draw(*spr);
 }
 
+
 void Entity::Movement(double dt) {
 	dx = sin(timeSinceLevelStart * dt) * 600 * dt;
 	dy = cos(timeSinceLevelStart * .2f * dt) * 600 * dt;
 }
+
 
 Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 	//dt = 1.0f / 60.0f * 0.1;
@@ -72,6 +66,7 @@ Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 
 
 
+
 void PlayerPad::update(double dt) {
 	if (invincible) {
 		invincibleTime -= dt;
@@ -84,11 +79,13 @@ void PlayerPad::update(double dt) {
 		spr->setFillColor(sf::Color::Transparent);
 }
 
+
 void PlayerPad::draw(sf::RenderWindow& win) {
 	if (visible)
 		win.draw(*spr);
 
 }
+
 
 bool PlayerPad::ChangeHealth(int amount) {
 	if (invincible) return false;
@@ -109,6 +106,8 @@ bool PlayerPad::ChangeHealth(int amount) {
 	}
 	return false;
 }
+
+
 
 
 void Laser::create(float _px, float _py, float _dx, float _dy, float rTime) {
@@ -139,12 +138,14 @@ void Laser::create(float _px, float _py, float _dx, float _dy, float rTime) {
 	power.push_back(1);
 }
 
+
 void Laser::ChangeDirection(int idx, float x, float y) {
 	sf::Vector2f dir(x, y);
 	Normalize(&dir);
 	dx[idx] = dir.x;
 	dy[idx] = dir.y;
 }
+
 
 void Laser::update(double dt) {
 	if (reloading > 0.0f) {
@@ -164,6 +165,7 @@ void Laser::update(double dt) {
 	}
 }
 
+
 void Laser::draw(sf::RenderWindow& win) {
 	int idx = 0;
 	const int sz = px.size();
@@ -180,36 +182,6 @@ void Laser::draw(sf::RenderWindow& win) {
 
 
 
-bool CheckCollisionUsingRect(Entity* rect1, Entity* rect2) {
-	if (rect1->spr->getGlobalBounds().contains(rect2->getPosition())) {
-		float x = rect2->getPosition().x - rect1->getPosition().x;
-		float y = rect2->getPosition().y - rect1->getPosition().y;
-		float magnitude = sqrt(x * x + y * y);
-		x /= magnitude;
-		y /= magnitude;
-
-		float w = rect1->spr->getGlobalBounds().width / 2;
-		float h = rect1->spr->getGlobalBounds().height / 2;
-		magnitude = sqrt(w * w + h * h);
-		w /= magnitude;
-		h /= magnitude;
-
-		if (abs(x) > w)			rect2->dx *= -1;
-		else if (abs(y) > h)	rect2->dy *= -1;
-		rect2->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		rect1->spr->setOutlineColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		rect2->setPosition(rect2->lastGoodPos.x, rect2->lastGoodPos.y);
-		return true;
-	}
-	rect2->lastGoodPos = rect2->getPosition();
-	return false;
-}
-
-void PlayMode() {
-	Game::GetInstance()->state = GameState::Playing;
-}
-
-void RetryButton() { Game::GetInstance()->Reset(); }
 
 bool Enemy::ChangeHealth(int amount) {
 	health += amount;
@@ -219,6 +191,7 @@ bool Enemy::ChangeHealth(int amount) {
 	}
 	return false;
 }
+
 
 void Enemy::update(double dt)
 {
@@ -247,50 +220,50 @@ void Enemy::update(double dt)
 	}
 }
 
-PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor) {
-
-	sf::Vector2f ray = pp->getPosition() - getPosition();	// Raycast from enemy to player
-	float distance = Magnitude(ray);
-	if (distance < 100)
-		return pp;
-	Normalize(&ray);
-	for (int i = 100; i < distance; i += 5) {
-
-		sf::Vector2f point;
-		point.x = getPosition().x + ray.x * i;
-		point.y = getPosition().y + ray.y * i;
-		if (!visible) return nullptr;
-		sf::Color rtc = rt.getPixel(point.x, point.y);		// Check pixel's color along the ray
-		if (rtc.toInteger() != clearColor.toInteger()) {
-			if (pp->spr->getGlobalBounds().contains(point))	// if pixel in player's bounds
-				return pp;									// Player found
-			else
-				return nullptr;								// Else obstacle
-		}
-	}
-	return nullptr;											// Nothing hit
-}
-
+//  Old Raycast //	PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor) {
+//	
+//		sf::Vector2f ray = pp->getPosition() - getPosition();	// Raycast from enemy to player
+//		float distance = Magnitude(ray);
+//		if (distance < 100)
+//			return pp;
+//		Normalize(&ray);
+//		for (int i = 100; i < distance; i += 5) {
+//	
+//			sf::Vector2f point;
+//			point.x = getPosition().x + ray.x * i;
+//			point.y = getPosition().y + ray.y * i;
+//			if (!visible) return nullptr;
+//			sf::Color rtc = rt.getPixel(point.x, point.y);		// Check pixel's color along the ray
+//			if (rtc.toInteger() != clearColor.toInteger()) {
+//				if (pp->spr->getGlobalBounds().contains(point))	// if pixel in player's bounds
+//					return pp;									// Player found
+//				else
+//					return nullptr;								// Else obstacle
+//			}
+//		}
+//		return nullptr;											// Nothing hit
+//	}
 void Enemy::SlowDown(int speed) {
 	dx = clamp(0.0f, dx - speed, dx + speed);
 	dy = clamp(0.0f, dy - speed, dy + speed);
 }
 
-void Enemy::draw(sf::RenderWindow& win)
-{
-	Entity::draw(win);
-}
+
+
+
+void PlayMode()		{ Game::GetInstance()->state = GameState::Playing; }
+void RetryButton()	{ Game::GetInstance()->Reset(); }
 
 Button::Button(sf::Shape* _spr, sf::Text* txt) : Entity(EType::UI, _spr) {
 	text = *txt;
 }
 
+
 void Button::draw(sf::RenderWindow& win) {
 	Entity::draw(win);
-	win.draw(text);
-
-	
+	win.draw(text);	
 }
+
 
 sf::Color Button::baseColor = sf::Color(sf::Color::Blue);
 sf::Color Button::selectedColor = sf::Color(sf::Color::Cyan);

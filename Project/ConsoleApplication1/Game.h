@@ -10,8 +10,7 @@ enum  GameState {
 
 class Game {
 private:
-	static Game* Instance;
-	
+	static Game* Instance;	
 	float time = 0.0f;
 
 public:
@@ -25,11 +24,9 @@ public:
 		Instance = new Game(w);
 		Instance->player = p;
 	}
-
 	static Game* GetInstance() {
 		return Instance;
 	}
-
 	Game(World* w);
 
 	void update(double dt);
@@ -37,12 +34,6 @@ public:
 	void NextWave();
 	int EnemyHealth() { return wave * 3; }
 
-	void Reset() {
-		world->DestroyAllEnemies();		
-		player->Revive();
-		state = GameState::Playing;
-		wave = 0;
-		NextWave();
-	}
+	void Reset();
 };
 
