@@ -48,6 +48,16 @@ int main()
 	window.setMouseCursorVisible(false);
 
 
+#pragma region Bullet
+	float bWidth = 35.0f;
+	float bHeight = 3.0f;
+	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
+	Color bc = Color::Blue;
+	Laser b(bShape, bc);
+	world.dataPlay.push_back(&b);
+#pragma endregion
+
+
 #pragma region player	
 	float speed = 800.0f;
 	ConvexShape* pShape = new ConvexShape(11);
@@ -65,21 +75,10 @@ int main()
 	pShape->setFillColor(Color::Transparent);			
 	pShape->setOutlineThickness(4);
 
-	PlayerPad p(pShape);
+	PlayerPad p(pShape, &b);
 	p.setPosition(950, 400);
 	world.dataPlay.push_back(&p);
 #pragma endregion
-
-#pragma region Bullet
-	float bWidth = 35.0f;
-	float bHeight = 3.0f;
-	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
-	Color bc = Color::Blue;
-	Laser b(bShape, bc);
-	world.dataPlay.push_back(&b);
-#pragma endregion
-
-	world.SpawnObstacle(100);
 
 
 
@@ -94,13 +93,15 @@ int main()
 			ImGui::SFML::ProcessEvent(event);
 			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				window.close();
+
 		}
 
 
 		// UPDATE
+
 		#pragma region PlayerControls
 		// Move
-		if (p.visible)
+		if (p.visible && Game::GetInstance()->state != GameState::Pause)
 		{
 			bool keyHit = false;
 			Vector2f pPos = p.getPosition();

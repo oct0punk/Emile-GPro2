@@ -17,6 +17,7 @@ public:
 	sf::Color* clearColor;
 	
 	int eCount = 0;
+	bool pauseKeyUp = true;
 
 	World(sf::RenderWindow* win) {
 		window = win;
@@ -39,7 +40,7 @@ public:
 
 	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
-	void SpawnObstacle(int radius);
+	void SpawnObstacle(int radius, sf::Vector2f pos);
 
 	void updateGame(double dt);
 	void updateMenu(double dt) {
@@ -56,6 +57,7 @@ public:
 				e->state = ButtonState::Normal;
 		}
 	}
+	void updatePause();
 	
 	
 	void clear(sf::RenderWindow& win) {

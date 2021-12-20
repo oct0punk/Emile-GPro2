@@ -147,25 +147,14 @@ class PlayerPad : public Entity {
 public:
 	bool invincible = false;
 	float invincibleTime = 1.0f;
-
-	PlayerPad(sf::Shape* _spr) : Entity(EType::Player, _spr) {
-		
+	Laser* laser = nullptr;
+	PlayerPad(sf::Shape* _spr, Laser* l) : Entity(EType::Player, _spr) {
+		laser = l;
 	}
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
-	virtual bool ChangeHealth(int amount) {
-		if (invincible) return false;
-		health += amount;
-		invincible = true;
-		invincibleTime = 1.0f;
-		spr->setFillColor(sf::Color::Red);
-		if (health < 0) {
-			visible = false;
-			return true;
-		}
-		return false;
-	}
+	virtual bool ChangeHealth(int amount);
 	void SetHealth(int value) {
 		health = value;
 	}
@@ -181,7 +170,7 @@ public :
 	bool invincible = false;
 	float invincibleTime = 1.0f;
 
-	Enemy(sf::Shape* _spr) : PlayerPad(_spr) {
+	Enemy(sf::Shape* _spr) : PlayerPad(_spr, nullptr) {
 		type = EType::Bot;
 		health = 10;
 	}

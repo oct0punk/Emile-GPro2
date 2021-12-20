@@ -2,6 +2,7 @@
 #include"Tool.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "Game.h"
+#include <SFML/Window/Keyboard.hpp>
 
 void World::updateGame(double dt) {
 
@@ -95,6 +96,26 @@ void World::updateGame(double dt) {
 		}
 		}
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		if (pauseKeyUp) {
+			Game::GetInstance()->state = GameState::Pause;
+			pauseKeyUp = false;
+		}
+	}
+	else
+		pauseKeyUp = true;
+}
+
+void World::updatePause() {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		if (pauseKeyUp) {
+			Game::GetInstance()->state = GameState::Playing;
+			pauseKeyUp = false;
+		}
+	}
+	else
+		pauseKeyUp = true;
 }
 
 void World::drawGame(sf::RenderWindow& window) {
@@ -161,14 +182,14 @@ void World::SpawnEnemy(sf::Vector2f pos) {
 
 }
 
-void World::SpawnObstacle(int radius) {
+void World::SpawnObstacle(int radius, sf::Vector2f pos) {
 	sf::CircleShape* wShape = new sf::CircleShape(radius);
 	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
 	wShape->setFillColor(sf::Color::Transparent);
 	wShape->setOutlineThickness(radius / 7);
 	wShape->setOutlineColor(sf::Color::Cyan);
 	Entity* w = new Entity(EType::Wall, wShape);
-	w->setPosition(-radius, -radius);
+	w->setPosition(pos.x, pos.y);
 	dataPlay.push_back(w);
 }
 

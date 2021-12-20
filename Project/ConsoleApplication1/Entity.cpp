@@ -77,15 +77,36 @@ void PlayerPad::update(double dt) {
 		invincibleTime -= dt;
 		if (invincibleTime <= 0) {
 			invincible = false;
-			spr->setFillColor(sf::Color::White);
+			spr->setFillColor(sf::Color(150, 50, 0));
 		}
 	}
+	else
+		spr->setFillColor(sf::Color::Transparent);
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {
 	if (visible)
 		win.draw(*spr);
 
+}
+
+bool PlayerPad::ChangeHealth(int amount) {
+	if (invincible) return false;
+	health += amount;
+	float r = lerp(health / 2, 0, 255);
+	float g = lerp(health / 3, 0, 255);
+	float b = lerp(health / 1, 0, 255);
+	spr->setOutlineColor(sf::Color(r, g, b));
+	if (amount < 0) {
+		invincible = true;
+		invincibleTime = 1.0f;
+		spr->setFillColor(sf::Color::Red);
+	}
+	if (health < 0) {
+		visible = false;
+		return true;
+	}
+	return false;
 }
 
 
@@ -137,16 +158,6 @@ void Laser::update(double dt) {
 				(py[i] > 3000) || (py[i] < -100)
 				) {
 				alive[i] = false;
-			}
-			if (px[i] < 0 || px[i] > 1820) {
-				px[i] -= dx[i] * dt;
-				dx[i] *= -1.4f;
-				power[i] *= 2;
-			}
-			if (py[i] < 0 || py[i] > 950) {
-				py[i] -= dy[i] * dt;
-				dy[i] *= -1.4f;
-				power[i] *= 2;
 			}
 		}
 	}

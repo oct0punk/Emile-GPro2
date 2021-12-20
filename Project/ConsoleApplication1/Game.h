@@ -4,7 +4,8 @@
 enum GameState {
 	Playing,
 	Menu,
-	Pause
+	Pause,
+	GameOver
 };
 
 class Game {

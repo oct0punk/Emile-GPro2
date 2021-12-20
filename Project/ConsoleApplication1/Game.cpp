@@ -30,6 +30,7 @@ void Game::update(double dt) {
 		world->updateMenu(dt);
 		break;
 	case Pause:
+		world->updatePause();
 		break;
 	default:
 		break;
@@ -58,15 +59,18 @@ void Game::draw(sf::RenderWindow& win) {
 void Game::NextWave() {
 	wave++;
 	enemyCount = wave * 3;
-	if (wave % 3 == 0)
-	{
-		for (auto p : world->dataPlay)
-			if (p->type == EType::Player)
-			{
-				PlayerPad* pad = (PlayerPad*)p;
-				pad->ChangeHealth(1);
-			}
-	}
+	int radius = rand() % 100;
+	world->SpawnObstacle(radius, sf::Vector2f(-radius, -radius));
+	radius = rand() % 100;
+	world->SpawnObstacle(radius, sf::Vector2f(10000, -radius));
+
+	for (auto p : world->dataPlay)
+		if (p->type == EType::Player)
+		{
+			PlayerPad* pad = (PlayerPad*)p;
+			pad->ChangeHealth(1);
+			return;
+		}
 }
 
 Game* Game::Instance = nullptr;
