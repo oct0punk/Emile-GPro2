@@ -140,7 +140,7 @@ public:
 	Laser(sf::Shape* _spr, sf::Color color = sf::Color::White) : Entity(EType::Bullet, _spr) {
 		//spr->setFillColor(color);
 	};
-	void create(float _px, float _py, float _dx, float _dy, float rTime = 0.0f);
+	void create(float _px, float _py, float _dx, float _dy, float rTime = 0.0f, int p = 1);
 	void ChangeDirection(int idx, float x, float y);
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
@@ -148,6 +148,7 @@ public:
 
 
 class PlayerPad : public Entity {
+	float powerTime = 0.0f;
 
 public:
 	Laser* laser = nullptr;
@@ -175,7 +176,7 @@ public :
 		health = 10;
 	}
 
-	
+	// Slow the entity until stop
 	void SlowDown(int speed);
 
 	virtual bool ChangeHealth(int amount);

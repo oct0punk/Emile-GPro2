@@ -1,8 +1,10 @@
 #include "Audio.h"
+#include "Game.h"
 
 Audio::Audio() {
 	buffer.loadFromFile("res/blipSelect.wav");
 	sound.setBuffer(buffer);
+	pitch = &Game::GetInstance()->world->timeScale;
 }
 
 Audio* Audio::GetInstance() {
@@ -12,6 +14,7 @@ Audio* Audio::GetInstance() {
 }
 
 void Audio::Play() {
+	sound.setPitch(*pitch);
 	sound.play();
 }
 

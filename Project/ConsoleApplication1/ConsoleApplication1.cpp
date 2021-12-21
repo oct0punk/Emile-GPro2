@@ -25,12 +25,6 @@ int main()
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 	World world(&window);
-	Audio::GetInstance();
-	world.clearColor = new Color(20, 20, 20, 20);
-
-	double tStart = getTimeStamp();
-	double tEnterFrame = getTimeStamp();
-	double tExitFrame = getTimeStamp();
 
 	Font font;
 	font.loadFromFile("res/arial.ttf");
@@ -80,9 +74,14 @@ int main()
 
 
 	Game::create(&world, &p);
+	Audio::GetInstance();
 
 	ImGui::SFML::Init(window);
 
+	double tStart = getTimeStamp();
+	double tEnterFrame = getTimeStamp();
+	double tExitFrame = getTimeStamp();
+	bool shootflag = true;
 
 	while (window.isOpen()) {
 		double dt = tExitFrame - tEnterFrame;
@@ -112,7 +111,20 @@ int main()
 
 			// Shoot
 			if (Mouse::isButtonPressed(Mouse::Left)) {
-				b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, .1f);
+				if (world.timeScale < 1.0f) {
+					if (shootflag) {
+						b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, 0.02f, 8);
+						shootflag = false;
+					}
+				}
+				else
+				{
+					b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, 0.1f);
+				}
+			}
+			else
+			{
+					shootflag = true;
 			}
 
 		}

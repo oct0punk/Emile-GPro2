@@ -53,8 +53,7 @@ void World::updateGame(double dt) {
 							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - e->getPosition());
 							l->px[i - 1] -= l->dx[i - 1] * dt * l->speed * 1.2f;			// Move the bullet to previous good position
 							l->py[i - 1] -= l->dy[i - 1] * dt * l->speed * 1.2f;
-							l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new direction to bullet							
-							l->power[i - 1] = l->power[i - 1] * 2;
+							l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new direction to bullet
 						}
 					}
 				}

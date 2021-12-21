@@ -103,8 +103,15 @@ void PlayerPad::update(double dt) {
 		setPosition(pPos.x, pPos.y);
 
 	// Power
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && power > 0) {
 		Power();
+		powerTime = 4.2f;
+	}
+	if (powerTime > 0.0f) {
+		powerTime -= dt;
+		if (powerTime <= 0.0f)
+			Game::GetInstance()->world->timeScale = 1.0f;
+
 	}
 }
 
@@ -148,7 +155,7 @@ bool Entity::ChangeHealth(int amount) {
 
 
 
-void Laser::create(float _px, float _py, float _dx, float _dy, float rTime) {
+void Laser::create(float _px, float _py, float _dx, float _dy, float rTime, int p) {
 	if (reloading > 0.0f) return;
 	reloading = rTime;
 	Audio::GetInstance()->Play();
@@ -164,7 +171,7 @@ void Laser::create(float _px, float _py, float _dx, float _dy, float rTime) {
 			this->dx[i] = dx;
 			this->dy[i] = dy;
 			alive[i] = true;
-			power[i] = 1;
+			power[i] = p;
 			return;
 		}
 	}
@@ -173,7 +180,7 @@ void Laser::create(float _px, float _py, float _dx, float _dy, float rTime) {
 	this->dx.push_back(dx);
 	this->dy.push_back(dy);
 	alive.push_back(true);
-	power.push_back(1);
+	power.push_back(p);
 }
 
 
@@ -182,6 +189,7 @@ void Laser::ChangeDirection(int idx, float x, float y) {
 	Normalize(&dir);
 	dx[idx] = dir.x;
 	dy[idx] = dir.y;
+	power[idx] += 10;
 }
 
 

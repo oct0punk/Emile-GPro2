@@ -33,7 +33,7 @@ public:
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 	void NextWave();
-	int EnemyHealth() { return wave * 3; }
+	int EnemyHealth() { return wave + (wave % 2) * 3; }
 
 	void Reset();
 };

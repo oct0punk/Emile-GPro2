@@ -5,6 +5,7 @@
 class Audio {
 	sf::Sound sound;
 	sf::SoundBuffer buffer;
+	float* pitch = nullptr;
 
 private:
 	Audio();
