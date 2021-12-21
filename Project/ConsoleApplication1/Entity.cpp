@@ -139,7 +139,7 @@ bool PlayerPad::ChangeHealth(int amount) {
 }
 
 void PlayerPad::Power() {
-	Game::GetInstance()->world->timeScale = 0.1f;
+	Game::GetInstance()->world->timeScale = 0.01f;
 }
 
 

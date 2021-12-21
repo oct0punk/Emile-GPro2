@@ -2,9 +2,14 @@
 #include "Game.h"
 
 Audio::Audio() {
-	buffer.loadFromFile("res/blipSelect.wav");
-	sound.setBuffer(buffer);
+	stdShotBuf.loadFromFile("res/blipSelect.wav");
+	stdShot.setBuffer(stdShotBuf);
 	pitch = &Game::GetInstance()->world->timeScale;
+	themBuf.loadFromFile("res/them.wav");
+	them.setBuffer(themBuf);
+	
+	them.setPlayingOffset(sf::seconds(68.4f));
+	them.play();
 }
 
 Audio* Audio::GetInstance() {
@@ -14,8 +19,8 @@ Audio* Audio::GetInstance() {
 }
 
 void Audio::Play() {
-	sound.setPitch(*pitch);
-	sound.play();
+	stdShot.setPitch(*pitch);
+	stdShot.play();
 }
 
 Audio* Audio::instance = nullptr;

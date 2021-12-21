@@ -113,7 +113,7 @@ int main()
 			if (Mouse::isButtonPressed(Mouse::Left)) {
 				if (world.timeScale < 1.0f) {
 					if (shootflag) {
-						b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, 0.02f, 8);
+						b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, world.timeScale * world.timeScale, 8);
 						shootflag = false;
 					}
 				}

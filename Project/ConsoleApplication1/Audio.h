@@ -3,8 +3,10 @@
 #include "SFML/Audio/SoundBuffer.hpp"
 
 class Audio {
-	sf::Sound sound;
-	sf::SoundBuffer buffer;
+	sf::Sound stdShot;
+	sf::SoundBuffer stdShotBuf;
+	sf::Sound them;
+	sf::SoundBuffer themBuf;
 	float* pitch = nullptr;
 
 private:
