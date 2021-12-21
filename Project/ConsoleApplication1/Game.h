@@ -14,11 +14,12 @@ private:
 	float time = 0.0f;
 
 public:
-	int wave = 0;
 	PlayerPad* player = nullptr;
 	World* world = nullptr;
-	int enemyCount = 5;
 	GameState state = GameState::Menu;
+	int wave = 0;
+	int enemyCount = 5;
+	bool pHit = false;
 
 	static void create(World* w, PlayerPad* p) {
 		Instance = new Game(w);

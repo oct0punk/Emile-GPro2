@@ -43,15 +43,19 @@ struct Cmd {
 
 enum EType {
 	Player,
+	Bullet,
 	Bot,
 	Wall,
-	Bullet,
+	Power,
 	UI,
 };
 
 class Entity {
+protected:
 	double timeSinceLevelStart = 0.0;
 	int health = 1;
+	bool invincible = false;
+	float invincibleTime = 1.0f;
 
 public:
 	sf::Shape* spr = nullptr;
@@ -81,6 +85,17 @@ public:
 	virtual void setPosition(float x, float y)	{ spr->setPosition(sf::Vector2f(x, y)); }
 	void setRotation(float angle)				{ return spr->setRotation(angle); }
 	int getRotation()							{ return spr->getRotation(); }
+
+	virtual bool ChangeHealth(int amount);
+	void SetHealth(int value) {
+		health = value;
+	}
+	virtual void Revive() {
+		SetHealth(3);
+		visible = true;
+		setPosition(800, 700);
+	}
+
 
 	//ajoute les cmds a la fin de la liste courante
 	void appendCmd(Cmd* cmd) {
@@ -133,11 +148,11 @@ public:
 
 
 class PlayerPad : public Entity {
+
 public:
-	bool invincible = false;
-	float invincibleTime = 1.0f;
 	Laser* laser = nullptr;
-	int health = 1;
+	int speed = 800.0f;
+	int power = 0;
 
 	PlayerPad(sf::Shape* _spr, Laser* l) : Entity(EType::Player, _spr) {
 		laser = l;
@@ -146,31 +161,21 @@ public:
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 	virtual bool ChangeHealth(int amount);
-	void SetHealth(int value) {
-		health = value;
-	}
-	virtual void Revive() {
-		SetHealth(3);
-		visible = true;
-		setPosition(800, 700);
-	}
+	void Power();
 
-protected :
 };
 
 
-class Enemy : public PlayerPad {
+class Enemy : public Entity {
 public :
 	PlayerPad* p = nullptr;
-	bool invincible = false;
-	float invincibleTime = 1.0f;
 
-	Enemy(sf::Shape* _spr) : PlayerPad(_spr, nullptr) {
+	Enemy(sf::Shape* _spr) : Entity(EType::Bot, _spr) {
 		type = EType::Bot;
 		health = 10;
 	}
 
-	// PlayerPad* LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor);
+	
 	void SlowDown(int speed);
 
 	virtual bool ChangeHealth(int amount);
@@ -200,7 +205,7 @@ public:
 	ButtonState state = ButtonState::Normal;
 	void (*action)(void);		// The button's function
 
-	Button(sf::Shape* _spr, sf::Text* txt);
+	Button(sf::Shape* _spr, sf::Text* txt, void (*func)(void));
 
 	virtual void setPosition(float x, float y) {
 		spr->setPosition(sf::Vector2f(x, y));

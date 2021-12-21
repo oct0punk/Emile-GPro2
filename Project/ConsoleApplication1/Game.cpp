@@ -63,23 +63,25 @@ void Game::draw(sf::RenderWindow& win) {
 void Game::NextWave() {
 	wave++;
 	enemyCount = wave * 3;
-	int radius = rand() % 100;
+	int radius = 30 + rand() % 50;
 	world->SpawnObstacle(radius, sf::Vector2f(-radius, -radius));
 	radius = rand() % 100;
-	world->SpawnObstacle(radius, sf::Vector2f(10000, -radius));
+	world->SpawnObstacle(radius, sf::Vector2f(-1000, 2000 -radius));
 
-	for (auto p : world->dataPlay)
-		if (p->type == EType::Player)
-		{
-			PlayerPad* pad = (PlayerPad*)p;
-			pad->ChangeHealth(1);
-			return;
-		}
+	player->ChangeHealth(1);
+	if (!pHit) {
+		world->InstantiatePower();
+	}
+	pHit = false;
 }
 
-
+// Launch a game from the beginning
 void Game::Reset() {
-	world->DestroyAllEnemies();
+	for (auto e : world->dataPlay) {
+		if (e->type != Player)
+			e->visible = false;
+	}
+	world->eCount = 0;
 	player->Revive();
 	state = GameState::Playing;
 	wave = 0;

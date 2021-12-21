@@ -2,6 +2,7 @@
 #include "Tool.hpp"
 #include "Game.h"
 #include "Audio.h"
+#include "SFML/Window/Keyboard.hpp"
 
 void Entity::update(double dt) {
 	timeSinceLevelStart += dt;
@@ -68,6 +69,7 @@ Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 
 
 void PlayerPad::update(double dt) {
+	dt /= Game::GetInstance()->world->timeScale;
 	if (invincible) {
 		invincibleTime -= dt;
 		if (invincibleTime <= 0) {
@@ -77,6 +79,33 @@ void PlayerPad::update(double dt) {
 	}
 	else
 		spr->setFillColor(sf::Color::Transparent);
+
+	// Moves
+	bool keyHit = false;
+	sf::Vector2f pPos = getPosition();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+		pPos.y -= speed * dt;
+		keyHit = true;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+		pPos.y += speed * dt;
+		keyHit = true;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+		pPos.x -= speed * dt;
+		keyHit = true;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		pPos.x += speed * dt;
+		keyHit = true;
+	}
+	if (keyHit)
+		setPosition(pPos.x, pPos.y);
+
+	// Power
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		Power();
+	}
 }
 
 
@@ -86,22 +115,31 @@ void PlayerPad::draw(sf::RenderWindow& win) {
 
 }
 
-
 bool PlayerPad::ChangeHealth(int amount) {
 	if (invincible) return false;
-	health += amount;
-	float r = lerp(health / 2, 0, 255);
-	float g = lerp(health / 3, 0, 255);
-	float b = lerp(health / 1, 0, 255);
-	spr->setOutlineColor(sf::Color(r, g, b));
 	if (amount < 0) {
 		invincible = true;
 		invincibleTime = 1.0f;
 		spr->setFillColor(sf::Color::Red);
 	}
+	health += amount;
 	if (health < 0) {
 		visible = false;
 		Game::GetInstance()->state = GameState::GameOver;
+		return true;
+	}
+	return false;
+}
+
+void PlayerPad::Power() {
+	Game::GetInstance()->world->timeScale = 0.1f;
+}
+
+
+bool Entity::ChangeHealth(int amount) {
+	health += amount;
+	if (health < 0) {
+		visible = false;
 		return true;
 	}
 	return false;
@@ -209,8 +247,6 @@ void Enemy::update(double dt)
 			Normalize(&intoP);
 			dx = intoP.x * speed;
 			dy = intoP.y * speed;
-			//dx += Sign(intoP.x) * speed * dt;
-			//dy += Sign(intoP.y) * speed * dt;
 		}
 		else
 		{
@@ -220,29 +256,8 @@ void Enemy::update(double dt)
 	}
 }
 
-//  Old Raycast //	PlayerPad* Enemy::LookForPlayer(PlayerPad* pp, sf::Image rt, sf::Color clearColor) {
-//	
-//		sf::Vector2f ray = pp->getPosition() - getPosition();	// Raycast from enemy to player
-//		float distance = Magnitude(ray);
-//		if (distance < 100)
-//			return pp;
-//		Normalize(&ray);
-//		for (int i = 100; i < distance; i += 5) {
-//	
-//			sf::Vector2f point;
-//			point.x = getPosition().x + ray.x * i;
-//			point.y = getPosition().y + ray.y * i;
-//			if (!visible) return nullptr;
-//			sf::Color rtc = rt.getPixel(point.x, point.y);		// Check pixel's color along the ray
-//			if (rtc.toInteger() != clearColor.toInteger()) {
-//				if (pp->spr->getGlobalBounds().contains(point))	// if pixel in player's bounds
-//					return pp;									// Player found
-//				else
-//					return nullptr;								// Else obstacle
-//			}
-//		}
-//		return nullptr;											// Nothing hit
-//	}
+
+
 void Enemy::SlowDown(int speed) {
 	dx = clamp(0.0f, dx - speed, dx + speed);
 	dy = clamp(0.0f, dy - speed, dy + speed);
@@ -254,10 +269,12 @@ void Enemy::SlowDown(int speed) {
 void PlayMode()		{ Game::GetInstance()->state = GameState::Playing; }
 void RetryButton()	{ Game::GetInstance()->Reset(); }
 
-Button::Button(sf::Shape* _spr, sf::Text* txt) : Entity(EType::UI, _spr) {
-	text = *txt;
-}
 
+
+Button::Button(sf::Shape* _spr, sf::Text* txt, void(*func)(void)) : Entity(EType::UI, _spr) {
+	text = *txt;
+	action = func;
+}
 
 void Button::draw(sf::RenderWindow& win) {
 	Entity::draw(win);

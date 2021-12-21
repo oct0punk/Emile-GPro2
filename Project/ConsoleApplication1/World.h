@@ -8,15 +8,14 @@
 #include "SFML/Graphics/ConvexShape.hpp"
 
 class World {
-public:
-	
+public:	
 	sf::RenderWindow* window = nullptr;;
 	std::vector<Entity*>	dataPlay;
 	std::vector<Button*>	dataPause;
 	std::vector<Button*>	dataMenu;
 	std::vector<Button*>	dataGameOver;
 	sf::Color* clearColor;
-	
+	float timeScale = 1.0f;
 	int eCount = 0;
 	bool pauseKeyUp = true;
 
@@ -33,15 +32,13 @@ public:
 		sf::Text* text = new sf::Text("Play", *font);
 
 #pragma region Buttons
-		Button* menuPlay = new Button(rect, text);
+		Button* menuPlay = new Button(rect, text, PlayMode);
 		menuPlay->setPosition(450, 666);
-		menuPlay->action = PlayMode;
 		dataMenu.push_back(menuPlay);
 
 		text->setString("Retry");
-		Button* retry = new Button(rect, text);
+		Button* retry = new Button(rect, text, RetryButton);
 		retry->setPosition(450, 666);
-		retry->action = RetryButton;
 		dataGameOver.push_back(retry);
 
 #pragma endregion
@@ -51,7 +48,7 @@ public:
 	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnObstacle(int radius, sf::Vector2f pos);
-	void DestroyAllEnemies();
+	void InstantiatePower();
 
 	void updateGame(double dt);
 	void updateMenu(double dt);
@@ -64,7 +61,5 @@ public:
 	void drawMenu(sf::RenderWindow& win);
 	void drawGameOver(sf::RenderWindow& win);
 
-	void KeepEntityOnScreen(Entity* e, float value = 10.0f);
+	void KeepEntityOnScreen(Entity* e, float value = 50.0f);
 };
-
-

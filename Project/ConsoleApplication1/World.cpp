@@ -5,17 +5,13 @@
 #include <SFML/Window/Keyboard.hpp>
 
 void World::updateGame(double dt) {
-
+	dt *= timeScale;
 	bool coll = false;
-	PlayerPad* p = nullptr;
+	PlayerPad* p = Game::GetInstance()->player;
+	KeepEntityOnScreen(p);
+
 	for (auto e : dataPlay) {
-		if (e->type == Player) {
-			p = (PlayerPad*)e;
-			KeepEntityOnScreen(p);
-			break;
-		}
-	}
-	for (auto e : dataPlay) {
+		if (!e->visible) continue;
 		e->update(dt);
 		switch (e->type) {
 		case EType::Wall:
@@ -90,14 +86,32 @@ void World::updateGame(double dt) {
 
 			// Contact with player
 			if (Magnitude(e->getPosition() - p->getPosition()) < 150)
-				if (e->visible && p->visible)
+				if (e->visible && p->visible) {
 					p->ChangeHealth(-1);
+					Game::GetInstance()->pHit = true;
+				}
 			break;
 		}
+		case EType::Power:
+			// Collision with lasers
+			for (auto b : dataPlay) {
+				if (b->type == EType::Bullet) {
+					Laser* l = (Laser*)b;
+					for (int i = 0; i < l->px.size(); i++) {
+						if (!l->alive[i]) break;
+						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
+							if (e->ChangeHealth(-l->power[i]))
+								p->power++;
+							l->alive[i] = false;
+
+						}
+					}
+				}
+			}
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
 		if (pauseKeyUp) {
 			Game::GetInstance()->state = GameState::Pause;
 			pauseKeyUp = false;
@@ -223,7 +237,7 @@ void World::SpawnEnemy(sf::Vector2f pos) {
 	eShape->setPoint(3, Vector2f(20, 20));
 	eShape->setOrigin(Vector2f(20, 20));
 	eShape->setFillColor(Color::Transparent);
-	eShape->setOutlineThickness(3);
+	eShape->setOutlineThickness(7);
 
 	PushEntity(new Enemy(eShape), pos);
 
@@ -242,12 +256,22 @@ void World::SpawnObstacle(int radius, sf::Vector2f pos) {
 }
 
 
-void World::DestroyAllEnemies() {
-	for (auto e : dataPlay)
-		if (e->type == EType::Bot)
-			e->visible = false;
-	eCount = 0;
+void World::InstantiatePower() {
+	sf::CircleShape* cShape = new sf::CircleShape(20);
+	cShape->setOrigin(20, 20);
+	sf::Texture* watch = new sf::Texture();
+	watch->loadFromFile("res/watch.png");
+	cShape->setTexture(watch);
+	cShape->setOutlineThickness(4);
+	cShape->setOutlineColor(sf::Color::Yellow);
+	Entity* power = new Entity(EType::Power, cShape);
+	PushEntity(power);
+	power->dx = -20;
+	power->dy = 5;
+	power->setPosition(1030, 250);
+	power->SetHealth(20);
 }
+
 
 
 void World::KeepEntityOnScreen(Entity* e, float value) {

@@ -58,7 +58,6 @@ int main()
 
 
 #pragma region player	
-	float speed = 800.0f;
 	ConvexShape* pShape = new ConvexShape(11);
 	pShape->setPoint(0, Vector2f(30, 0));						  /*		7 ----- 8				  */
 	pShape->setPoint(1, Vector2f(13, 30));						  /*	  /				    	9	  */
@@ -72,7 +71,7 @@ int main()
 	pShape->setPoint(9, Vector2f(60, -35));						  /*		4 ----- 3				  */
 	pShape->setPoint(10, Vector2f(13, -30));			
 	pShape->setFillColor(Color::Transparent);			
-	pShape->setOutlineThickness(4);
+	pShape->setOutlineThickness(10);
 
 	PlayerPad p(pShape, &b);
 	p.setPosition(950, 400);
@@ -101,30 +100,9 @@ int main()
 
 		#pragma region PlayerControls
 		// Move
-		if (p.visible && Game::GetInstance()->state != GameState::Pause)
+		if (Game::GetInstance()->state == GameState::Playing)
 		{
-			bool keyHit = false;
 			Vector2f pPos = p.getPosition();
-			if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Z)) {
-				pPos.y -= speed * dt;
-				keyHit = true;
-			}
-			if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
-				pPos.y += speed * dt;
-				keyHit = true;
-			}
-			if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Q)) {
-				pPos.x -= speed * dt;
-				keyHit = true;
-			}
-			if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
-				pPos.x += speed * dt;
-				keyHit = true;
-			}
-			if (keyHit)
-				p.setPosition(pPos.x, pPos.y);
-
-
 			Vector2f pToMouse = Vector2f(
 				Mouse::getPosition(window).x - p.getPosition().x,
 				Mouse::getPosition(window).y - p.getPosition().y);
@@ -141,7 +119,6 @@ int main()
 		#pragma endregion
 		
 		cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-
 		
 		Game::GetInstance()->update(dt);
 		text.setString(to_string(world.eCount));
@@ -151,7 +128,7 @@ int main()
 		ImGui::SFML::Update(window, sf::milliseconds((int)(dt * 1000.0)));
 		ShowDemoWindow();
 		Begin("Edit");
-		DragFloat("Speed", &speed, 1.0f, 0.0f, 1000.0f);
+		DragInt("Speed", &p.speed, 1.0f, 0.0f, 1000.0f);
 		Separator();
 
 		DragFloat("bSpeed", &b.speed, 5.0f, 100.0f, 10000.0f);
