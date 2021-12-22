@@ -77,10 +77,11 @@ void World::updateGame(double dt) {
 									for (int i = 0; i < 40; i++) {
 										sf::CircleShape* cShape = new sf::CircleShape(2 + rand() % 10);
 										cShape->setFillColor(sf::Color(rand() % 255, rand() % 50, rand() % 60));
-										Entity* p = new Entity(EType::FX, cShape);
-										p->dx = cos(i * rand() % 300) * RadToDeg();
-										p->dy = sin(i * rand() % 300) * RadToDeg();
+										Particle* p = new Particle(cShape);
+										p->dx =  cos(i * rand() % 300) * RadToDeg();
+										p->dy =  sin(i * rand() % 300) * RadToDeg();
 										p->setPosition(e->getPosition().x, e->getPosition().y);
+										bool inserted = false;
 										dataFX.push_back(p);
 									}
 								}

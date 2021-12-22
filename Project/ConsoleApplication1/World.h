@@ -11,7 +11,7 @@ class World {
 public:	
 	sf::RenderWindow* window = nullptr;;
 	std::vector<Entity*>	dataPlay;
-	std::vector<Entity*>	dataFX;
+	std::vector<Particle*>	dataFX;
 	std::vector<Button*>	dataPause;
 	std::vector<Button*>	dataMenu;
 	std::vector<Button*>	dataGameOver;

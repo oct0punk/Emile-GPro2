@@ -292,3 +292,19 @@ void Button::draw(sf::RenderWindow& win) {
 sf::Color Button::baseColor = sf::Color(sf::Color::Blue);
 sf::Color Button::selectedColor = sf::Color(sf::Color::Cyan);
 sf::Color Button::clickedColor = sf::Color(sf::Color(150, 50, 0));
+
+void Particle::update(double dt) {
+	Entity::update(dt);
+	time -= dt;
+	if (time > 0) {
+
+		int r = lerp(time / originalTime, 0, color.r);
+		int g = lerp(time / originalTime, 0, color.g);
+		int b = lerp(time / originalTime, 0, color.b);
+		int a = lerp(time / originalTime, 0, color.a);
+
+		spr->setFillColor(sf::Color(r, g, b, a));
+	}
+	else
+		visible = false;
+}

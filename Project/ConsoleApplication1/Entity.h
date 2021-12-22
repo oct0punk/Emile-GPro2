@@ -123,6 +123,22 @@ protected:
 };
 
 
+class Particle : public Entity {
+public:
+	float originalTime;
+	float time;
+	sf::Color color;
+
+	Particle(sf::Shape* _spr) : Entity(EType::FX, _spr) {
+		originalTime = .3f + rand() % 3;
+		time = originalTime;
+		color = _spr->getFillColor();
+	}
+
+	virtual void update(double dt);
+};
+
+
 class Laser : public Entity {
 	float reloading = 0.0f;
 public:
