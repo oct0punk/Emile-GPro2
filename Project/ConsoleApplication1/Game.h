@@ -18,7 +18,7 @@ public:
 	World* world = nullptr;
 	GameState state = GameState::Menu;
 	int wave = 0;
-	int enemyCount = 5;
+	int enemyCount = 0;
 	bool pHit = false;
 
 	static void create(World* w, PlayerPad* p) {
@@ -33,7 +33,7 @@ public:
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 	void NextWave();
-	int EnemyHealth() { return wave + (wave % 2) * 3; }
+	int EnemyHealth() { return -1 + wave * 2 + rand() % wave; }
 
 	void Reset();
 };

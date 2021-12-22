@@ -74,11 +74,10 @@ void PlayerPad::update(double dt) {
 		invincibleTime -= dt;
 		if (invincibleTime <= 0) {
 			invincible = false;
-			spr->setFillColor(sf::Color(150, 50, 0));
 		}
 	}
 	else
-		spr->setFillColor(sf::Color::Transparent);
+		spr->setOutlineColor(sf::Color::White);
 
 	// Moves
 	bool keyHit = false;
@@ -127,7 +126,7 @@ bool PlayerPad::ChangeHealth(int amount) {
 	if (amount < 0) {
 		invincible = true;
 		invincibleTime = 1.0f;
-		spr->setFillColor(sf::Color::Red);
+		spr->setOutlineColor(sf::Color::Red);
 	}
 	health += amount;
 	if (health < 0) {

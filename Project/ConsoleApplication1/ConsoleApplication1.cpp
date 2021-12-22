@@ -117,14 +117,12 @@ int main()
 						shootflag = false;
 					}
 				}
-				else
-				{
+				else {
 					b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, 0.1f);
 				}
 			}
-			else
-			{
-					shootflag = true;
+			else {
+				shootflag = true;
 			}
 
 		}

@@ -47,6 +47,7 @@ enum EType {
 	Bot,
 	Wall,
 	Power,
+	FX,
 	UI,
 };
 
@@ -90,30 +91,30 @@ public:
 	void SetHealth(int value) {
 		health = value;
 	}
-	virtual void Revive() {
-		SetHealth(3);
-		visible = true;
-		setPosition(800, 700);
-	}
+virtual void Revive() {
+	SetHealth(3);
+	visible = true;
+	setPosition(800, 700);
+}
 
 
-	//ajoute les cmds a la fin de la liste courante
-	void appendCmd(Cmd* cmd) {
-		if (cmds)
-			cmds = cmds->append(cmd);
-		else
-			cmds = cmd;
-	}
-	void Translate(sf::Vector2f pos, float speed) { 
-		targetPos = pos;
-		appendCmd(new Cmd(CmdType::Move, speed)); 
-	}
-	virtual void Movement(double dt);
+//ajoute les cmds a la fin de la liste courante
+void appendCmd(Cmd* cmd) {
+	if (cmds)
+		cmds = cmds->append(cmd);
+	else
+		cmds = cmd;
+}
+void Translate(sf::Vector2f pos, float speed) {
+	targetPos = pos;
+	appendCmd(new Cmd(CmdType::Move, speed));
+}
+virtual void Movement(double dt);
 
-	virtual void update(double dt);
-	virtual void draw(sf::RenderWindow& win);
+virtual void update(double dt);
+virtual void draw(sf::RenderWindow& win);
 
-	
+
 
 protected:
 	sf::Vector2f targetPos;
@@ -122,7 +123,7 @@ protected:
 };
 
 
-class Laser : public Entity {	
+class Laser : public Entity {
 	float reloading = 0.0f;
 public:
 
@@ -162,13 +163,18 @@ public:
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 	virtual bool ChangeHealth(int amount);
+	virtual void Revive() {
+		Entity::Revive();
+		for (auto l : laser->alive)
+			l = false;
+	}
 	void Power();
 
 };
 
 
 class Enemy : public Entity {
-public :
+public:
 	PlayerPad* p = nullptr;
 
 	Enemy(sf::Shape* _spr) : Entity(EType::Bot, _spr) {
@@ -184,16 +190,14 @@ public :
 };
 
 
-
-
 enum ButtonState {
 	Normal,
 	Selected,
 	Clicked,
 };
-// Button methods
-void PlayMode();
 
+
+void PlayMode();
 void RetryButton();
 
 class Button : public Entity {

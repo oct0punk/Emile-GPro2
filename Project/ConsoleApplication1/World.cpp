@@ -68,11 +68,22 @@ void World::updateGame(double dt) {
 				if (b->type == EType::Bullet) {
 					Laser* l = (Laser*)b;
 					for (int i = 0; i < l->px.size(); i++) {
-						if (!l->alive[i]) break;
+						if (!l->alive[i]) continue;
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
 							if (e->visible) {
-								if (enemy->ChangeHealth(-l->power[i]))
+								if (enemy->ChangeHealth(-l->power[i])) {
 									eCount--;
+									// FX
+									for (int i = 0; i < 40; i++) {
+										sf::CircleShape* cShape = new sf::CircleShape(2 + rand() % 10);
+										cShape->setFillColor(sf::Color(rand() % 255, rand() % 50, rand() % 60));
+										Entity* p = new Entity(EType::FX, cShape);
+										p->dx = cos(i * rand() % 300) * RadToDeg();
+										p->dy = sin(i * rand() % 300) * RadToDeg();
+										p->setPosition(e->getPosition().x, e->getPosition().y);
+										dataFX.push_back(p);
+									}
+								}
 								l->alive[i] = false;
 							}
 						}
@@ -108,6 +119,9 @@ void World::updateGame(double dt) {
 				}
 			}
 		}
+
+		for (auto p : dataFX)
+			p->update(dt);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
@@ -172,6 +186,8 @@ void World::drawGame(sf::RenderWindow& window) {
 	for (auto e : dataPlay) {
 		e->draw(window);
 	}
+	for (auto p : dataFX)
+		p->draw(window);
 }
 
 
