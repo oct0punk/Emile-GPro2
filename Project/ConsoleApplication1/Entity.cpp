@@ -108,8 +108,10 @@ void PlayerPad::update(double dt) {
 	}
 	if (powerTime > 0.0f) {
 		powerTime -= dt;
-		if (powerTime <= 0.0f)
+		if (powerTime <= 0.0f) {
 			Game::GetInstance()->world->timeScale = 1.0f;
+			Audio::GetInstance()->SetPitch(1.0f);
+		}
 
 	}
 }
@@ -139,6 +141,8 @@ bool PlayerPad::ChangeHealth(int amount) {
 
 void PlayerPad::Power() {
 	Game::GetInstance()->world->timeScale = 0.01f;
+	Audio::GetInstance()->SetPitch(0.2f);
+	laser->reloading = 0.0f;
 }
 
 
@@ -157,7 +161,7 @@ bool Entity::ChangeHealth(int amount) {
 void Laser::create(float _px, float _py, float _dx, float _dy, float rTime, int p) {
 	if (reloading > 0.0f) return;
 	reloading = rTime;
-	Audio::GetInstance()->Play();
+	Audio::GetInstance()->Play(&Audio::GetInstance()->stdShot);
 
 	sf::Vector2f dir(_dx, _dy);
 	Normalize(&dir);

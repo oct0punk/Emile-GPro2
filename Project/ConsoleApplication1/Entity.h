@@ -130,7 +130,7 @@ public:
 	sf::Color color;
 
 	Particle(sf::Shape* _spr) : Entity(EType::FX, _spr) {
-		originalTime = .3f + rand() % 3;
+		originalTime = .3f + 50.0f * (rand() % 10 / 200.0f);
 		time = originalTime;
 		color = _spr->getFillColor();
 	}
@@ -140,8 +140,8 @@ public:
 
 
 class Laser : public Entity {
-	float reloading = 0.0f;
 public:
+	float reloading = 0.0f;
 
 	float speed = 3000.0f;
 
