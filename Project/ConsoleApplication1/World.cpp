@@ -18,7 +18,7 @@ void World::updateGame(double dt) {
 		{
 			float distanceToP = Magnitude(p->getPosition().x, p->getPosition().y, e->getPosition().x, e->getPosition().y);
 			float radius = e->spr->getGlobalBounds().width / 2;
-			// The obstacle rebound on the screen edges
+			// The obstacle rebound on edges outside the screen
 			sf::Vector2f pos = e->getPosition();
 			if (e->getPosition().x < -radius * 3)
 				pos.x = window->getSize().x + radius * 2;
@@ -37,18 +37,14 @@ void World::updateGame(double dt) {
 				moveP.y *= radius / distanceToP;
 				p->setPosition(e->getPosition().x + moveP.x, e->getPosition().y + moveP.y);
 			}
-			// Contact with ball
+			// Contact with laser
 			for (auto b : dataPlay) { // Rebound
 				if (b->type == Bullet) {
 					Laser* l = (Laser*)b;
 					for (int i = 1; i <= l->px.size(); i++) {
 						sf::Vector2f bPos = sf::Vector2f(l->px[i - 1], l->py[i - 1]);
 						float distance = Magnitude(e->getPosition().x, e->getPosition().y, bPos.x, bPos.y);
-						if (distance < e->spr->getGlobalBounds().width / 3)		
-						{
-							l->alive[i - 1] = false;
-							continue;
-						}   // if rebound failed
+
 						if (distance < e->spr->getGlobalBounds().width / 2) {
 							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - e->getPosition());
 							l->px[i - 1] -= l->dx[i - 1] * dt * l->speed * 1.2f;			// Move the bullet to previous good position

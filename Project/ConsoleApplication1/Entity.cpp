@@ -142,6 +142,7 @@ bool PlayerPad::ChangeHealth(int amount) {
 void PlayerPad::Power() {
 	Game::GetInstance()->world->timeScale = 0.01f;
 	Audio::GetInstance()->SetPitch(0.2f);
+	Audio::GetInstance()->Play(&Audio::GetInstance()->slow);
 	laser->reloading = 0.0f;
 }
 
@@ -192,7 +193,9 @@ void Laser::ChangeDirection(int idx, float x, float y) {
 	Normalize(&dir);
 	dx[idx] = dir.x;
 	dy[idx] = dir.y;
+	speed += 10;
 	power[idx] += 10;
+	Audio::GetInstance()->Play(&Audio::GetInstance()->lHit);
 }
 
 
