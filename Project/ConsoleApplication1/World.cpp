@@ -263,8 +263,9 @@ void World::SpawnEnemy(sf::Vector2f pos) {
 	eShape->setPoint(2, Vector2f(0, 40));
 	eShape->setPoint(3, Vector2f(20, 20));
 	eShape->setOrigin(Vector2f(20, 20));
-	eShape->setFillColor(Color::Transparent);
 	eShape->setOutlineThickness(7);
+	eShape->setFillColor(	sf::Color::Blue);
+	eShape->setOutlineColor(sf::Color::White);
 
 	PushEntity(new Enemy(eShape), pos);
 
@@ -276,7 +277,7 @@ void World::SpawnObstacle(int radius, sf::Vector2f pos) {
 	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
 	wShape->setFillColor(sf::Color::Transparent);
 	wShape->setOutlineThickness(radius / 7);
-	wShape->setOutlineColor(sf::Color::Cyan);
+	wShape->setOutlineColor(rand() % 2 == 0 ? sf::Color::Red : sf::Color::Cyan);
 	Entity* w = new Entity(EType::Wall, wShape);
 	w->setPosition(pos.x, pos.y);
 	dataPlay.push_back(w);

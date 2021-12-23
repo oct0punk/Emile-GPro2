@@ -71,13 +71,18 @@ Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 void PlayerPad::update(double dt) {
 	dt /= Game::GetInstance()->world->timeScale;
 	if (invincible) {
+		spr->setFillColor(fColorInv);
+		spr->setOutlineColor(oColorInv);
 		invincibleTime -= dt;
 		if (invincibleTime <= 0) {
 			invincible = false;
+			spr->setOutlineColor(oColor);
+			spr->setFillColor(fColor);
 		}
+	} else {
+		spr->setFillColor(fColor);
+		spr->setOutlineColor(oColor);
 	}
-	else
-		spr->setOutlineColor(sf::Color::White);
 
 	// Moves
 	bool keyHit = false;
@@ -105,6 +110,7 @@ void PlayerPad::update(double dt) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && power > 0) {
 		Power();
 		powerTime = 4.2f;
+		power--;
 	}
 	if (powerTime > 0.0f) {
 		powerTime -= dt;
@@ -128,7 +134,8 @@ bool PlayerPad::ChangeHealth(int amount) {
 	if (amount < 0) {
 		invincible = true;
 		invincibleTime = 1.0f;
-		spr->setOutlineColor(sf::Color::Red);
+		spr->setOutlineColor(oColorInv);
+		spr->setFillColor(fColorInv);
 	}
 	health += amount;
 	if (health < 0) {
@@ -191,9 +198,11 @@ void Laser::create(float _px, float _py, float _dx, float _dy, float rTime, int 
 void Laser::ChangeDirection(int idx, float x, float y) {
 	sf::Vector2f dir(x, y);
 	Normalize(&dir);
+	float acc = Magnitude(sf::Vector2f(dx[idx], dy[idx])) * 1.5f;
+	dir.x *= acc;
+	dir.y *= acc;
 	dx[idx] = dir.x;
 	dy[idx] = dir.y;
-	speed += 10;
 	power[idx] += 10;
 	Audio::GetInstance()->Play(&Audio::GetInstance()->lHit);
 }
@@ -271,7 +280,6 @@ void Enemy::update(double dt)
 }
 
 
-
 void Enemy::SlowDown(int speed) {
 	dx = clamp(0.0f, dx - speed, dx + speed);
 	dy = clamp(0.0f, dy - speed, dy + speed);
@@ -282,7 +290,6 @@ void Enemy::SlowDown(int speed) {
 
 void PlayMode()		{ Game::GetInstance()->state = GameState::Playing; }
 void RetryButton()	{ Game::GetInstance()->Reset(); }
-
 
 
 Button::Button(sf::Shape* _spr, sf::Text* txt, void(*func)(void)) : Entity(EType::UI, _spr) {

@@ -64,8 +64,9 @@ int main()
 	pShape->setPoint(8, Vector2f(18, -55));						  /*	  \						2	  */
 	pShape->setPoint(9, Vector2f(60, -35));						  /*		4 ----- 3				  */
 	pShape->setPoint(10, Vector2f(13, -30));			
-	pShape->setFillColor(Color::Transparent);			
-	pShape->setOutlineThickness(10);
+	pShape->setFillColor(Color::Blue);
+	pShape->setOutlineColor(Color::Yellow);
+	pShape->setOutlineThickness(7);
 
 	PlayerPad p(pShape, &b);
 	p.setPosition(950, 400);
@@ -83,6 +84,8 @@ int main()
 	double tExitFrame = getTimeStamp();
 	bool shootflag = true;
 
+	int* thickness = new int(2);
+
 	while (window.isOpen()) {
 		double dt = tExitFrame - tEnterFrame;
 		tEnterFrame = getTimeStamp();
@@ -96,29 +99,40 @@ int main()
 
 
 		// UPDATE
-
+		if (sf::Joystick::isConnected) {
+			std::cout << "Joystick is connected\n";
+			sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X);
+		}
 		#pragma region PlayerControls
-		// Move
 		if (Game::GetInstance()->state == GameState::Playing)
 		{
+			// Shoot
 			Vector2f pPos = p.getPosition();
-			Vector2f pToMouse = Vector2f(
-				Mouse::getPosition(window).x - p.getPosition().x,
-				Mouse::getPosition(window).y - p.getPosition().y);
-			Normalize(&pToMouse);
-			float intoMouse = atan2(pToMouse.y, pToMouse.x) * RadToDeg();
-			p.setRotation(intoMouse);
+			Vector2f aimDir;
+			if (sf::Joystick::isConnected(0)) {
+				aimDir = Vector2f(
+					sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::U),
+					sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::V));
+			}
+			else {
+				aimDir = Vector2f(
+					Mouse::getPosition(window).x - p.getPosition().x,
+					Mouse::getPosition(window).y - p.getPosition().y);
+			}
+			Normalize(&aimDir);
+			float rotAngle = atan2(aimDir.y, aimDir.x) * RadToDeg();
+			p.setRotation(rotAngle);
 
 			// Shoot
 			if (Mouse::isButtonPressed(Mouse::Left)) {
 				if (world.timeScale < 1.0f) {
 					if (shootflag) {
-						b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, world.timeScale * world.timeScale, 8);
+						b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, world.timeScale * world.timeScale, 8);
 						shootflag = false;
 					}
 				}
 				else {
-					b.create(pPos.x, pPos.y, pToMouse.x, pToMouse.y, 0.1f);
+					b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, 0.1f);
 				}
 			}
 			else {
@@ -131,37 +145,13 @@ int main()
 		cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 		
 		Game::GetInstance()->update(dt);
-		text.setString(to_string(world.eCount));
+		text.setString(to_string(p.power));
 
 		// IMGUI
 		{	using namespace ImGui;
 		ImGui::SFML::Update(window, sf::milliseconds((int)(dt * 1000.0)));
 		ShowDemoWindow();
 		Begin("Edit");
-		DragInt("Speed", &p.speed, 1.0f, 0.0f, 1000.0f);
-		Separator();
-
-		DragFloat("bSpeed", &b.speed, 5.0f, 100.0f, 10000.0f);
-		if (DragFloat("bWidth", &bWidth, .1f, 0.1f, 50.0f)) {
-			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
-			b.spr = bShape;
-		}
-		if (DragFloat("bHeight", &bHeight, .1f, 0.1f, 50.0f)) {
-			bShape = new RectangleShape(Vector2f(bWidth, bHeight));
-			b.spr = bShape;
-		}
-		//DragFloat("Reload time", &b.reloadTime, .01f, 0.01f, .5f);
-		Separator();
-
-		//background color
-		float col[4]{ world.clearColor->r / 255.0f, world.clearColor->g / 255.0f, world.clearColor->b / 255.0f, world.clearColor->a / 255.0f };
-		if (ColorPicker4("ClearColor", col))
-		{
-			world.clearColor->r = col[0] * 255.f;
-			world.clearColor->g = col[1] * 255.f;
-			world.clearColor->b = col[2] * 255.f;
-			world.clearColor->a = col[3] * 255.f;
-		}
 		ImGui::End();
 		}
 

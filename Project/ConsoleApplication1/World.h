@@ -15,7 +15,7 @@ public:
 	std::vector<Button*>	dataPause;
 	std::vector<Button*>	dataMenu;
 	std::vector<Button*>	dataGameOver;
-	sf::Color* clearColor = new sf::Color(20, 20, 20, 20);
+	sf::Color* clearColor = new sf::Color(0, 0, 20, 0);
 	float timeScale = 1.0f;
 	int eCount = 0;
 	bool pauseKeyUp = true;
