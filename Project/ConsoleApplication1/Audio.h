@@ -9,6 +9,8 @@ private:
 	sf::SoundBuffer themBuf;
 	sf::SoundBuffer slowBuf;
 	sf::SoundBuffer lHitBuf;
+	sf::SoundBuffer hitBuf;
+	sf::SoundBuffer powerBuf;
 	float pitch = 1.0f;
 
 	Audio();	
@@ -20,6 +22,8 @@ public:
 	sf::Sound them;
 	sf::Sound slow;
 	sf::Sound lHit;
+	sf::Sound hit;
+	sf::Sound power;
 
 	static Audio* GetInstance();
 
@@ -29,8 +33,9 @@ public:
 		pitch = val;
 		stdShot.setPitch(val);
 		them.setPitch(val);
-		slow.setPitch(val);
 		lHit.setPitch(val);
+		power.setPitch(val);
+		hit.setPitch(val);
 	}
 };
 

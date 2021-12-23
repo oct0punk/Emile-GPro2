@@ -142,7 +142,7 @@ bool PlayerPad::ChangeHealth(int amount) {
 void PlayerPad::Power() {
 	Game::GetInstance()->world->timeScale = 0.01f;
 	Audio::GetInstance()->SetPitch(0.2f);
-	Audio::GetInstance()->Play(&Audio::GetInstance()->slow);
+	Audio::GetInstance()->slow.play();
 	laser->reloading = 0.0f;
 }
 
@@ -302,16 +302,18 @@ sf::Color Button::clickedColor = sf::Color(sf::Color(150, 50, 0));
 
 void Particle::update(double dt) {
 	Entity::update(dt);
-	time -= dt;
-	if (time > 0) {
+	if (type == EType::Bot) {
+		time -= dt;
+		if (time > 0) {
 
-		int r = lerp(time / originalTime, 0, color.r);
-		int g = lerp(time / originalTime, 0, color.g);
-		int b = lerp(time / originalTime, 0, color.b);
-		int a = lerp(time / originalTime, 0, color.a);
+			int r = lerp(time / originalTime, 0, color.r);
+			int g = lerp(time / originalTime, 0, color.g);
+			int b = lerp(time / originalTime, 0, color.b);
+			int a = lerp(time / originalTime, 0, color.a);
 
-		spr->setFillColor(sf::Color(r, g, b, a));
+			spr->setFillColor(sf::Color(r, g, b, a));
+		}
+		else
+			visible = false;
 	}
-	else
-		visible = false;
 }

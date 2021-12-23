@@ -2,6 +2,7 @@
 #include"Tool.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "Game.h"
+#include "Audio.h"
 #include <SFML/Window/Keyboard.hpp>
 
 void World::updateGame(double dt) {
@@ -72,8 +73,8 @@ void World::updateGame(double dt) {
 									// FX
 									for (int i = 0; i < 40; i++) {
 										sf::CircleShape* cShape = new sf::CircleShape(2 + rand() % 10);
-										cShape->setFillColor(sf::Color(rand() % 255, rand() % 50, rand() % 60));
-										Particle* p = new Particle(cShape);
+										cShape->setFillColor(sf::Color(255 - rand() % 55, rand() % 150, 0));
+										Particle* p = new Particle(EType::Bot, cShape);
 										p->dx =  cos(i * rand() % 300) * RadToDeg();
 										p->dy =  sin(i * rand() % 300) * RadToDeg();
 										p->setPosition(e->getPosition().x, e->getPosition().y);
@@ -82,6 +83,7 @@ void World::updateGame(double dt) {
 									}
 								}
 								l->alive[i] = false;
+								Audio::GetInstance()->Play(&Audio::GetInstance()->hit);
 							}
 						}
 					}
@@ -92,7 +94,7 @@ void World::updateGame(double dt) {
 			//	KeepEntityOnScreen(e);
 
 			// Contact with player
-			if (Magnitude(e->getPosition() - p->getPosition()) < 150)
+			if (Magnitude(e->getPosition() - p->getPosition()) < 150 && timeScale >= 1.0f)
 				if (e->visible && p->visible) {
 					p->ChangeHealth(-1);
 					Game::GetInstance()->pHit = true;
@@ -107,9 +109,12 @@ void World::updateGame(double dt) {
 					for (int i = 0; i < l->px.size(); i++) {
 						if (!l->alive[i]) break;
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
-							if (e->ChangeHealth(-l->power[i]))
+							if (e->ChangeHealth(-l->power[i])) {
 								p->power++;
+								Audio::GetInstance()->Play(&Audio::GetInstance()->power);
+							}
 							l->alive[i] = false;
+							Audio::GetInstance()->Play(&Audio::GetInstance()->hit);
 
 						}
 					}
@@ -180,11 +185,11 @@ void World::updateGameOver(double dt) {
 
 void World::drawGame(sf::RenderWindow& window) {
 	window.clear(*clearColor);
+	for (auto p : dataFX)
+		p->draw(window);
 	for (auto e : dataPlay) {
 		e->draw(window);
 	}
-	for (auto p : dataFX)
-		p->draw(window);
 }
 
 
@@ -206,6 +211,16 @@ void World::drawGameOver(sf::RenderWindow& win) {
 
 
 
+
+void World::PushFX(Particle* p) {
+	for (auto e : dataFX) {
+		if ((!e->visible)) {
+			e = p;
+			return;
+		}
+	}
+	dataFX.push_back(p);
+}
 
 void World::PushEntity(Entity* e, sf::Vector2f pos) {
 	bool inserted = false;

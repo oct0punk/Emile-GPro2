@@ -43,9 +43,16 @@ public:
 		dataGameOver.push_back(retry);
 
 #pragma endregion
+
+		for (int i = 0; i < 1000; i++) {
+			sf::CircleShape shape(rand() % 100 / 100.0f);
+			shape.setFillColor(sf::Color(255 - rand() % 25, 255 - rand() % 10, 255));
+			shape.setPosition(rand() % window->getSize().x, rand() % window->getSize().y);
+			dataFX.push_back(new Particle(EType::FX, new sf::CircleShape(shape)));
+		}
 	}
 
-
+	void PushFX(Particle* p);
 	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnEnemy(sf::Vector2f pos = sf::Vector2f(0, 0));
 	void SpawnObstacle(int radius, sf::Vector2f pos);

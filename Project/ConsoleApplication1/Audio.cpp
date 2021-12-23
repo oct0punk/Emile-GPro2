@@ -18,6 +18,12 @@ Audio::Audio() {
 	
 	slowBuf.loadFromFile("res/slow.wav");
 	slow.setBuffer(slowBuf);
+
+	hitBuf.loadFromFile("res/hitHurt.wav");
+	hit.setBuffer(hitBuf);
+
+	powerBuf.loadFromFile("res/powerUp.wav");
+	power.setBuffer(powerBuf);
 	
 	pitch = Game::GetInstance()->world->timeScale;
 }
@@ -30,7 +36,7 @@ Audio* Audio::GetInstance() {
 
 void Audio::Play(sf::Sound* s) {
 	float p = (rand() % 3000) / 10000.0f;
-	s->setPitch(pitch + p);
+	s->setPitch(pitch + p * Game::GetInstance()->world->timeScale);
 	s->play();
 }
 

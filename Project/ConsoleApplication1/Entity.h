@@ -129,7 +129,8 @@ public:
 	float time;
 	sf::Color color;
 
-	Particle(sf::Shape* _spr) : Entity(EType::FX, _spr) {
+
+	Particle(EType type, sf::Shape* _spr) : Entity(type, _spr) {
 		originalTime = .3f + 50.0f * (rand() % 10 / 200.0f);
 		time = originalTime;
 		color = _spr->getFillColor();
