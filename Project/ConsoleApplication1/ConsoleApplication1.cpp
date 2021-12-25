@@ -13,6 +13,7 @@
 #include "World.h"
 #include "Game.h"
 #include "Audio.h"
+#include "Command.h"
 
 #include "imgui.h"
 #include "imgui-SFML.h"
@@ -76,6 +77,7 @@ int main()
 
 	Game::create(&world, &p);
 	Audio::GetInstance();
+	Controls control;
 
 	ImGui::SFML::Init(window);
 
@@ -99,49 +101,45 @@ int main()
 
 
 		// UPDATE
-		if (sf::Joystick::isConnected) {
-			std::cout << "Joystick is connected\n";
-			sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X);
-		}
-		#pragma region PlayerControls
-		if (Game::GetInstance()->state == GameState::Playing)
-		{
-			// Shoot
-			Vector2f pPos = p.getPosition();
-			Vector2f aimDir;
-			if (sf::Joystick::isConnected(0)) {
-				aimDir = Vector2f(
-					sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::U),
-					sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::V));
-			}
-			else {
-				aimDir = Vector2f(
-					Mouse::getPosition(window).x - p.getPosition().x,
-					Mouse::getPosition(window).y - p.getPosition().y);
-			}
-			Normalize(&aimDir);
-			float rotAngle = atan2(aimDir.y, aimDir.x) * RadToDeg();
-			p.setRotation(rotAngle);
-
-			// Shoot
-			if (Mouse::isButtonPressed(Mouse::Left)) {
-				if (world.timeScale < 1.0f) {
-					if (shootflag) {
-						b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, world.timeScale * world.timeScale, 8);
-						shootflag = false;
-					}
-				}
-				else {
-					b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, 0.1f);
-				}
-			}
-			else {
-				shootflag = true;
-			}
-
-		}
-		#pragma endregion
-		
+		control.Update();
+//#pragma region PlayerControls
+//		if (Game::GetInstance()->state == GameState::Playing)
+//		{
+//			// Shoot
+//			Vector2f pPos = p.getPosition();
+//			Vector2f aimDir;
+//			if (sf::Joystick::isConnected(0)) {
+//				aimDir = Vector2f(
+//					sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::U),
+//					sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::V));
+//			}
+//			else {
+//				aimDir = Vector2f(
+//					Mouse::getPosition(window).x - p.getPosition().x,
+//					Mouse::getPosition(window).y - p.getPosition().y);
+//			}
+//			Normalize(&aimDir);
+//			float rotAngle = atan2(aimDir.y, aimDir.x) * RadToDeg();
+//			p.setRotation(rotAngle);
+//
+//			// Shoot
+//			if (Mouse::isButtonPressed(Mouse::Left)) {
+//				if (world.timeScale < 1.0f) {
+//					if (shootflag) {
+//						b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, world.timeScale * world.timeScale, 8);
+//						shootflag = false;
+//					}
+//				}
+//				else {
+//					b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, 0.1f);
+//				}
+//			}
+//			else {
+//				shootflag = true;
+//			}
+//
+//		}
+//#pragma endregion
 		cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 		
 		Game::GetInstance()->update(dt);

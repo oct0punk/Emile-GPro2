@@ -1,3 +1,4 @@
+#pragma once
 #include <chrono>
 #include <ctime>
 #include "SFML/System/Vector2.hpp"
