@@ -2,6 +2,7 @@
 #include"Tool.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "Game.h"
+#include "Command.h"
 #include "Audio.h"
 #include <SFML/Window/Keyboard.hpp>
 
@@ -128,7 +129,7 @@ void World::updateGame(double dt) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
 		if (pauseKeyUp) {
-			Game::GetInstance()->state = GameState::Pause;
+			Game::GetInstance()->ChangeState(GameState::Pause);
 			pauseKeyUp = false;
 		}
 	}
@@ -140,15 +141,21 @@ void World::updateGame(double dt) {
 void World::updateMenu(double dt) {
 	for (auto e : dataMenu) {
 		e->update(dt);
+		if (Controls::GetInstance()->isConnected) {
+			selectedButton->state = ButtonState::Selected;
+			if (sf::Joystick::isButtonPressed(0, 0))
+				selectedButton->action();
 
-		sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
-		if (e->spr->getGlobalBounds().contains(mPos))
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				e->state = ButtonState::Clicked;
+		} else {
+			sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+			if (e->spr->getGlobalBounds().contains(mPos))
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+					e->state = ButtonState::Clicked;
+				else
+					e->state = ButtonState::Selected;
 			else
-				e->state = ButtonState::Selected;
-		else
-			e->state = ButtonState::Normal;
+				e->state = ButtonState::Normal;
+		}
 	}
 }
 
@@ -156,7 +163,7 @@ void World::updateMenu(double dt) {
 void World::updatePause(double dt) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		if (pauseKeyUp) {
-			Game::GetInstance()->state = GameState::Playing;
+			Game::GetInstance()->ChangeState(GameState::Playing);
 			pauseKeyUp = false;
 		}
 	}
@@ -168,15 +175,22 @@ void World::updatePause(double dt) {
 void World::updateGameOver(double dt) {
 	for (auto e : dataGameOver) {
 		e->update(dt);
+		if (Controls::GetInstance()->isConnected) {
+			selectedButton->state = ButtonState::Selected;
+			if (sf::Joystick::isButtonPressed(0, 0))
+				selectedButton->action();
 
-		sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
-		if (e->spr->getGlobalBounds().contains(mPos))
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				e->state = ButtonState::Clicked;
+		}
+		else {
+			sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+			if (e->spr->getGlobalBounds().contains(mPos))
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+					e->state = ButtonState::Clicked;
+				else
+					e->state = ButtonState::Selected;
 			else
-				e->state = ButtonState::Selected;
-		else
-			e->state = ButtonState::Normal;
+				e->state = ButtonState::Normal;
+		}
 	}
 }
 

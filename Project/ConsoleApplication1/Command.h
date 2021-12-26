@@ -51,7 +51,6 @@ public:
 	void Update() {
 		if (isConnected != JoystickIsConnected()) {
 			isConnected = JoystickIsConnected();
-			std::cout << isConnected;
 			aimingControl = isConnected ?
 				AimingJoystick :
 				AimingMouse;

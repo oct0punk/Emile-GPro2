@@ -99,4 +99,5 @@ sf::Vector2f CursorMouse(sf::CircleShape* cursor) {
 }
 
 
+
 Controls* Controls::instance;

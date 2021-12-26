@@ -8,7 +8,9 @@
 #include "SFML/Graphics/ConvexShape.hpp"
 
 class World {
+private:
 public:	
+	Button* selectedButton = nullptr;
 	sf::RenderWindow* window = nullptr;;
 	std::vector<Entity*>	dataPlay;
 	std::vector<Particle*>	dataFX;
@@ -32,10 +34,11 @@ public:
 		font->loadFromFile("res/arial.ttf");
 		sf::Text* text = new sf::Text("Play", *font);
 
-#pragma region Buttons
+		#pragma region Buttons
 		Button* menuPlay = new Button(rect, text, PlayMode);
 		menuPlay->setPosition(450, 666);
 		dataMenu.push_back(menuPlay);
+		selectedButton = menuPlay;
 
 		text->setString("Retry");
 		Button* retry = new Button(rect, text, RetryButton);
@@ -44,6 +47,7 @@ public:
 
 #pragma endregion
 
+		// Stars in background
 		for (int i = 0; i < 1000; i++) {
 			sf::CircleShape shape(rand() % 100 / 100.0f);
 			shape.setFillColor(sf::Color(255 - rand() % 25, 255 - rand() % 10, 255));

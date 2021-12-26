@@ -127,7 +127,7 @@ bool PlayerPad::ChangeHealth(int amount) {
 	health += amount;
 	if (health < 0) {
 		visible = false;
-		Game::GetInstance()->state = GameState::GameOver;
+		Game::GetInstance()->ChangeState(GameState::GameOver);
 		return true;
 	}
 	return false;
@@ -275,7 +275,7 @@ void Enemy::SlowDown(int speed) {
 
 
 
-void PlayMode()		{ Game::GetInstance()->state = GameState::Playing; }
+void PlayMode() { Game::GetInstance()->ChangeState(GameState::Playing); }
 void RetryButton()	{ Game::GetInstance()->Reset(); }
 
 

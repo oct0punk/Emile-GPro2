@@ -104,7 +104,7 @@ int main()
 #pragma region PlayerControls
 		Controls::GetInstance()->Update();
 		cursor.setPosition(Controls::GetInstance()->setCursor(&cursor).x, Controls::GetInstance()->setCursor(&cursor).y);
-		if (Game::GetInstance()->state == GameState::Playing)
+		if (Game::GetInstance()->GetGameState() == GameState::Playing)
 		{
 			// Move
 			Vector2f pPos = p.getPosition();
