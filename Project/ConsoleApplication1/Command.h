@@ -3,25 +3,43 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "Tool.hpp"
 #include "Game.h"
+#include <iostream>
+#include <SFML/Window/Keyboard.hpp>
 
 bool JoystickIsConnected();
 
-void JoystickShoot();
+sf::Vector2f MoveJoystick();
 
-void MouseShoot();
+sf::Vector2f MoveMouse();
+
+sf::Vector2f AimingJoystick();
+
+sf::Vector2f AimingMouse();
+
+bool ShootJoystick();
+
+bool ShootMouse();
 
 class Controls {
 public:
 	bool isConnected = false;
-	void (*shoot)() = MouseShoot;
+	sf::Vector2f (*aimingControl)() = AimingMouse;
+	sf::Vector2f (*moveControl)() = MoveMouse;
+	bool (*shootControl)() = ShootMouse;
 
 	void Update() {
 		if (isConnected != JoystickIsConnected()) {
 			isConnected = JoystickIsConnected;
-			shoot = isConnected ?
-				JoystickShoot :
-				MouseShoot;
+			std::cout << isConnected;
+			aimingControl = isConnected ?
+				AimingJoystick :
+				AimingMouse;
+			shootControl = isConnected ?
+				ShootJoystick :
+				ShootMouse;
+			moveControl = isConnected ?
+				MoveJoystick:
+				MoveMouse;
 		}
-		shoot();
 	}
 };

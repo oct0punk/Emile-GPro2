@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Audio.h"
 #include "SFML/Window/Keyboard.hpp"
+#include "Command.h"
 
 void Entity::update(double dt) {
 	timeSinceLevelStart += dt;
@@ -86,25 +87,11 @@ void PlayerPad::update(double dt) {
 
 	// Moves
 	bool keyHit = false;
-	sf::Vector2f pPos = getPosition();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-		pPos.y -= speed * dt;
-		keyHit = true;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		pPos.y += speed * dt;
-		keyHit = true;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-		pPos.x -= speed * dt;
-		keyHit = true;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		pPos.x += speed * dt;
-		keyHit = true;
-	}
-	if (keyHit)
-		setPosition(pPos.x, pPos.y);
+	sf::Vector2f pPos = MoveJoystick();
+	pPos.x *= speed * dt;
+	pPos.y *= speed * dt;
+	pPos += getPosition();
+	setPosition(pPos.x, pPos.y);
 
 	// Power
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && power > 0) {
