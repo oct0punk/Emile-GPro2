@@ -171,7 +171,7 @@ class PlayerPad : public Entity {
 public:
 	Laser* laser = nullptr;
 	int speed = 800.0f;
-	int power = 0;
+	int power = 1;
 	sf::Color fColor = sf::Color(10, 100, 150);
 	sf::Color oColor = sf::Color(230, 210, 85);
 	sf::Color fColorInv = sf::Color(100, 0, 0);

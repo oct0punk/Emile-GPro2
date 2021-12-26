@@ -9,6 +9,7 @@ Audio::Audio() {
 	themBuf.loadFromFile("res/them.wav");
 	them.setBuffer(themBuf); 
 	them.setVolume(10);
+	them.setLoop(true);
 	them.setPlayingOffset(sf::seconds(68.4f));
 	them.play();
 

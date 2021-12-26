@@ -4,6 +4,7 @@ bool JoystickIsConnected() {
 	return sf::Joystick::isConnected(0);
 }
 
+
 sf::Vector2f MoveJoystick() {
 	sf::Vector2f dir(
 		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X),
@@ -34,6 +35,7 @@ sf::Vector2f MoveMouse() {
 	return pPos;
 }
 
+
 sf::Vector2f AimingJoystick() {
 	sf::Vector2f aimDir = sf::Vector2f(
 		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::U),
@@ -56,6 +58,7 @@ sf::Vector2f AimingMouse() {
 	return aimDir;
 }
 
+
 bool ShootJoystick() {
 	return sf::Joystick::isButtonPressed(0, 5);
 }
@@ -63,3 +66,37 @@ bool ShootJoystick() {
 bool ShootMouse() {
 	return sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
+
+bool PowerJoystick() {
+	return sf::Joystick::isButtonPressed(0, 8)
+		&& sf::Joystick::isButtonPressed(0, 9);
+}
+
+bool PowerMouse() {
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+}
+
+
+sf::Vector2f CursorJoystick(sf::CircleShape* cursor)
+{
+	sf::Vector2f dir(
+		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::U),
+		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::V)
+	);
+	dir.x *= .3f;
+	dir.y *= .3f;
+	dir += cursor->getPosition();
+	dir.x = clamp(dir.x, 0, 1920 - cursor->getRadius());
+	dir.y = clamp(dir.y, 0, 1080 - cursor->getRadius());
+	return dir;
+}
+
+sf::Vector2f CursorMouse(sf::CircleShape* cursor) {
+	sf::Vector2f cPos(
+		sf::Mouse::getPosition(*Game::GetInstance()->world->window).x,
+		sf::Mouse::getPosition(*Game::GetInstance()->world->window).y);
+	return cPos;
+}
+
+
+Controls* Controls::instance;

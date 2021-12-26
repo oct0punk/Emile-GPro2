@@ -77,7 +77,7 @@ int main()
 
 	Game::create(&world, &p);
 	Audio::GetInstance();
-	Controls control;
+	Controls::GetInstance();
 
 	ImGui::SFML::Init(window);
 
@@ -102,17 +102,18 @@ int main()
 
 		// UPDATE
 #pragma region PlayerControls
-		control.Update();
+		Controls::GetInstance()->Update();
+		cursor.setPosition(Controls::GetInstance()->setCursor(&cursor).x, Controls::GetInstance()->setCursor(&cursor).y);
 		if (Game::GetInstance()->state == GameState::Playing)
 		{
 			// Move
 			Vector2f pPos = p.getPosition();
-			Vector2f aimDir = control.aimingControl();
+			Vector2f aimDir = cursor.getPosition() - p.getPosition(); //control.aimingControl();
 			float rotAngle = atan2(aimDir.y, aimDir.x) * RadToDeg();
 			p.setRotation(rotAngle);
 
 			// Shoot
-			if (control.shootControl()) {
+			if (Controls::GetInstance()->shootControl()) {
 				if (world.timeScale < 1.0f) {
 					if (shootflag) {
 						b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, world.timeScale * world.timeScale, 8);
@@ -129,10 +130,9 @@ int main()
 
 		}
 #pragma endregion
-		cursor.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 		
 		Game::GetInstance()->update(dt);
-		text.setString(to_string(control.isConnected));
+		text.setString(to_string(Controls::GetInstance()->isConnected));
 		// IMGUI
 		{	using namespace ImGui;
 		ImGui::SFML::Update(window, sf::milliseconds((int)(dt * 1000.0)));

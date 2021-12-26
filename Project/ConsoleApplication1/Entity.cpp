@@ -86,19 +86,19 @@ void PlayerPad::update(double dt) {
 	}
 
 	// Moves
-	bool keyHit = false;
-	sf::Vector2f pPos = MoveJoystick();
+	sf::Vector2f pPos = Controls::GetInstance()->moveControl();
 	pPos.x *= speed * dt;
 	pPos.y *= speed * dt;
 	pPos += getPosition();
 	setPosition(pPos.x, pPos.y);
 
 	// Power
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && power > 0) {
-		Power();
-		powerTime = 4.2f;
-		power--;
-	}
+	if (Controls::GetInstance()->powerControl())
+		if (power > 0 && powerTime <= .0f) {
+			Power();
+			powerTime = 4.2f;
+			power--;
+		}
 	if (powerTime > 0.0f) {
 		powerTime -= dt;
 		if (powerTime <= 0.0f) {
