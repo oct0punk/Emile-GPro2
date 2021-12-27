@@ -212,6 +212,7 @@ void World::drawMenu(sf::RenderWindow& win) {
 	for (auto e : dataMenu) {
 		e->draw(win);
 	}
+	win.draw(credit);
 }
 
 

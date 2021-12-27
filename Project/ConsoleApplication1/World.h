@@ -17,6 +17,7 @@ public:
 	std::vector<Button*>	dataPause;
 	std::vector<Button*>	dataMenu;
 	std::vector<Button*>	dataGameOver;
+	sf::Text credit;
 	sf::Color* clearColor = new sf::Color(0, 0, 20, 0);
 	float timeScale = 1.0f;
 	int eCount = 0;
@@ -45,6 +46,39 @@ public:
 		retry->setPosition(450, 666);
 		dataGameOver.push_back(retry);
 
+		FILE* f;
+		fopen_s(&f, "res/credit.txt", "rb");
+		char* str;
+		long size;
+		fseek(f, 0, SEEK_END);
+		size = ftell(f);
+		rewind(f);
+		str = (char*)malloc(sizeof(char) * size);
+		fread(str, 1, size, f);
+		str[strlen(str) - 4] = 0;
+		fclose(f);
+
+		//std::string str;
+		//FILE* f;
+		//fopen_s(&f, "res/credit.txt", "rb");		
+		//if ((f) && !feof(f)) {
+		//	for (;;) {
+		//		const int maxLineSize = 256;
+		//		char line[256]{  };
+		//		fscanf_s(f, "%s\n %i", line, maxLineSize, line);
+		//		str.append(line);
+		//		if (feof(f))
+		//			break;
+		//	}
+		//	fclose(f);
+		//}
+
+
+
+
+		credit.setFont(*font);
+		credit.setString(sf::String(str));
+		credit.setPosition(666, 100);
 #pragma endregion
 
 		// Stars in background
