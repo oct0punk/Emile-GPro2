@@ -37,16 +37,9 @@ sf::Vector2f MoveMouse() {
 
 
 sf::Vector2f AimingJoystick() {
-	sf::Vector2f aimDir = sf::Vector2f(
+	return sf::Vector2f(
 		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::U),
 		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::V));
-	if (Magnitude(aimDir) > 10.0f)
-		Normalize(&aimDir);
-	else
-		return sf::Vector2f(
-			cos(Game::GetInstance()->player->getRotation() * DegToRad()),
-			sin(Game::GetInstance()->player->getRotation() * DegToRad()));
-	return aimDir;
 }
 
 sf::Vector2f AimingMouse() {

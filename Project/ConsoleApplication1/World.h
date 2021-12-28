@@ -25,23 +25,31 @@ public:
 
 	World(sf::RenderWindow* win) {
 		window = win;
-
-		sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(300, 100));
-		rect->setOrigin(150, 50);
-		rect->setFillColor(sf::Color(155, 25, 0));
-
 		// Create Buttons
+
 		sf::Font* font = new sf::Font();
-		font->loadFromFile("res/arial.ttf");
+		font->loadFromFile("res/astro.ttf");
 		sf::Text* text = new sf::Text("Play", *font);
 
-		#pragma region Buttons
+		sf::RectangleShape* rect = new sf::RectangleShape(
+			sf::Vector2f(
+				text->getString().getSize() * text->getCharacterSize() * 1.32f,
+				text->getCharacterSize() * 2.3f));
+		rect->setOrigin(20, 20);
+		rect->setFillColor(sf::Color(155, 25, 0));
+
+		#pragma region UI
 		Button* menuPlay = new Button(rect, text, PlayMode);
 		menuPlay->setPosition(450, 666);
 		dataMenu.push_back(menuPlay);
 		selectedButton = menuPlay;
 
 		text->setString("Retry");
+		rect = new sf::RectangleShape(
+			sf::Vector2f(
+				text->getString().getSize() * text->getCharacterSize() * 1.24f,
+				text->getCharacterSize() * 2.3f));
+		rect->setOrigin(20, 20);
 		Button* retry = new Button(rect, text, RetryButton);
 		retry->setPosition(450, 666);
 		dataGameOver.push_back(retry);
@@ -57,23 +65,6 @@ public:
 		fread(str, 1, size, f);
 		str[strlen(str) - 4] = 0;
 		fclose(f);
-
-		//std::string str;
-		//FILE* f;
-		//fopen_s(&f, "res/credit.txt", "rb");		
-		//if ((f) && !feof(f)) {
-		//	for (;;) {
-		//		const int maxLineSize = 256;
-		//		char line[256]{  };
-		//		fscanf_s(f, "%s\n %i", line, maxLineSize, line);
-		//		str.append(line);
-		//		if (feof(f))
-		//			break;
-		//	}
-		//	fclose(f);
-		//}
-
-
 
 
 		credit.setFont(*font);

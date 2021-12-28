@@ -230,7 +230,7 @@ void World::drawGameOver(sf::RenderWindow& win) {
 void World::PushFX(Particle* p) {
 	for (auto e : dataFX) {
 		if ((!e->visible)) {
-			e = p;
+			e = new Particle(*p);
 			return;
 		}
 	}

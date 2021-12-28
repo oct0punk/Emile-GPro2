@@ -28,7 +28,7 @@ int main()
 	World world(&window);
 
 	Font font;
-	font.loadFromFile("res/arial.ttf");
+	font.loadFromFile("res/astro.ttf");
 	Text text;
 	text.setFont(font);
 
@@ -40,6 +40,8 @@ int main()
 	target.loadFromFile("res/target.png");
 	cursor.setTexture(&target);
 	window.setMouseCursorVisible(false);
+
+	Entity* lockTarget = nullptr;
 
 
 #pragma region Bullet
@@ -96,14 +98,39 @@ int main()
 			ImGui::SFML::ProcessEvent(event);
 			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				window.close();
-
 		}
 
 
 		// UPDATE
-#pragma region PlayerControls
 		Controls::GetInstance()->Update();
-		cursor.setPosition(Controls::GetInstance()->setCursor(&cursor).x, Controls::GetInstance()->setCursor(&cursor).y);
+		if (Controls::GetInstance()->lock) { // Can lock when using a controller
+			if (!lockTarget) {
+				// Look for nearest entity
+				float mindist = FLT_MAX;
+				for (auto e : world.dataPlay) {
+					if (e->type == EType::Bullet || !e->visible) continue;
+					float dist = Magnitude(e->getPosition() - cursor.getPosition());
+					if (dist < mindist) {
+						mindist = dist;
+						lockTarget = e;
+					}
+				}
+			}
+			sf::Vector2f offset = Controls::GetInstance()->aimingControl();
+			offset.x *= 2;
+			offset.y *= 2;
+			cursor.setPosition(lockTarget->getPosition() + offset);
+			cursor.setRotation(cursor.getRotation() + dt * 300);
+			if (!lockTarget->visible) {
+				lockTarget = nullptr;
+				Controls::GetInstance()->lock = false;
+			}
+		}
+		else {
+			if (lockTarget) lockTarget = nullptr;
+			cursor.setPosition(Controls::GetInstance()->setCursor(&cursor));
+		}
+
 		if (Game::GetInstance()->GetGameState() == GameState::Playing)
 		{
 			// Move
@@ -129,7 +156,6 @@ int main()
 			}
 
 		}
-#pragma endregion
 		
 		Game::GetInstance()->update(dt);
 		text.setString(to_string(Controls::GetInstance()->isConnected));

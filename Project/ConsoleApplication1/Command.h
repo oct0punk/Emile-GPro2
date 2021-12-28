@@ -46,10 +46,12 @@ public:
 	sf::Vector2f (*moveControl)() = MoveMouse;
 	bool (*shootControl)() = ShootMouse;
 	bool (*powerControl)() = PowerMouse;
+	bool lockKeyDown = false;
+	bool lock;
 	sf::Vector2f (*setCursor)(sf::CircleShape*) = CursorMouse;
 
 	void Update() {
-		if (isConnected != JoystickIsConnected()) {
+		if (isConnected != JoystickIsConnected()) {	// Altern between Mouse Inputs and Controller Inputs
 			isConnected = JoystickIsConnected();
 			aimingControl = isConnected ?
 				AimingJoystick :
@@ -67,5 +69,17 @@ public:
 				PowerJoystick :
 				PowerMouse;
 		}
+
+		if (isConnected) {	// Can lock an Entity when using a controller
+			if (sf::Joystick::isButtonPressed(0, 4)) {
+				if (!lockKeyDown) {
+					lock = !lock;
+					lockKeyDown = true;
+				}
+			} else {
+				lockKeyDown = false;
+			}
+		}
 	}
+
 };
