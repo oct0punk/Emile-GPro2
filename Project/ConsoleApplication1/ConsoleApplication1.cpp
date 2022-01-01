@@ -86,7 +86,6 @@ int main()
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
 	double tExitFrame = getTimeStamp();
-	bool shootflag = true;
 
 	int* thickness = new int(2);
 
@@ -100,12 +99,11 @@ int main()
 				window.close();
 		}
 
-
-		// UPDATE
-		Controls::GetInstance()->Update();
+		
+		Controls::GetInstance()->Update();	// Update controls 
 		if (Controls::GetInstance()->lock) { // Can lock when using a controller
 			if (!lockTarget) {
-				// Look for nearest entity
+				// Find the nearest entity
 				float mindist = FLT_MAX;
 				for (auto e : world.dataPlay) {
 					if (e->type == EType::Bullet || !e->visible) continue;
@@ -116,6 +114,7 @@ int main()
 					}
 				}
 			}
+			// Add an offet using the joystick
 			sf::Vector2f offset = Controls::GetInstance()->aimingControl();
 			offset.x *= 2;
 			offset.y *= 2;
@@ -126,47 +125,40 @@ int main()
 				Controls::GetInstance()->lock = false;
 			}
 		}
-		else {
+		else {	// Free aiming
 			if (lockTarget) lockTarget = nullptr;
 			cursor.setPosition(Controls::GetInstance()->setCursor(&cursor));
 		}
 
 		if (Game::GetInstance()->GetGameState() == GameState::Playing)
 		{
-			// Move
-			Vector2f pPos = p.getPosition();
+			p.getPosition();
 			Vector2f aimDir = cursor.getPosition() - p.getPosition(); //control.aimingControl();
 			float rotAngle = atan2(aimDir.y, aimDir.x) * RadToDeg();
 			p.setRotation(rotAngle);
 
 			// Shoot
 			if (Controls::GetInstance()->shootControl()) {
-				if (world.timeScale < 1.0f) {
-					if (shootflag) {
-						b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, world.timeScale * world.timeScale, 8);
-						shootflag = false;
+				if (world.timeScale < 1.0f) {	// Normal shot
+					if (p.shootflag) {
+						b.create(p.getPosition().x, p.getPosition().y, aimDir.x, aimDir.y, world.timeScale * world.timeScale, 8);
+						p.shootflag = false;
 					}
 				}
-				else {
-					b.create(pPos.x, pPos.y, aimDir.x, aimDir.y, 0.1f);
+				else {	// Shot in slow motion
+					b.create(p.getPosition().x, p.getPosition().y, aimDir.x, aimDir.y, 0.1f);
 				}
 			}
 			else {
-				shootflag = true;
+				p.shootflag = true;
 			}
 
 		}
 		
-		Game::GetInstance()->update(dt);
-		text.setString(to_string(Controls::GetInstance()->isConnected));
-		// IMGUI
-		{	using namespace ImGui;
+		Game::GetInstance()->update(dt);		
 		ImGui::SFML::Update(window, sf::milliseconds((int)(dt * 1000.0)));
-		ShowDemoWindow();
-		Begin("Edit");
-		ImGui::End();
-		}
-
+		// (a.*(a.x))()
+		(world.*(world.ImguiWindow))();
 
 		// RENDERING
 		Game::GetInstance()->draw(window);

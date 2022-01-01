@@ -226,7 +226,6 @@ void World::drawGameOver(sf::RenderWindow& win) {
 
 
 
-
 void World::PushFX(Particle* p) {
 	for (auto e : dataFX) {
 		if ((!e->visible)) {
@@ -236,6 +235,7 @@ void World::PushFX(Particle* p) {
 	}
 	dataFX.push_back(p);
 }
+
 
 void World::PushEntity(Entity* e, sf::Vector2f pos) {
 	bool inserted = false;

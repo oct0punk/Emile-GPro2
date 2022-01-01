@@ -10,23 +10,18 @@
 bool JoystickIsConnected();
 
 sf::Vector2f MoveJoystick();
-
 sf::Vector2f MoveMouse();
 
 sf::Vector2f AimingJoystick();
-
 sf::Vector2f AimingMouse();
 
 bool ShootJoystick();
-
 bool ShootMouse();
 
 bool PowerJoystick();
-
 bool PowerMouse();
 
 sf::Vector2f CursorJoystick(sf::CircleShape* cursor);
-
 sf::Vector2f CursorMouse(sf::CircleShape* cursor);
 
 
