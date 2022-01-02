@@ -73,6 +73,7 @@ void World::updateGame(double dt) {
 							if (e->visible) {
 								if (enemy->ChangeHealth(-l->power[i])) {
 									eCount--;
+									Game::GetInstance()->score += 10 * (l->power[i] / 1.9f);
 									// FX
 									for (int i = 0; i < 40; i++) {
 										sf::CircleShape* cShape = new sf::CircleShape(2 + rand() % 10);

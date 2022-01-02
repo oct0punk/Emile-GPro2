@@ -28,7 +28,7 @@ int main()
 	World world(&window);
 
 	Font font;
-	font.loadFromFile("res/astro.ttf");
+	font.loadFromFile("res/arial.ttf");
 	Text text;
 	text.setFont(font);
 
@@ -98,8 +98,9 @@ int main()
 				window.close();
 		}
 
-		
-		Controls::GetInstance()->Update();	// Update controls 
+
+		// CONTROLS
+		Controls::GetInstance()->Update();	
 		if (Controls::GetInstance()->lock) { // Can lock when using a controller
 			if (!lockTarget) {
 				// Find the nearest entity
@@ -129,6 +130,7 @@ int main()
 			cursor.setPosition(Controls::GetInstance()->setCursor(&cursor));
 		}
 
+		// UPDATE
 		if (Game::GetInstance()->GetGameState() == GameState::Playing)
 		{
 			p.getPosition();
@@ -153,18 +155,19 @@ int main()
 			}
 
 		}
-		
 		Game::GetInstance()->update(dt);		
+		text.setString(to_string(Game::GetInstance()->score));
+
 
 		// RENDERING
 		Game::GetInstance()->draw(window);
 		if (world.ImguiWindow) {
 			ImGui::SFML::Update(window, sf::milliseconds((int)(dt * 1000.0)));
 			(world.*(world.ImguiWindow))();
+			ImGui::SFML::Render(window);
 		}
 		window.draw(text);
 		window.draw(cursor);
-		ImGui::SFML::Render(window);
 		window.display();
 		tExitFrame = getTimeStamp();
 	}

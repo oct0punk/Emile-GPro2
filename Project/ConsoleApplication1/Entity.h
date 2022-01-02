@@ -223,7 +223,7 @@ enum ButtonState {
 
 
 void PlayMode();
-void RetryButton();
+void BackToMenu();
 
 class Button : public Entity {
 	static sf::Color baseColor;

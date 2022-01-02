@@ -17,6 +17,7 @@ private:
 public:
 	PlayerPad* player = nullptr;
 	World* world = nullptr;
+	int score = 0;
 	int wave = 0;
 	int enemyCount = 0;
 	bool pHit = false;

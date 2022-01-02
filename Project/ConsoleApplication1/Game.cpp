@@ -87,6 +87,7 @@ void Game::Reset() {
 	player->Revive();
 	ChangeState(GameState::Playing);
 	wave = 0;
+	score = 0;
 	NextWave();
 }
 

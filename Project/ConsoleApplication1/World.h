@@ -43,11 +43,16 @@ public:
 		rect->setOrigin(20, 20);
 		rect->setFillColor(sf::Color(155, 25, 0));
 
+
+
+#pragma region Button
+		// --------------------------- PLAY BUTTON ---------------------------
 		Button* menuPlay = new Button(rect, text, PlayMode);
 		menuPlay->setPosition(450, 666);
 		dataMenu.push_back(menuPlay);
 		selectedButton = menuPlay;
 
+		// --------------------------- RETRY BUTTON ---------------------------
 		text->setString("Retry");
 		rect = new sf::RectangleShape(
 			sf::Vector2f(
@@ -57,6 +62,18 @@ public:
 		Button* retry = new Button(rect, text, PlayMode);
 		retry->setPosition(450, 666);
 		dataGameOver.push_back(retry);
+
+		// --------------------------- MAIN MENU BUTTON ---------------------------
+		text->setString("Main Menu");
+		rect = new sf::RectangleShape(
+			sf::Vector2f(
+				text->getString().getSize() * text->getCharacterSize() * 1.24f,
+				text->getCharacterSize() * 2.3f));
+		rect->setOrigin(20, 20);
+		Button* menuButton = new Button(rect, text, BackToMenu);
+		menuButton->setPosition(750, 666);
+		dataGameOver.push_back(menuButton);
+#pragma endregion
 
 		FILE* f;
 		fopen_s(&f, "res/credit.txt", "rb");
@@ -73,7 +90,8 @@ public:
 
 		credit.setFont(*font);
 		credit.setString(sf::String(str));
-		credit.setPosition(666, 100);
+		credit.setCharacterSize(12);
+		credit.setPosition(10, 10);
 
 		// Stars in background
 		for (int i = 0; i < 1000; i++) {
@@ -110,11 +128,6 @@ public:
 			clearColor->g = col[1];
 			clearColor->b = col[2];
 		}
-		//if (ColorEdit3("Color", col)) {
-		//	clearColor->r = col[0] * 255.0f;
-		//	clearColor->g = col[1] * 255.0f;
-		//	clearColor->b = col[2] * 255.0f;
-		//}
 		Value("r", clearColor->r);
 		Value("g", clearColor->g);
 		Value("b", clearColor->b);

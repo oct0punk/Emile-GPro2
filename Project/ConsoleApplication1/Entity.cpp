@@ -276,6 +276,10 @@ void Enemy::SlowDown(int speed) {
 
 void PlayMode() { Game::GetInstance()->Reset(); }
 
+void BackToMenu() {
+	Game::GetInstance()->ChangeState(GameState::Menu);
+}
+
 
 Button::Button(sf::Shape* _spr, sf::Text* txt, void(*func)(void)) : Entity(EType::UI, _spr) {
 	text = *txt;
