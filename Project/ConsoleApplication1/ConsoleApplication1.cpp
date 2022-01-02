@@ -166,7 +166,8 @@ int main()
 			(world.*(world.ImguiWindow))();
 			ImGui::SFML::Render(window);
 		}
-		window.draw(text);
+		else
+			window.draw(text);
 		window.draw(cursor);
 		window.display();
 		tExitFrame = getTimeStamp();
