@@ -70,7 +70,6 @@ Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 
 
 void PlayerPad::update(double dt) {
-	dt /= Game::GetInstance()->world->timeScale;
 	if (invincible) {
 		spr->setFillColor(fColorInv);
 		spr->setOutlineColor(oColorInv);
@@ -275,8 +274,7 @@ void Enemy::SlowDown(int speed) {
 
 
 
-void PlayMode() { Game::GetInstance()->ChangeState(GameState::Playing); }
-void RetryButton()	{ Game::GetInstance()->Reset(); }
+void PlayMode() { Game::GetInstance()->Reset(); }
 
 
 Button::Button(sf::Shape* _spr, sf::Text* txt, void(*func)(void)) : Entity(EType::UI, _spr) {

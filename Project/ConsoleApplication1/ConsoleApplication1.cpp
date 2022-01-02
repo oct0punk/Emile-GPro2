@@ -48,8 +48,7 @@ int main()
 	float bWidth = 35.0f;
 	float bHeight = 3.0f;
 	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
-	Color bc = Color::Blue;
-	Laser b(bShape, bc);
+	Laser b(bShape);
 	world.dataPlay.push_back(&b);
 #pragma endregion
 
@@ -156,12 +155,13 @@ int main()
 		}
 		
 		Game::GetInstance()->update(dt);		
-		ImGui::SFML::Update(window, sf::milliseconds((int)(dt * 1000.0)));
-		// (a.*(a.x))()
-		(world.*(world.ImguiWindow))();
 
 		// RENDERING
 		Game::GetInstance()->draw(window);
+		if (world.ImguiWindow) {
+			ImGui::SFML::Update(window, sf::milliseconds((int)(dt * 1000.0)));
+			(world.*(world.ImguiWindow))();
+		}
 		window.draw(text);
 		window.draw(cursor);
 		ImGui::SFML::Render(window);

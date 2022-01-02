@@ -35,9 +35,11 @@ public:
 		switch (state)
 		{
 		case Playing:
+			world->ImguiWindow = nullptr;
 			break;
 		case Menu:
 			world->selectedButton = world->dataMenu[0];
+			world->ImguiWindow = &World::ShowTools;
 			break;
 		case Pause:
 			break;

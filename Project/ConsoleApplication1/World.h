@@ -10,7 +10,7 @@
 #include "imgui-SFML.h"
 
 class World {
-public:	
+public:
 	Button* selectedButton = nullptr;
 	sf::RenderWindow* window = nullptr;
 
@@ -30,8 +30,8 @@ public:
 
 	World(sf::RenderWindow* win) {
 		window = win;
-		// Create Buttons
 
+		// Create Buttons
 		sf::Font* font = new sf::Font();
 		font->loadFromFile("res/astro.ttf");
 		sf::Text* text = new sf::Text("Play", *font);
@@ -43,7 +43,6 @@ public:
 		rect->setOrigin(20, 20);
 		rect->setFillColor(sf::Color(155, 25, 0));
 
-		#pragma region UI
 		Button* menuPlay = new Button(rect, text, PlayMode);
 		menuPlay->setPosition(450, 666);
 		dataMenu.push_back(menuPlay);
@@ -55,7 +54,7 @@ public:
 				text->getString().getSize() * text->getCharacterSize() * 1.24f,
 				text->getCharacterSize() * 2.3f));
 		rect->setOrigin(20, 20);
-		Button* retry = new Button(rect, text, RetryButton);
+		Button* retry = new Button(rect, text, PlayMode);
 		retry->setPosition(450, 666);
 		dataGameOver.push_back(retry);
 
@@ -75,7 +74,6 @@ public:
 		credit.setFont(*font);
 		credit.setString(sf::String(str));
 		credit.setPosition(666, 100);
-#pragma endregion
 
 		// Stars in background
 		for (int i = 0; i < 1000; i++) {
@@ -97,7 +95,7 @@ public:
 	void updateMenu(double dt);
 	void updatePause(double dt);
 	void updateGameOver(double dt);
-		
+
 	void clear(sf::RenderWindow& win) { win.clear(*clearColor); }
 	void drawGame(sf::RenderWindow& win);
 	void drawMenu(sf::RenderWindow& win);
@@ -106,17 +104,17 @@ public:
 	void ShowTools() {
 		using namespace ImGui;
 		Begin("Edit");
-		float col[4] {clearColor->r, clearColor->g, clearColor->b, clearColor->a};
-		//if (SliderFloat4("color", col, 0.0f, 255.0f)) {
-		//	clearColor->r = col[0];
-		//	clearColor->g = col[1];
-		//	clearColor->b = col[2];
-		//}
-		if (ColorEdit3("Color", col)) {
-			clearColor->r = col[0] * 255.0f;
-			clearColor->g = col[1] * 255.0f;
-			clearColor->b = col[2] * 255.0f;
+		float col[4]{ clearColor->r, clearColor->g, clearColor->b, clearColor->a };
+		if (SliderFloat4("color", col, 0.0f, 255.0f)) {
+			clearColor->r = col[0];
+			clearColor->g = col[1];
+			clearColor->b = col[2];
 		}
+		//if (ColorEdit3("Color", col)) {
+		//	clearColor->r = col[0] * 255.0f;
+		//	clearColor->g = col[1] * 255.0f;
+		//	clearColor->b = col[2] * 255.0f;
+		//}
 		Value("r", clearColor->r);
 		Value("g", clearColor->g);
 		Value("b", clearColor->b);

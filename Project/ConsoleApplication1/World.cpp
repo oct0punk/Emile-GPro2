@@ -7,14 +7,16 @@
 #include <SFML/Window/Keyboard.hpp>
 
 void World::updateGame(double dt) {
-	dt *= timeScale;
 	bool coll = false;
 	PlayerPad* p = Game::GetInstance()->player;
+	p->update(dt);
 	KeepEntityOnScreen(p);
+	dt *= timeScale;
 
 	for (auto e : dataPlay) {
-		if (!e->visible) continue;
+		if (!e->visible || e->type == Player) continue;
 		e->update(dt);
+
 		switch (e->type) {
 		case EType::Wall:
 		{
@@ -196,7 +198,6 @@ void World::updateGameOver(double dt) {
 
 
 
-
 void World::drawGame(sf::RenderWindow& window) {
 	window.clear(*clearColor);
 	for (auto p : dataFX)
@@ -252,21 +253,20 @@ void World::PushEntity(Entity* e, sf::Vector2f pos) {
 		idx++;
 	}
 	if (!inserted) dataPlay.push_back(e);
+	e->setPosition(pos.x, pos.y);
 
 
-
-	if (e->type == EType::Bot) {
-		eCount++;
-		Enemy* enemy = (Enemy*)dataPlay[idx];
-		enemy->SetHealth(Game::GetInstance()->EnemyHealth());
-		for (auto b : dataPlay) {
-			if (b->type == Player) {
-				enemy->p = (PlayerPad*)b;
-				break;
-			}
+	if (e->type != EType::Bot) return;
+	eCount++;
+	Enemy* enemy = (Enemy*)dataPlay[idx];
+	enemy->SetHealth(Game::GetInstance()->EnemyHealth());
+	for (auto b : dataPlay) {
+		if (b->type == Player) {
+			enemy->p = (PlayerPad*)b;
+			break;
 		}
 	}
-	e->setPosition(pos.x, pos.y);
+	
 }
 
 

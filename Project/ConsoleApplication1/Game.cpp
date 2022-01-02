@@ -77,13 +77,15 @@ void Game::NextWave() {
 
 // Launch a game from the beginning
 void Game::Reset() {
-	for (auto e : world->dataPlay) {
-		if (e->type != Player)
+	for (auto e : world->dataPlay) {	// Disable all elements in world
+		if (e->type != Player || e->type != Bullet)
 			e->visible = false;
+		else
+			e->visible = true;
 	}
 	world->eCount = 0;
 	player->Revive();
-	state = GameState::Playing;
+	ChangeState(GameState::Playing);
 	wave = 0;
 	NextWave();
 }

@@ -156,7 +156,7 @@ public:
 	std::vector<int>	power;
 
 	Laser(sf::Shape* _spr, sf::Color color = sf::Color::White) : Entity(EType::Bullet, _spr) {
-		//spr->setFillColor(color);
+		spr->setFillColor(color);
 	};
 	void create(float _px, float _py, float _dx, float _dy, float rTime = 0.0f, int p = 1);
 	void ChangeDirection(int idx, float x, float y);
@@ -187,6 +187,7 @@ public:
 	virtual bool ChangeHealth(int amount);
 	virtual void Revive() {
 		Entity::Revive();
+		laser->visible = true;
 		for (auto l : laser->alive)
 			l = false;
 		shootflag = true;		
