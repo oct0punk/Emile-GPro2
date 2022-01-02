@@ -20,6 +20,7 @@ public:
 	std::vector<Button*>	dataMenu;
 	std::vector<Button*>	dataGameOver;
 	sf::Text credit;
+	sf::Text* scoretxt = nullptr;
 
 	sf::Color* clearColor = new sf::Color(0, 0, 20, 0);
 	void (World::* ImguiWindow)() = &World::ShowTools;
@@ -134,4 +135,5 @@ public:
 		Value("a", clearColor->a);
 		End();
 	}
+	float flashTime = 0.0f;
 };

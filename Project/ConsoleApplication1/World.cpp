@@ -12,6 +12,8 @@ void World::updateGame(double dt) {
 	p->update(dt);
 	KeepEntityOnScreen(p);
 	dt *= timeScale;
+	if (flashTime > 0.0f)
+		flashTime -= dt * 14.0f;
 
 	for (auto e : dataPlay) {
 		if (!e->visible || e->type == Player) continue;
@@ -71,13 +73,16 @@ void World::updateGame(double dt) {
 						if (!l->alive[i]) continue;
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
 							if (e->visible) {
+								Game::GetInstance()->score += 1;
 								if (enemy->ChangeHealth(-l->power[i])) {
 									eCount--;
 									Game::GetInstance()->score += 10 * (l->power[i] / 1.9f);
+									scoretxt->setString(to_string(Game::GetInstance()->score));
+									flashTime = pi();
 									// FX
 									for (int i = 0; i < 40; i++) {
 										sf::CircleShape* cShape = new sf::CircleShape(2 + rand() % 10);
-										cShape->setFillColor(sf::Color(255 - rand() % 55, rand() % 150, 0));
+										cShape->setFillColor(sf::Color(255 - rand() % 25, rand() % 50, 0));
 										Particle* p = new Particle(EType::Bot, cShape);
 										p->dx =  cos(i * rand() % 300) * RadToDeg();
 										p->dy =  sin(i * rand() % 300) * RadToDeg();
@@ -164,7 +169,7 @@ void World::updateMenu(double dt) {
 
 
 void World::updatePause(double dt) {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
 		if (pauseKeyUp) {
 			Game::GetInstance()->ChangeState(GameState::Playing);
 			pauseKeyUp = false;
@@ -200,12 +205,19 @@ void World::updateGameOver(double dt) {
 
 
 void World::drawGame(sf::RenderWindow& window) {
-	window.clear(*clearColor);
+	sf::Color clear = *clearColor;
+	if (flashTime > 0.0f) {
+		clear.r = lerp(sin(flashTime), clearColor->r, clearColor->r + 40);
+		clear.g = lerp(sin(flashTime), clearColor->g, clearColor->g + 40);
+		clear.b = lerp(sin(flashTime), clearColor->b, clearColor->b + 40);
+	}
+	window.clear(clear);
 	for (auto p : dataFX)
 		p->draw(window);
 	for (auto e : dataPlay) {
 		e->draw(window);
 	}
+	window.draw(*scoretxt);
 }
 
 
@@ -223,6 +235,7 @@ void World::drawGameOver(sf::RenderWindow& win) {
 	for (auto e : dataGameOver) {
 		e->draw(win);
 	}
+	win.draw(*scoretxt);
 }
 
 

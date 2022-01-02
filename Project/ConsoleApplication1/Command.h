@@ -41,6 +41,7 @@ public:
 	sf::Vector2f (*moveControl)() = MoveMouse;
 	bool (*shootControl)() = ShootMouse;
 	bool (*powerControl)() = PowerMouse;
+	bool (*pauseControl)() = nullptr;
 	bool lockKeyDown = false;
 	bool lock;
 	sf::Vector2f (*setCursor)(sf::CircleShape*) = CursorMouse;

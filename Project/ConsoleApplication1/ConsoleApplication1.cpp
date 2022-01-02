@@ -31,6 +31,7 @@ int main()
 	font.loadFromFile("res/arial.ttf");
 	Text text;
 	text.setFont(font);
+	world.scoretxt = &text;
 
 	// Target cursor
 	CircleShape cursor(20);
@@ -155,8 +156,7 @@ int main()
 			}
 
 		}
-		Game::GetInstance()->update(dt);		
-		text.setString(to_string(Game::GetInstance()->score));
+		Game::GetInstance()->update(dt);
 
 
 		// RENDERING
@@ -166,8 +166,6 @@ int main()
 			(world.*(world.ImguiWindow))();
 			ImGui::SFML::Render(window);
 		}
-		else
-			window.draw(text);
 		window.draw(cursor);
 		window.display();
 		tExitFrame = getTimeStamp();
