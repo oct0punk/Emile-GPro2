@@ -9,6 +9,7 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 
+
 class World {
 public:
 	Button* selectedButton = nullptr;
@@ -28,11 +29,13 @@ public:
 	float timeScale = 1.0f;
 	int eCount = 0;
 	bool pauseKeyUp = true;
+	float flashTime = 0.0f;
 
 	World(sf::RenderWindow* win) {
+		Enemy::oColor = sf::Color::Blue;
 		window = win;
 
-		// Create Buttons
+		// Used for buttons
 		sf::Font* font = new sf::Font();
 		font->loadFromFile("res/astro.ttf");
 		sf::Text* text = new sf::Text("Play", *font);
@@ -45,13 +48,23 @@ public:
 		rect->setFillColor(sf::Color(155, 25, 0));
 
 
-
-#pragma region Button
+	#pragma region Button
 		// --------------------------- PLAY BUTTON ---------------------------
 		Button* menuPlay = new Button(rect, text, PlayMode);
 		menuPlay->setPosition(450, 666);
 		dataMenu.push_back(menuPlay);
 		selectedButton = menuPlay;
+
+		// --------------------------- OPTIONS BUTTON ---------------------------
+		text->setString("Options");
+		rect = new sf::RectangleShape(
+			sf::Vector2f(
+				text->getString().getSize() * text->getCharacterSize() * 1.24f,
+				text->getCharacterSize() * 2.3f));
+		rect->setOrigin(20, 20);
+		Button* options = new Button(rect, text, OptionButton);
+		options->setPosition(750, 666);
+		dataMenu.push_back(options);
 
 		// --------------------------- RETRY BUTTON ---------------------------
 		text->setString("Retry");
@@ -59,7 +72,6 @@ public:
 			sf::Vector2f(
 				text->getString().getSize() * text->getCharacterSize() * 1.24f,
 				text->getCharacterSize() * 2.3f));
-		rect->setOrigin(20, 20);
 		Button* retry = new Button(rect, text, PlayMode);
 		retry->setPosition(450, 666);
 		dataGameOver.push_back(retry);
@@ -70,12 +82,15 @@ public:
 			sf::Vector2f(
 				text->getString().getSize() * text->getCharacterSize() * 1.24f,
 				text->getCharacterSize() * 2.3f));
-		rect->setOrigin(20, 20);
 		Button* menuButton = new Button(rect, text, BackToMenu);
 		menuButton->setPosition(750, 666);
 		dataGameOver.push_back(menuButton);
 #pragma endregion
 
+
+	#pragma region Credit
+
+		// Print credit text written in "res/credit.txt"
 		FILE* f;
 		fopen_s(&f, "res/credit.txt", "rb");
 		char* str;
@@ -88,11 +103,12 @@ public:
 		str[strlen(str) - 4] = 0;
 		fclose(f);
 
-
 		credit.setFont(*font);
 		credit.setString(sf::String(str));
 		credit.setCharacterSize(12);
 		credit.setPosition(10, 10);
+
+#pragma endregion
 
 		// Stars in background
 		for (int i = 0; i < 1000; i++) {
@@ -101,7 +117,10 @@ public:
 			shape.setPosition(rand() % window->getSize().x, rand() % window->getSize().y);
 			dataFX.push_back(new Particle(EType::FX, new sf::CircleShape(shape)));
 		}
+
 	}
+
+
 
 	void PushFX(Particle* p);
 	void PushEntity(Entity* e, sf::Vector2f pos = sf::Vector2f(0, 0));
@@ -120,20 +139,6 @@ public:
 	void drawMenu(sf::RenderWindow& win);
 	void drawGameOver(sf::RenderWindow& win);
 
-	void ShowTools() {
-		using namespace ImGui;
-		Begin("Edit");
-		float col[4]{ clearColor->r, clearColor->g, clearColor->b, clearColor->a };
-		if (SliderFloat4("color", col, 0.0f, 255.0f)) {
-			clearColor->r = col[0];
-			clearColor->g = col[1];
-			clearColor->b = col[2];
-		}
-		Value("r", clearColor->r);
-		Value("g", clearColor->g);
-		Value("b", clearColor->b);
-		Value("a", clearColor->a);
-		End();
-	}
-	float flashTime = 0.0f;
+	void ShowTools();
+	void ColorsTool();
 };

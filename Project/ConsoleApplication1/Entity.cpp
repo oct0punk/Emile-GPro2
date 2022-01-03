@@ -19,16 +19,24 @@ void Entity::update(double dt) {
 		Movement(dt * 5);
 	}
 
-
 void Entity::draw(sf::RenderWindow& win) {
-	if (visible)
+	if (visible) {
 		win.draw(*spr);
+	}
 }
-
 
 void Entity::Movement(double dt) {
 	dx = sin(timeSinceLevelStart * dt) * 600 * dt;
 	dy = cos(timeSinceLevelStart * .2f * dt) * 600 * dt;
+}
+
+bool Entity::ChangeHealth(int amount) {
+	health += amount;
+	if (health < 0) {
+		visible = false;
+		return true;
+	}
+	return false;
 }
 
 
@@ -68,8 +76,16 @@ Cmd* Entity::applyCmdInterp(Cmd* cmd, double dt) {
 
 
 
+PlayerPad::PlayerPad(sf::Shape* _spr, Laser* l) : Entity(EType::Player, _spr) {
+	laser = l;
+	PlayerPad::fColor = sf::Color(10, 100, 150);
+	PlayerPad::oColor = sf::Color(230, 210, 85);
+	PlayerPad::fColorInv = sf::Color(100, 0, 0);
+	PlayerPad::oColorInv = sf::Color::Black;
+}
 
 void PlayerPad::update(double dt) {
+	if (!visible) return;
 	if (invincible) {
 		spr->setFillColor(fColorInv);
 		spr->setOutlineColor(oColorInv);
@@ -108,7 +124,6 @@ void PlayerPad::update(double dt) {
 	}
 }
 
-
 void PlayerPad::draw(sf::RenderWindow& win) {
 	if (visible)
 		win.draw(*spr);
@@ -137,16 +152,6 @@ void PlayerPad::Power() {
 	Audio::GetInstance()->SetPitch(0.2f);
 	Audio::GetInstance()->slow.play();
 	laser->reloading = 0.0f;
-}
-
-
-bool Entity::ChangeHealth(int amount) {
-	health += amount;
-	if (health < 0) {
-		visible = false;
-		return true;
-	}
-	return false;
 }
 
 
@@ -189,7 +194,7 @@ void Laser::ChangeDirection(int idx, float x, float y) {
 	dir.y *= acc;
 	dx[idx] = dir.x;
 	dy[idx] = dir.y;
-	power[idx] += 10;
+	power[idx] += 5;
 	Audio::GetInstance()->Play(&Audio::GetInstance()->lHit);
 }
 
@@ -234,6 +239,7 @@ bool Enemy::ChangeHealth(int amount) {
 	health += amount;
 	if (health < 0) {
 		visible = false;
+		hit = true;
 		return true;
 	}
 	return false;
@@ -242,6 +248,8 @@ bool Enemy::ChangeHealth(int amount) {
 
 void Enemy::update(double dt)
 {
+	if (!visible) 
+		return;
 	Entity::update(dt);
 
 	if (p) {
@@ -272,6 +280,11 @@ void Enemy::SlowDown(int speed) {
 }
 
 
+sf::Color Enemy::fColor = sf::Color::Blue;
+sf::Color Enemy::oColor = sf::Color::White;
+sf::Color Enemy::fColorHit = sf::Color::White;
+sf::Color Enemy::oColorHit = sf::Color::White;
+
 
 
 void PlayMode() { Game::GetInstance()->Reset(); }
@@ -280,10 +293,18 @@ void BackToMenu() {
 	Game::GetInstance()->ChangeState(GameState::Menu);
 }
 
+void OptionButton() {
+
+	Game::GetInstance()->world->ImguiWindow =
+		Game::GetInstance()->world->ImguiWindow == &World::ColorsTool ?
+		&World::ShowTools :
+		&World::ColorsTool;
+}
+
 
 Button::Button(sf::Shape* _spr, sf::Text* txt, void(*func)(void)) : Entity(EType::UI, _spr) {
-	text = *txt;
-	action = func;
+	text = *txt;	// Set a text for the button
+	action = func;	// Set a function to call when clicking on the button
 }
 
 void Button::draw(sf::RenderWindow& win) {
@@ -292,11 +313,15 @@ void Button::draw(sf::RenderWindow& win) {
 }
 
 
+
+
 sf::Color Button::baseColor = sf::Color(sf::Color::Blue);
 sf::Color Button::selectedColor = sf::Color(sf::Color::Cyan);
 sf::Color Button::clickedColor = sf::Color(sf::Color(150, 50, 0));
 
+
 void Particle::update(double dt) {
+	if (!visible) return;
 	Entity::update(dt);
 	if (type == EType::Bot) {
 		time -= dt;

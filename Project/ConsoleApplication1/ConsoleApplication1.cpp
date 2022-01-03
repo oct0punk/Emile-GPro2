@@ -99,6 +99,8 @@ int main()
 				window.close();
 		}
 
+		
+
 
 		// CONTROLS
 		Controls::GetInstance()->Update();	

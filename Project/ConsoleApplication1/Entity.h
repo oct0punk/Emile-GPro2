@@ -57,6 +57,7 @@ protected:
 	int health = 1;
 	bool invincible = false;
 	float invincibleTime = 1.0f;
+	bool hit = false;
 
 public:
 	sf::Shape* spr = nullptr;
@@ -67,7 +68,6 @@ public:
 	float dx = 0.0f;
 	float dy = 0.0f;
 
-		
 
 	Entity(EType type, sf::Shape* _spr) {
 		this->type = type;
@@ -173,14 +173,14 @@ public:
 	int speed = 800.0f;
 	int power = 1;
 	bool shootflag = true;
-	sf::Color fColor = sf::Color(10, 100, 150);
-	sf::Color oColor = sf::Color(230, 210, 85);
-	sf::Color fColorInv = sf::Color(100, 0, 0);
+
+	sf::Color fColor;
+	sf::Color oColor;
+	sf::Color fColorInv;
 	sf::Color oColorInv;
 
-	PlayerPad(sf::Shape* _spr, Laser* l) : Entity(EType::Player, _spr) {
-		laser = l;
-	}
+
+	PlayerPad(sf::Shape* _spr, Laser* l);
 
 	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
@@ -201,6 +201,12 @@ public:
 class Enemy : public Entity {
 public:
 	PlayerPad* p = nullptr;
+
+	static sf::Color fColor;
+	static sf::Color oColor;
+	static sf::Color fColorHit;
+	static sf::Color oColorHit;
+
 
 	Enemy(sf::Shape* _spr) : Entity(EType::Bot, _spr) {
 		type = EType::Bot;
@@ -224,6 +230,7 @@ enum ButtonState {
 
 void PlayMode();
 void BackToMenu();
+void OptionButton();
 
 class Button : public Entity {
 	static sf::Color baseColor;

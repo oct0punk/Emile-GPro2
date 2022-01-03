@@ -51,11 +51,14 @@ void World::updateGame(double dt) {
 						sf::Vector2f bPos = sf::Vector2f(l->px[i - 1], l->py[i - 1]);
 						float distance = Magnitude(e->getPosition().x, e->getPosition().y, bPos.x, bPos.y);
 
+						// Collision
 						if (distance < e->spr->getGlobalBounds().width / 2) {
 							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - e->getPosition());
 							l->px[i - 1] -= l->dx[i - 1] * dt * l->speed * 1.2f;			// Move the bullet to previous good position
 							l->py[i - 1] -= l->dy[i - 1] * dt * l->speed * 1.2f;
 							l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new direction to bullet
+							if (e->spr->getFillColor() == sf::Color::Red)
+								e->ChangeHealth(-1);
 						}
 					}
 				}
@@ -82,7 +85,7 @@ void World::updateGame(double dt) {
 									// FX
 									for (int i = 0; i < 40; i++) {
 										sf::CircleShape* cShape = new sf::CircleShape(2 + rand() % 10);
-										cShape->setFillColor(sf::Color(255 - rand() % 25, rand() % 50, 0));
+										cShape->setFillColor(sf::Color(255 - rand() % 25, 255 - rand() % 50, 0));
 										Particle* p = new Particle(EType::Bot, cShape);
 										p->dx =  cos(i * rand() % 300) * RadToDeg();
 										p->dy =  sin(i * rand() % 300) * RadToDeg();
@@ -293,8 +296,8 @@ void World::SpawnEnemy(sf::Vector2f pos) {
 	eShape->setPoint(3, Vector2f(20, 20));
 	eShape->setOrigin(Vector2f(20, 20));
 	eShape->setOutlineThickness(7);
-	eShape->setFillColor(	sf::Color::Blue);
-	eShape->setOutlineColor(sf::Color::White);
+	eShape->setFillColor(Enemy::fColor);
+	eShape->setOutlineColor(Enemy::oColor);
 
 	PushEntity(new Enemy(eShape), pos);
 
@@ -330,11 +333,135 @@ void World::InstantiatePower() {
 }
 
 
-
 void World::KeepEntityOnScreen(Entity* e, float value) {
 	// Keep the entity inside screen's bounds
 	sf::Vector2f pPos = e->getPosition();
 	pPos.x = clamp(pPos.x, value, window->getSize().x - value);
 	pPos.y = clamp(pPos.y, value, window->getSize().y - value);
 	e->setPosition(pPos.x, pPos.y);
+}
+
+
+
+void World::ShowTools() { using namespace ImGui;
+
+	Begin("Edit");
+	float fCol[4]{ clearColor->r / 255.0f, clearColor->g / 255.0f, clearColor->b / 255.0f, clearColor->a / 255.0f };
+	if (ImGui::ColorPicker4("Fill Color", fCol)) {
+		clearColor->r = fCol[0] * 255.0f;
+		clearColor->g = fCol[1] * 255.0f;
+		clearColor->b = fCol[2] * 255.0f;
+		clearColor->a = fCol[3] * 255.0f;
+	}
+	End();
+}
+
+
+void World::ColorsTool() {	using namespace ImGui;
+
+	#pragma region Player
+	
+	Begin("Player Colors");
+	PlayerPad* p = Game::GetInstance()->player;
+	float pFillCol[4]{ p->fColor.r / 255.0f, p->fColor.g / 255.0f, p->fColor.b / 255.0f, p->fColor.a / 255.0f };
+	if (ColorPicker4("Fill Color", pFillCol)) {
+		p->fColor = sf::Color(
+			pFillCol[0] * 255.0f,
+			pFillCol[1] * 255.0f,
+			pFillCol[2] * 255.0f,
+			pFillCol[3] * 255.0f
+		);
+	}
+
+
+	float pOutlineCol[4]{ p->oColor.r / 255.0f, p->oColor.g / 255.0f, p->oColor.b / 255.0f, p->oColor.a / 255.0f };
+	if (ColorPicker4("Outline Color", pOutlineCol)) {
+		p->oColor = sf::Color(
+			pOutlineCol[0] * 255.0f,
+			pOutlineCol[1] * 255.0f,
+			pOutlineCol[2] * 255.0f,
+			pOutlineCol[3] * 255.0f
+		);
+	}
+
+	NewLine();
+	Separator();
+	NewLine();
+	
+	float pFillColHit[4]{ p->fColorInv.r / 255.0f, p->fColorInv.g / 255.0f, p->fColorInv.b / 255.0f, p->fColorInv.a / 255.0f };
+	if (ColorPicker4("Hit Fill Color", pFillColHit)) {
+		p->fColorInv = sf::Color(
+			pFillColHit[0] * 255.0f,
+			pFillColHit[1] * 255.0f,
+			pFillColHit[2] * 255.0f,
+			pFillColHit[3] * 255.0f
+		);
+	}
+
+	float pOutlineColHit[4]{ p->oColorInv.r / 255.0f, p->oColorInv.g / 255.0f, p->oColorInv.b / 255.0f, p->oColorInv.a / 255.0f };
+	if (ColorPicker4("Hit Outline Color", pOutlineColHit)) {
+		p->oColorInv = sf::Color(
+			pOutlineColHit[0] * 255.0f,
+			pOutlineColHit[1] * 255.0f,
+			pOutlineColHit[2] * 255.0f,
+			pOutlineColHit[3] * 255.0f
+		);
+	}
+
+	End();
+	
+	#pragma endregion
+		
+		
+	#pragma region Enemy
+
+	Begin("Enemmies Colors");
+	float fCol[4]{ Enemy::fColor.r / 255.0f, Enemy::fColor.g / 255.0f, Enemy::fColor.b / 255.0f, Enemy::fColor.a / 255.0f };
+	if (ColorPicker4("Fill Color", fCol)) {
+		Enemy::fColor = sf::Color(
+			fCol[0] * 255.0f,
+			fCol[1] * 255.0f,
+			fCol[2] * 255.0f,
+			fCol[3] * 255.0f
+		);
+	}
+
+
+	float oCol[4]{ Enemy::oColor.r / 255.0f, Enemy::oColor.g / 255.0f, Enemy::oColor.b / 255.0f, Enemy::oColor.a / 255.0f };
+	if (ColorPicker4("Outline Color", oCol)) {
+		Enemy::oColor = sf::Color(
+			oCol[0] * 255.0f,
+			oCol[1] * 255.0f,
+			oCol[2] * 255.0f,
+			oCol[3] * 255.0f
+		);
+	}
+
+	NewLine();
+	Separator();
+	NewLine();
+
+	float eFillColHit[4]{ Enemy::fColorHit.r / 255.0f, Enemy::fColorHit.g / 255.0f, Enemy::fColorHit.b / 255.0f, Enemy::fColorHit.a / 255.0f };
+	if (ColorPicker4("Hit Fill Color", eFillColHit)) {
+		Enemy::fColorHit = sf::Color(
+			eFillColHit[0] * 255.0f,
+			eFillColHit[1] * 255.0f,
+			eFillColHit[2] * 255.0f,
+			eFillColHit[3] * 255.0f
+		);
+	}
+
+	float eOutlineColHit[4]{ Enemy::oColorHit.r / 255.0f, Enemy::oColorHit.g / 255.0f, Enemy::oColorHit.b / 255.0f, Enemy::oColorHit.a / 255.0f };
+	if (ColorPicker4("Hit Outline Color", eOutlineColHit)) {
+		Enemy::oColorHit = sf::Color(
+			eOutlineColHit[0] * 255.0f,
+			eOutlineColHit[1] * 255.0f,
+			eOutlineColHit[2] * 255.0f,
+			eOutlineColHit[3] * 255.0f
+		);
+	}
+
+	End();
+
+	#pragma endregion
 }
