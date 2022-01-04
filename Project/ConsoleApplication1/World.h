@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Entity.h"
+#include "Tuto.h"
 #include "SFML/Audio/Sound.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
@@ -12,8 +13,9 @@
 
 class World {
 public:
-	// Button* selectedButton = nullptr;
+	Button* selectedButton = nullptr;
 	sf::RenderWindow* window = nullptr;
+	Tuto* tuto;
 	sf::CircleShape* cursor = nullptr;
 
 	std::vector<Entity*>	dataPlay;
@@ -34,6 +36,7 @@ public:
 
 	World(sf::RenderWindow* win) {
 		Enemy::oColor = sf::Color::Blue;
+		tuto = new Tuto();
 		window = win;
 
 		// Used for buttons
@@ -54,7 +57,7 @@ public:
 		Button* menuPlay = new Button(rect, text, PlayMode);
 		menuPlay->setPosition(450, 666);
 		dataMenu.push_back(menuPlay);
-		// selectedButton = menuPlay;
+		
 
 		// --------------------------- OPTIONS BUTTON ---------------------------
 		text->setString("Options");
