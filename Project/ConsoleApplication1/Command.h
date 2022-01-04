@@ -21,6 +21,9 @@ bool ShootMouse();
 bool PowerJoystick();
 bool PowerMouse();
 
+bool SelectJoystick();
+bool SelectMouse();
+
 sf::Vector2f CursorJoystick(sf::CircleShape* cursor);
 sf::Vector2f CursorMouse(sf::CircleShape* cursor);
 
@@ -42,6 +45,7 @@ public:
 	bool (*shootControl)() = ShootMouse;
 	bool (*powerControl)() = PowerMouse;
 	bool (*pauseControl)() = nullptr;
+	bool (*selectControl)() = nullptr;
 	bool lockKeyDown = false;
 	bool lock;
 	sf::Vector2f (*setCursor)(sf::CircleShape*) = CursorMouse;
@@ -64,6 +68,9 @@ public:
 			powerControl = isConnected ?
 				PowerJoystick :
 				PowerMouse;
+			selectControl = isConnected ?
+				SelectJoystick :
+				SelectMouse;
 		}
 
 		if (isConnected) {	// Can lock an Entity when using a controller

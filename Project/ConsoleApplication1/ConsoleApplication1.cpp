@@ -41,6 +41,7 @@ int main()
 	target.loadFromFile("res/target.png");
 	cursor.setTexture(&target);
 	window.setMouseCursorVisible(false);
+	world.cursor = &cursor;
 
 	Entity* lockTarget = nullptr;
 

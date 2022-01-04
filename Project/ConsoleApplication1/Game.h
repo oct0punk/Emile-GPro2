@@ -39,13 +39,13 @@ public:
 			world->ImguiWindow = nullptr;
 			break;
 		case Menu:
-			world->selectedButton = world->dataMenu[0];
+			// world->selectedButton = world->dataMenu[0];
 			world->ImguiWindow = &World::ShowTools;
 			break;
 		case Pause:
 			break;
 		case GameOver:
-			world->selectedButton = world->dataGameOver[0];
+			// world->selectedButton = world->dataGameOver[0];
 			break;
 		default:
 			break;

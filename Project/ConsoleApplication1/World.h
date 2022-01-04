@@ -12,8 +12,9 @@
 
 class World {
 public:
-	Button* selectedButton = nullptr;
+	// Button* selectedButton = nullptr;
 	sf::RenderWindow* window = nullptr;
+	sf::CircleShape* cursor = nullptr;
 
 	std::vector<Entity*>	dataPlay;
 	std::vector<Particle*>	dataFX;
@@ -53,7 +54,7 @@ public:
 		Button* menuPlay = new Button(rect, text, PlayMode);
 		menuPlay->setPosition(450, 666);
 		dataMenu.push_back(menuPlay);
-		selectedButton = menuPlay;
+		// selectedButton = menuPlay;
 
 		// --------------------------- OPTIONS BUTTON ---------------------------
 		text->setString("Options");

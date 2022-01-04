@@ -69,6 +69,10 @@ bool PowerMouse() {
 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 }
 
+bool SelectJoystick() { return sf::Joystick::isButtonPressed(0, 0); }
+
+bool SelectMouse() { return sf::Mouse::isButtonPressed(sf::Mouse::Left); }
+
 
 sf::Vector2f CursorJoystick(sf::CircleShape* cursor)
 {

@@ -249,25 +249,7 @@ public:
 		text.setPosition(x, y);
 	}
 
-	virtual void update(double dt) {
-		switch (state)
-		{
-		case Normal:
-			spr->setFillColor(baseColor);
-			break;
-		case Selected:
-			spr->setFillColor(selectedColor);
-			break;
-		case Clicked:
-			if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))	// Use button function
-				action();
-			spr->setFillColor(clickedColor);
-			break;
-		default:
-			spr->setFillColor(baseColor);
-			break;
-		}
-	}
+	virtual void update(double dt);
 	virtual void draw(sf::RenderWindow& win);
 
 };

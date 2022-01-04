@@ -152,21 +152,16 @@ void World::updateGame(double dt) {
 void World::updateMenu(double dt) {
 	for (auto e : dataMenu) {
 		e->update(dt);
-		if (Controls::GetInstance()->isConnected) {
-			selectedButton->state = ButtonState::Selected;
-			if (sf::Joystick::isButtonPressed(0, 0))
-				selectedButton->action();
-
-		} else {
-			sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
-			if (e->spr->getGlobalBounds().contains(mPos))
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-					e->state = ButtonState::Clicked;
-				else
-					e->state = ButtonState::Selected;
+		
+		sf::Vector2f mPos(cursor->getPosition().x, cursor->getPosition().y);
+		if (e->spr->getGlobalBounds().contains(mPos))
+			if (Controls::GetInstance()->selectControl())
+				e->state = ButtonState::Clicked;
 			else
-				e->state = ButtonState::Normal;
-		}
+				e->state = ButtonState::Selected;
+		else
+			e->state = ButtonState::Normal;
+
 	}
 }
 
@@ -186,22 +181,14 @@ void World::updatePause(double dt) {
 void World::updateGameOver(double dt) {
 	for (auto e : dataGameOver) {
 		e->update(dt);
-		if (Controls::GetInstance()->isConnected) {
-			selectedButton->state = ButtonState::Selected;
-			if (sf::Joystick::isButtonPressed(0, 0))
-				selectedButton->action();
-
-		}
-		else {
-			sf::Vector2f mPos(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
-			if (e->spr->getGlobalBounds().contains(mPos))
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-					e->state = ButtonState::Clicked;
-				else
-					e->state = ButtonState::Selected;
+		sf::Vector2f mPos(cursor->getPosition().x, cursor->getPosition().y);
+		if (e->spr->getGlobalBounds().contains(mPos))
+			if (Controls::GetInstance()->selectControl())
+				e->state = ButtonState::Clicked;
 			else
-				e->state = ButtonState::Normal;
-		}
+				e->state = ButtonState::Selected;
+		else
+			e->state = ButtonState::Normal;
 	}
 }
 

@@ -307,6 +307,26 @@ Button::Button(sf::Shape* _spr, sf::Text* txt, void(*func)(void)) : Entity(EType
 	action = func;	// Set a function to call when clicking on the button
 }
 
+void Button::update(double dt) {
+	switch (state)
+	{
+	case Normal:
+		spr->setFillColor(baseColor);
+		break;
+	case Selected:
+		spr->setFillColor(selectedColor);
+		break;
+	case Clicked:
+		if (!Controls::GetInstance()->selectControl())	// Use button function
+			action();
+		spr->setFillColor(clickedColor);
+		break;
+	default:
+		spr->setFillColor(baseColor);
+		break;
+	}
+}
+
 void Button::draw(sf::RenderWindow& win) {
 	Entity::draw(win);
 	win.draw(text);	
