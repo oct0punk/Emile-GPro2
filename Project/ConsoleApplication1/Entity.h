@@ -218,6 +218,21 @@ public:
 
 	virtual bool ChangeHealth(int amount);
 	virtual void update(double dt);
+	virtual void draw(sf::RenderWindow& win) {
+		if (hit) {
+			spr->setFillColor(fColorHit);
+			spr->setOutlineColor(oColorHit);
+			hit = false;
+		}
+		else
+		{
+			spr->setFillColor(fColor);
+			spr->setOutlineColor(oColor);
+		}
+
+		Entity::draw(win);
+
+	}
 };
 
 

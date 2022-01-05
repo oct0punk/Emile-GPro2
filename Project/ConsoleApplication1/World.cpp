@@ -318,7 +318,7 @@ void World::SpawnObstacle(int radius, sf::Vector2f pos) {
 	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
 	wShape->setFillColor(sf::Color::Transparent);
 	wShape->setOutlineThickness(radius / 7);
-	wShape->setOutlineColor(rand() % 2 == 0 ? sf::Color::Red : sf::Color::Cyan);
+	wShape->setOutlineColor(rand() % 2 == 0 ? sf::Color(155, 100, 0) : sf::Color::Cyan);
 	Entity* w = new Entity(EType::Wall, wShape);
 	w->setPosition(pos.x, pos.y);
 	dataPlay.push_back(w);

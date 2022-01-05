@@ -237,9 +237,11 @@ void Laser::draw(sf::RenderWindow& win) {
 
 bool Enemy::ChangeHealth(int amount) {
 	health += amount;
+	hit = true; 
 	if (health < 0) {
 		visible = false;
-		hit = true;
+		spr->setFillColor(fColorHit);
+		spr->setOutlineColor(oColorHit);
 		return true;
 	}
 	return false;
