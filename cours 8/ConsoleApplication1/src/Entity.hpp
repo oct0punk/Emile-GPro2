@@ -3,6 +3,48 @@
 #include "SFML/Graphics/Shape.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 
+class Entity;
+
+class State {
+public:
+	sf::Color stateColor = sf::Color::Black;
+
+
+	virtual void OnEnter(Entity* e);
+
+	virtual void Update(Entity* e, double dt){}
+
+};
+
+class IdleState : public State {
+public:
+	IdleState() {
+		stateColor = sf::Color::White;
+	}
+
+	virtual void Update(Entity* e, double dt);
+};
+
+class WalkState : public State {
+public:
+	WalkState() {
+		stateColor = sf::Color::Blue;
+	}
+
+	virtual void Update(Entity* e, double dt);
+};
+
+class RunState : public State {
+public:
+	RunState() {
+		stateColor = sf::Color::Red;
+	}
+
+	virtual void Update(Entity* e, double dt);
+};
+
+
+
 class Entity {
 public:
 	sf::Shape*		spr = nullptr;
@@ -26,11 +68,15 @@ public:
 
 	inline static const int	stride = 32;
 
+	State* currentState = nullptr;
+
 	Entity(sf::Shape* _spr, float _cx, float _cy) {
 		this->spr = _spr;
 		cx = _cx;
 		cy = _cy;
 		syncSprite();
+
+		currentState = new IdleState();
 	}
 
 	void			im();
@@ -38,5 +84,5 @@ public:
 	virtual void	update(double dt);
 	virtual void	draw(sf::RenderWindow& win);
 	void			syncSprite();
+	void ChangeState(State* newState);
 };
-

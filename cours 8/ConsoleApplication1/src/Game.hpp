@@ -2,6 +2,8 @@
 #include "Particle.hpp"
 #include "Entity.hpp"
 
+float clamp(float val, float a, float b);
+
 class Game {
 public:
 	static inline const int W = 1280;

@@ -44,3 +44,11 @@ void Game::render(sf::RenderWindow& win) {
 	
 
 }
+
+float clamp(float val, float a, float b) {
+	if (val < a)
+		val = a;
+	if (val > b)
+		val = b;
+	return val;
+}

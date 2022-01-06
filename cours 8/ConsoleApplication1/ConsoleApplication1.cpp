@@ -20,13 +20,6 @@
 #include "Entity.hpp"
 #include "Game.hpp"
 
-float clamp(float val, float a, float b) {
-	if (val < a)
-		val = a;
-	if (val > b)
-		val = b;
-	return val;
-}
 
 int main(){
 	sf::RenderWindow window(sf::VideoMode(Game::W, Game::H), "SFML works!");
@@ -95,32 +88,10 @@ int main(){
 
 		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 
-		if (mouseLeftIsPressed && !mouseLeftWasPressed) {
-			
-		}
+		////////////////   UPDATE   ////////////////
 
 		auto player = Game::player;
-		float max_speed_x = 10;
-		float max_speed_y = 30;
-
-		static bool wasPressedUp = false;
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-			player->dx -= max_speed_x * 0.5;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-			player->dx += max_speed_x * 0.5;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !wasPressedUp) {
-			player->dy -= max_speed_y * 2;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-			player->dy += max_speed_y * 2;
-		}
-		wasPressedUp = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-
-		player->dx = std::clamp(player->dx, -max_speed_x, max_speed_x);
-		player->dy = std::clamp(player->dy, -max_speed_y, max_speed_y);
+		
 
 		if (mouseLeftIsPressed) 
 			mouseLeftWasPressed = true;

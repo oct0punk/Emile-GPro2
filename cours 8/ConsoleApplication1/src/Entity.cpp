@@ -1,6 +1,7 @@
 
 #include "Entity.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Window/Keyboard.hpp"
 #include "imgui.h"
 #include "Game.hpp"
 
@@ -10,6 +11,13 @@ void Entity::syncSprite(){
 	px = (cx + rx) * stride;
 	py = (cy + ry) * stride;
 	spr->setPosition(px, py);
+}
+
+void Entity::ChangeState(State* newState) {
+	
+	delete currentState;
+	currentState = newState;
+	currentState->OnEnter(this);
 }
 
 void Entity::im(){
@@ -54,6 +62,8 @@ bool Entity::isColliding(int ccx, int ccy) {
 }
 
 void Entity::update(double dt) {
+	currentState->Update(this, dt);
+
 	dy += gy * dt;
 	rx += dt * dx;
 	ry += dt * dy;
@@ -104,6 +114,7 @@ void Entity::update(double dt) {
 		}
 	}
 	syncSprite();
+
 }
 
 void Entity::draw(sf::RenderWindow& win) {
@@ -111,3 +122,70 @@ void Entity::draw(sf::RenderWindow& win) {
 		win.draw(*spr);
 }
 
+
+
+
+void State::OnEnter(Entity* e) {
+	e->spr->setFillColor(stateColor);
+}
+
+void IdleState::Update(Entity* e, double dt) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		e->ChangeState(new WalkState());
+
+}
+
+void WalkState::Update(Entity* e, double dt) {
+	float max_speed_x = 5;
+	float max_speed_y = 30;
+
+	static bool wasPressedUp = false;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		e->dx -= max_speed_x * 100;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		e->dx += max_speed_x * 100;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		e->dy -= max_speed_y * 2;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		e->dy += max_speed_y * 2;
+	}
+
+	e->dx = clamp(e->dx, -max_speed_x, max_speed_x);
+	e->dy = clamp(e->dy, -max_speed_y, max_speed_y);
+
+	if (abs(e->dx) < .1f)
+		e->ChangeState(new IdleState());
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+		e->ChangeState(new RunState());
+}
+
+void RunState::Update(Entity* e, double dt) {
+	float max_speed_x = 20;
+	float max_speed_y = 30;
+
+	static bool wasPressedUp = false;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		e->dx -= max_speed_x * 100;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		e->dx += max_speed_x * 100;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		e->dy -= max_speed_y * 2;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		e->dy += max_speed_y * 2;
+	}
+
+	e->dx = clamp(e->dx, -max_speed_x, max_speed_x);
+	e->dy = clamp(e->dy, -max_speed_y, max_speed_y);
+
+	if (abs(e->dx) < .1f)
+		e->ChangeState(new IdleState());
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+		e->ChangeState(new WalkState());
+}
