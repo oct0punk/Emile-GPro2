@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
 
 
 struct Controller {
@@ -56,40 +57,7 @@ public:
 		button0.setPosition(vec);
 	}
 
-	void draw(sf::RenderWindow& win, sf::Vector2f pos, sf::RectangleShape& rect) {
-		joystickAngle+= .1f;
-
-		rect.setFillColor(sf::Color::Red);
-
-		sf::RectangleShape con(controller);
-		sf::RectangleShape lJoy(lJoystick);
-		sf::RectangleShape rJoy(rJoystick);
-		sf::RectangleShape but0(button0);
-		
-		rect.setFillColor(sf::Color::White);
-
-		con.setPosition(pos);
-		float magnitude = 10;
-		sf::Vector2f angleOffset(cos(joystickAngle) * magnitude, sin(joystickAngle) * magnitude);
-		if (lJoy.getFillColor() == sf::Color::Red) {
-			lJoy.setPosition(pos + angleOffset);
-			rJoy.setPosition(pos);
-		}
-		else if (rJoy.getFillColor() == sf::Color::Red) {
-			rJoy.setPosition(pos + angleOffset);
-			lJoy.setPosition(pos);
-		}
-		else {
-			rJoy.setPosition(pos);
-			lJoy.setPosition(pos);
-		}
-		but0.setPosition(pos);
-
-		win.draw(con);
-		win.draw(lJoy);
-		win.draw(rJoy);
-		win.draw(but0);
-	}
+	void draw(sf::RenderWindow& win, sf::Vector2f pos, sf::RectangleShape& rect);
 };
 
 
