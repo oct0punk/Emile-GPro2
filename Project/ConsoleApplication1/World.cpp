@@ -156,7 +156,6 @@ void World::updateMenu(double dt) {
 		sf::Vector2f mPos(cursor->getPosition().x, cursor->getPosition().y);
 		if (e->spr->getGlobalBounds().contains(mPos)) {
 			selectedButton = e;
-			tuto->setPosition(selectedButton->getPosition());
 
 			if (Controls::GetInstance()->selectControl())
 				e->state = ButtonState::Clicked;
@@ -191,7 +190,6 @@ void World::updateGameOver(double dt) {
 		sf::Vector2f mPos(cursor->getPosition().x, cursor->getPosition().y);
 		if (e->spr->getGlobalBounds().contains(mPos)) {
 			selectedButton = e;
-			tuto->setPosition(selectedButton->getPosition());
 			if (Controls::GetInstance()->selectControl())
 				e->state = ButtonState::Clicked;
 			else
@@ -232,9 +230,10 @@ void World::drawMenu(sf::RenderWindow& win) {
 	}
 	win.draw(credit);
 	if (selectedButton) {
-		win.draw(tuto->controller);
-		win.draw(tuto->button0);
+		tuto->DrawButton0(*window, selectedButton->getPosition());
 	}
+	tuto->DrawRJoystick(*window, sf::Vector2f(330, 100));
+	tuto->DrawLJoystick(*window, sf::Vector2f(330, 300));
 }
 
 
@@ -245,8 +244,7 @@ void World::drawGameOver(sf::RenderWindow& win) {
 	}
 	win.draw(*scoretxt);
 	if (selectedButton) {
-		win.draw(tuto->controller);
-		win.draw(tuto->button0);
+		tuto->DrawButton0(*window, selectedButton->getPosition());
 	}
 }
 
