@@ -1,0 +1,9 @@
+﻿  ConsoleApplication1.cpp
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Curve.hpp(48,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Curve.hpp(49,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Curve.hpp(50,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(59,33): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(61,97): warning C4244: 'argument' : conversion de 'long' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(109,35): warning C4244: '-=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(112,35): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+  ConsoleApplication1.vcxproj -> C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
