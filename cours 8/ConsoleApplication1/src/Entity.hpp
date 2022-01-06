@@ -63,11 +63,11 @@ public:
 
 	bool			visible = true;
 
-	float			cx = 0.0f;
+	float			cx = 0.0f; // Scaled position
 	float			cy = 0.0f;
-	float			rx = 0.0f;
+	float			rx = 0.0f; // Scaled position's rest
 	float			ry = 0.0f;
-	float			px = 0.0f;
+	float			px = 0.0f; // Position in window
 	float			py = 0.0f;
 
 	float			dx = 0.0f;
