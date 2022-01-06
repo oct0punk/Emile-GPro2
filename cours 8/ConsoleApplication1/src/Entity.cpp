@@ -7,20 +7,20 @@
 
 using namespace sf;
 
-void Entity::syncSprite(){
+void Entity::syncSprite() {
 	px = (cx + rx) * stride;
 	py = (cy + ry) * stride;
 	spr->setPosition(px, py);
 }
 
 void Entity::ChangeState(State* newState) {
-	
+
 	delete currentState;
 	currentState = newState;
 	currentState->OnEnter(this);
 }
 
-void Entity::im(){
+void Entity::im() {
 	using namespace ImGui;
 
 	bool modified = false;
@@ -38,7 +38,7 @@ void Entity::im(){
 	modified |= DragFloat("ry", &ry, 0.05f);
 	Value("px", (float)px);
 	Value("py", (float)py);
-	if (modified) 
+	if (modified)
 		syncSprite();
 }
 
@@ -55,7 +55,7 @@ bool Entity::isColliding(int ccx, int ccy) {
 		return true;
 
 	for (auto& vi : Game::walls)
-		if ( (vi.x == ccx) && (vi.y == ccy))
+		if ((vi.x == ccx) && (vi.y == ccy))
 			return true;
 
 	return false;
@@ -93,7 +93,7 @@ void Entity::update(double dt) {
 	}
 
 	while (ry >= 1) {
-		if (isColliding(cx, cy+1)) {
+		if (isColliding(cx, cy + 1)) {
 			dy = 0;
 			ry = 0.999f;
 		}
@@ -118,7 +118,7 @@ void Entity::update(double dt) {
 }
 
 void Entity::draw(sf::RenderWindow& win) {
-	if(visible)
+	if (visible)
 		win.draw(*spr);
 }
 
@@ -129,10 +129,25 @@ void State::OnEnter(Entity* e) {
 	e->spr->setFillColor(stateColor);
 }
 
+void IdleState::OnEnter(Entity* e) {
+	State::OnEnter(e);
+	life = .2f;
+}
+
 void IdleState::Update(Entity* e, double dt) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		e->ChangeState(new WalkState());
+		return;
+	}
+
+	life -= dt;
+	if (life < 0) {
+		if (e->isColliding(e->px + 1, e->py)) e->ChangeState(new CoverState());
+		if (e->isColliding(e->px - 1, e->py)) e->ChangeState(new CoverState());
+		if (e->isColliding(e->px, e->py + 1)) e->ChangeState(new CoverState());
+		if (e->isColliding(e->px, e->py - 1)) e->ChangeState(new CoverState());
+	}
 
 }
 
@@ -188,4 +203,11 @@ void RunState::Update(Entity* e, double dt) {
 		e->ChangeState(new IdleState());
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 		e->ChangeState(new WalkState());
+}
+
+void CoverState::Update(Entity* e, double dt) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		e->ChangeState(new WalkState());
+
 }

@@ -17,10 +17,14 @@ public:
 };
 
 class IdleState : public State {
+	float life = .2f;
+
 public:
 	IdleState() {
 		stateColor = sf::Color::White;
 	}
+
+	virtual void OnEnter(Entity* e);
 
 	virtual void Update(Entity* e, double dt);
 };
@@ -43,6 +47,14 @@ public:
 	virtual void Update(Entity* e, double dt);
 };
 
+class CoverState : public State {
+public:
+	CoverState() {
+		stateColor = sf::Color(100, 0, 0);
+	}
+
+	virtual void Update(Entity* e, double dt);
+};
 
 
 class Entity {
