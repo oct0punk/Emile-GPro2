@@ -95,10 +95,10 @@ public:
 	#pragma region Credit
 
 		// Print credit text written in "res/credit.txt"
-		FILE* f;
+		FILE* f = nullptr;
 		fopen_s(&f, "res/credit.txt", "rb");
-		char* str;
-		long size;
+		char* str = nullptr;
+		long size = 0;
 		fseek(f, 0, SEEK_END);
 		size = ftell(f);
 		rewind(f);
