@@ -143,10 +143,10 @@ void IdleState::Update(Entity* e, double dt) {
 
 	life -= dt;
 	if (life < 0) {
-		if (e->isColliding(e->px + 1, e->py)) e->ChangeState(new CoverState());
-		if (e->isColliding(e->px - 1, e->py)) e->ChangeState(new CoverState());
-		if (e->isColliding(e->px, e->py + 1)) e->ChangeState(new CoverState());
-		if (e->isColliding(e->px, e->py - 1)) e->ChangeState(new CoverState());
+		if (e->isColliding(e->cx + 1, e->cy)) e->ChangeState(new CoverState());
+		if (e->isColliding(e->cx - 1, e->cy)) e->ChangeState(new CoverState());
+		if (e->isColliding(e->cx, e->cy + 1)) e->ChangeState(new CoverState());
+		if (e->isColliding(e->cx, e->cy - 1)) e->ChangeState(new CoverState());
 	}
 
 }
