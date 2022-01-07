@@ -11,6 +11,8 @@ struct Controller {
 	sf::RectangleShape lJoystick;
 	sf::RectangleShape rJoystick;
 	sf::RectangleShape button0;
+	sf::RectangleShape aimButton;
+	sf::RectangleShape shootButton;
 
 	
 public:
@@ -30,6 +32,7 @@ public:
 		lJoystick.setTexture(new sf::Texture(lJoysText));
 		lJoystick.setOrigin(400, 0);
 		lJoystick.setScale(.6f, .6f);
+		lJoystick.setFillColor(sf::Color::Transparent);
 
 		sf::Texture rJoysText;
 		rJoysText.loadFromFile("res/Rjoystick.png");
@@ -38,6 +41,7 @@ public:
 		rJoystick.setTexture(new sf::Texture(rJoysText));
 		rJoystick.setOrigin(400, 0);
 		rJoystick.setScale(.6f, .6f);
+		rJoystick.setFillColor(sf::Color::Transparent);
 
 		sf::Texture butText;
 		butText.loadFromFile("res/button0.png");
@@ -46,6 +50,24 @@ public:
 		button0.setTexture(new sf::Texture(butText));
 		button0.setOrigin(400, 0);
 		button0.setScale(.6f, .6f);
+
+		sf::Texture aimButText;
+		aimButText.loadFromFile("res/AimButton.png");
+		aimButText.setSmooth(true);
+		aimButton.setSize(sf::Vector2f(300, 200));
+		aimButton.setTexture(new sf::Texture(aimButText));
+		aimButton.setOrigin(400, 0);
+		aimButton.setScale(.6f, .6f);
+		aimButton.setFillColor(sf::Color::Transparent);
+
+		sf::Texture shootButText;
+		shootButText.loadFromFile("res/ShootButton.png");
+		shootButText.setSmooth(true);
+		shootButton.setSize(sf::Vector2f(300, 200));
+		shootButton.setTexture(new sf::Texture(shootButText));
+		shootButton.setOrigin(400, 0);
+		shootButton.setScale(.6f, .6f);
+		shootButton.setFillColor(sf::Color::Transparent);
 	}
 
 
@@ -55,9 +77,13 @@ public:
 		lJoystick.setPosition(vec);
 		rJoystick.setPosition(vec);
 		button0.setPosition(vec);
+		aimButton.setPosition(vec);
+		shootButton.setPosition(vec);
 	}
 
-	void draw(sf::RenderWindow& win, sf::Vector2f pos, sf::RectangleShape& rect);
+	// Draw a controller.
+	// rect parameter color a RectangleShape, please write controller's class button
+	void draw(sf::RenderWindow& win, sf::Vector2f pos, sf::RectangleShape& rect, bool animJoystick = false);
 };
 
 
@@ -78,11 +104,19 @@ public:
 		controller->draw(win, pos, controller->button0);
 	}
 
-	void DrawRJoystick(sf::RenderWindow& win, sf::Vector2f pos) {
-		controller->draw(win, pos, controller->rJoystick);
+	void DrawRJoystick(sf::RenderWindow& win, sf::Vector2f pos, bool anim = false) {
+		controller->draw(win, pos, controller->rJoystick, anim);
 	}
 
-	void DrawLJoystick(sf::RenderWindow& win, sf::Vector2f pos) {
-		controller->draw(win, pos, controller->lJoystick);
+	void DrawLJoystick(sf::RenderWindow& win, sf::Vector2f pos, bool anim = false) {
+		controller->draw(win, pos, controller->lJoystick, anim);
+	}
+
+	void DrawAimButton(sf::RenderWindow& win, sf::Vector2f pos) {
+		controller->draw(win, pos, controller->aimButton);
+	}
+
+	void DrawShootButton(sf::RenderWindow& win, sf::Vector2f pos) {
+		controller->draw(win, pos, controller->shootButton);
 	}
 };

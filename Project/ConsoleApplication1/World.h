@@ -12,6 +12,8 @@
 
 
 class World {
+	bool aimDisplay = true;
+
 public:
 	Button* selectedButton = nullptr;
 	sf::RenderWindow* window = nullptr;

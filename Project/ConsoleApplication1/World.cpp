@@ -220,6 +220,16 @@ void World::drawGame(sf::RenderWindow& window) {
 		e->draw(window);
 	}
 	window.draw(*scoretxt);
+
+	// Controls
+	if (Game::GetInstance()->wave < 2) {
+		tuto->DrawLJoystick(window, sf::Vector2f(1000, 50), true);
+		tuto->DrawShootButton(window, sf::Vector2f(1000, 50));
+	}
+	if (Game::GetInstance()->player->power > 0) {
+		tuto->DrawLJoystick(window, sf::Vector2f(1000, 100));
+		tuto->DrawRJoystick(window, sf::Vector2f(1000, 100));
+	}
 }
 
 
@@ -229,11 +239,16 @@ void World::drawMenu(sf::RenderWindow& win) {
 		e->draw(win);
 	}
 	win.draw(credit);
+
+	// Display controller's controls
 	if (selectedButton) {
-		tuto->DrawButton0(*window, selectedButton->getPosition());
+		tuto->DrawButton0(win, selectedButton->getPosition());
 	}
-	tuto->DrawRJoystick(*window, sf::Vector2f(330, 100));
-	tuto->DrawLJoystick(*window, sf::Vector2f(330, 300));
+	if (!aimDisplay) return;
+	tuto->DrawRJoystick(*window, sf::Vector2f(1000, 50), true);
+	if (Magnitude(cursor->getPosition()) > 800)
+		aimDisplay = false;
+
 }
 
 
@@ -243,6 +258,8 @@ void World::drawGameOver(sf::RenderWindow& win) {
 		e->draw(win);
 	}
 	win.draw(*scoretxt);
+
+	// Display controller's controls
 	if (selectedButton) {
 		tuto->DrawButton0(*window, selectedButton->getPosition());
 	}
@@ -359,7 +376,7 @@ void World::ShowTools() { using namespace ImGui;
 		clearColor->g = fCol[1] * 255.0f;
 		clearColor->b = fCol[2] * 255.0f;
 		clearColor->a = fCol[3] * 255.0f;
-	}
+	}	
 	End();
 }
 
