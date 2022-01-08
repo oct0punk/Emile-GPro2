@@ -227,8 +227,8 @@ void World::drawGame(sf::RenderWindow& window) {
 		tuto->DrawShootButton(window, sf::Vector2f(1000, 50));
 	}
 	if (Game::GetInstance()->player->power > 0) {
-		tuto->DrawLJoystick(window, sf::Vector2f(1000, 100));
-		tuto->DrawRJoystick(window, sf::Vector2f(1000, 100));
+		tuto->DrawLJoystick(window, sf::Vector2f(1000, 200));
+		tuto->DrawRJoystick(window, sf::Vector2f(1000, 200));
 	}
 }
 

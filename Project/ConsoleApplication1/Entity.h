@@ -171,7 +171,7 @@ class PlayerPad : public Entity {
 public:
 	Laser* laser = nullptr;
 	int speed = 800.0f;
-	int power = 1;
+	int power = 0;
 	bool shootflag = true;
 
 	sf::Color fColor;
