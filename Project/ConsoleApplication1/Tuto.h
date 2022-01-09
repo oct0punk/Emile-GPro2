@@ -92,7 +92,8 @@ class Tuto {
 	sf::RectangleShape space;
 	sf::Color color = sf::Color::Red;	// highlight color
 public:
-	
+	bool powerTuto = true;
+	bool shootPowerTuto = true;
 
 	Tuto() {
 		controller = new Controller();

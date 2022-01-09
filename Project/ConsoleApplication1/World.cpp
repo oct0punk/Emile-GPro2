@@ -227,11 +227,17 @@ void World::drawGame(sf::RenderWindow& window) {
 		tuto->DrawMoveCommand(window, sf::Vector2f(800, 50));
 		tuto->DrawShootButton(window, sf::Vector2f(1100, 50));
 	}
+	else if (Game::GetInstance()->wave < 3) {
+		tuto->DrawRJoystick(window, sf::Vector2f(1000, 50));
+		tuto->DrawAimButton(window, sf::Vector2f(1000, 50));
+	}
 	if (Game::GetInstance()->player->power > 0) {
 		tuto->DrawPower(window, sf::Vector2f(1000, 200));
 	}
 	if (timeScale < 1.0f) {
-		tuto->DrawShootButton(window, sf::Vector2f(1000, 50));
+		tuto->powerTuto = false;
+		if (!tuto->shootPowerTuto)
+			tuto->DrawShootButton(window, sf::Vector2f(1000, 50));
 	}
 }
 
