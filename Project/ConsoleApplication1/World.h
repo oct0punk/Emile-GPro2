@@ -31,6 +31,7 @@ public:
 	sf::Color* clearColor = new sf::Color(0, 0, 20, 0);
 	void (World::* ImguiWindow)() = &World::ShowTools;
 
+	float timeSinceLevelLoad = 0.0f;
 	float timeScale = 1.0f;
 	int eCount = 0;
 	bool pauseKeyUp = true;

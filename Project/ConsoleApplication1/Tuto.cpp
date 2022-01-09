@@ -5,38 +5,13 @@
 #include "Command.h"
 
 
-void Controller::draw(sf::RenderWindow& win, sf::Vector2f pos, sf::RectangleShape& rect, bool animJoystick) {
-	if (!Controls::GetInstance()->isConnected)	return;
+void Controller::draw(sf::RenderWindow& win, sf::Vector2f pos, int animJoystick) {
 	joystickAngle += .04f;
 
-	sf::Color initial = rect.getFillColor();
-	rect.setFillColor(sf::Color::Red);
 
-	sf::RectangleShape con(controller);
-	sf::RectangleShape lJoy(lJoystick);
-	sf::RectangleShape rJoy(rJoystick);
-	sf::RectangleShape but0(button0);
-	sf::RectangleShape aimBut(aimButton);
-	sf::RectangleShape shootBut(shootButton);
-	rect.setFillColor(initial);
+	setPosition(pos);
 
-	con.setPosition(pos);
-	rJoy.setPosition(pos);
-	lJoy.setPosition(pos);
-	but0.setPosition(pos);
-	shootBut.setPosition(pos);
-	aimBut.setPosition(pos);
-
-	if (rJoy.getFillColor() == sf::Color::Red && animJoystick) { 
-		sf::Vector2f angleOffset = 
-			Magnitude(AimingJoystick()) > 10 ? AimingJoystick() :
-			sf::Vector2f(cos(joystickAngle) * 100, sin(joystickAngle) * 100);
-
-		angleOffset.x /= 8;
-		angleOffset.y /= 8;
-		rJoy.setPosition(pos + angleOffset);
-	}
-	if (lJoy.getFillColor() == sf::Color::Red && animJoystick) {
+	if (animJoystick == 1) {
 		sf::Vector2f lAngle(
 			sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X),
 			sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y));
@@ -44,17 +19,90 @@ void Controller::draw(sf::RenderWindow& win, sf::Vector2f pos, sf::RectangleShap
 		sf::Vector2f angleOffset =
 			Magnitude(lAngle) > 10 ? lAngle :
 			sf::Vector2f(cos(joystickAngle) * 100, sin(joystickAngle) * 100);
-		
+
 		angleOffset.x /= 8;
 		angleOffset.y /= 8;
-		lJoy.setPosition(pos + angleOffset);
-		
+		lJoystick.setPosition(pos + angleOffset);
+
+	}
+	if (animJoystick == 2) {
+		sf::Vector2f angleOffset =
+			Magnitude(AimingJoystick()) > 10 ? AimingJoystick() :
+			sf::Vector2f(cos(joystickAngle) * 100, sin(joystickAngle) * 100);
+
+		angleOffset.x /= 8;
+		angleOffset.y /= 8;
+		rJoystick.setPosition(pos + angleOffset);
 	}
 
-	win.draw(con);
-	win.draw(lJoy);
-	win.draw(rJoy);
-	win.draw(but0);
-	win.draw(aimBut);
-	win.draw(shootBut);
+	win.draw(controller);
+	win.draw(lJoystick);
+	win.draw(rJoystick);
+	win.draw(button0);
+	win.draw(aimButton);
+	win.draw(shootButton);
+}
+
+
+void Tuto::DrawController(sf::RenderWindow& win, sf::Vector2f pos) {
+	controller->controller.setFillColor(color);
+	controller->draw(win, pos);
+	controller->controller.setFillColor(sf::Color::White);
+}
+
+void Tuto::DrawButton0(sf::RenderWindow& win, sf::Vector2f pos) {
+	if (!Controls::GetInstance()->isConnected) return;
+	controller->button0.setFillColor(color);
+	controller->draw(win, pos);
+	controller->button0.setFillColor(sf::Color::White);
+}
+
+void Tuto::DrawMoveCommand(sf::RenderWindow& win, sf::Vector2f pos) {
+	if (Controls::GetInstance()->isConnected) {
+		controller->lJoystick.setFillColor(color);
+		controller->draw(win, pos, 1);
+		controller->lJoystick.setFillColor(sf::Color::Transparent);
+		return;
+	}
+	zqsd.setPosition(pos);
+	win.draw(zqsd);
+}
+
+void Tuto::DrawRJoystick(sf::RenderWindow& win, sf::Vector2f pos) {
+	if (!Controls::GetInstance()->isConnected) return;
+	controller->rJoystick.setFillColor(color);
+	controller->draw(win, pos, 2);
+	controller->rJoystick.setFillColor(sf::Color::Transparent);
+}
+
+void Tuto::DrawPower(sf::RenderWindow& win, sf::Vector2f pos) {
+	if (Controls::GetInstance()->isConnected) {
+		controller->lJoystick.setFillColor(color);
+		controller->draw(win, pos, 0);
+		controller->lJoystick.setFillColor(sf::Color::Transparent);
+		controller->rJoystick.setFillColor(color);
+		controller->draw(win, pos, 0);
+		controller->rJoystick.setFillColor(sf::Color::Transparent);
+		return;
+	}
+	space.setPosition(pos);
+	win.draw(space);
+}
+
+void Tuto::DrawAimButton(sf::RenderWindow& win, sf::Vector2f pos) {
+	if (!Controls::GetInstance()->isConnected) return;
+	controller->aimButton.setFillColor(color);
+	controller->draw(win, pos);
+	controller->aimButton.setFillColor(sf::Color::White);
+}
+
+void Tuto::DrawShootButton(sf::RenderWindow& win, sf::Vector2f pos) {
+	if (Controls::GetInstance()->isConnected) {
+		controller->shootButton.setFillColor(color);
+		controller->draw(win, pos);
+		controller->shootButton.setFillColor(sf::Color::White);
+		return;
+	}
+	left.setPosition(pos);
+	win.draw(left);
 }

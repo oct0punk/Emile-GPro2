@@ -221,14 +221,17 @@ void World::drawGame(sf::RenderWindow& window) {
 	}
 	window.draw(*scoretxt);
 
-	// Controls
+	// Display Controls
+	
 	if (Game::GetInstance()->wave < 2) {
-		tuto->DrawLJoystick(window, sf::Vector2f(1000, 50), true);
-		tuto->DrawShootButton(window, sf::Vector2f(1000, 50));
+		tuto->DrawMoveCommand(window, sf::Vector2f(800, 50));
+		tuto->DrawShootButton(window, sf::Vector2f(1100, 50));
 	}
 	if (Game::GetInstance()->player->power > 0) {
-		tuto->DrawLJoystick(window, sf::Vector2f(1000, 200));
-		tuto->DrawRJoystick(window, sf::Vector2f(1000, 200));
+		tuto->DrawPower(window, sf::Vector2f(1000, 200));
+	}
+	if (timeScale < 1.0f) {
+		tuto->DrawShootButton(window, sf::Vector2f(1000, 50));
 	}
 }
 
@@ -245,7 +248,7 @@ void World::drawMenu(sf::RenderWindow& win) {
 		tuto->DrawButton0(win, selectedButton->getPosition());
 	}
 	if (!aimDisplay) return;
-	tuto->DrawRJoystick(*window, sf::Vector2f(1000, 50), true);
+	tuto->DrawRJoystick(*window, sf::Vector2f(1000, 50));
 	if (Magnitude(cursor->getPosition()) > 800)
 		aimDisplay = false;
 
