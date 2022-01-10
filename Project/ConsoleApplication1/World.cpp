@@ -76,16 +76,16 @@ void World::updateGame(double dt) {
 		case EType::Bot:
 		{
 			Enemy* enemy = (Enemy*)e;
-			// Collision with lasers
+			// Collision with lasers and others ennemies
 			for (auto b : dataPlay) {
 				if (b->type == EType::Bullet) {
 					Laser* l = (Laser*)b;
 					for (int i = 0; i < l->px.size(); i++) {
 						if (!l->alive[i]) continue;
-						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
+						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {	// Hit
 							if (e->visible) {
 								Game::GetInstance()->score += 1;
-								if (enemy->ChangeHealth(-l->power[i])) {
+								if (enemy->ChangeHealth(-l->power[i])) {	// Kill
 									eCount--;
 									Game::GetInstance()->score += 10 * (l->power[i] / 1.9f);
 									scoretxt->setString(to_string(Game::GetInstance()->score));
@@ -108,12 +108,21 @@ void World::updateGame(double dt) {
 										dataFX.push_back(p);
 									}
 								}
-								if (l->power[i] > 1)
+								if (l->power[i] > 1)	// CamShake
 									camShake = camShaketime;
 								l->alive[i] = false;
 								Audio::GetInstance()->Play(Audio::GetInstance()->hit);
 							}
 						}
+					}
+				}
+				if (b->type == EType::Bot) {
+					sf::Vector2f dir = b->getPosition() - e->getPosition();
+					if (Magnitude(dir) < 50) {	// Collide with particle									
+						dir.x *= dt;
+						dir.y *= dt;
+						sf::Vector2f movePos(e->getPosition() - dir);
+						e->setPosition(movePos.x, movePos.y);
 					}
 				}
 			}
@@ -125,7 +134,7 @@ void World::updateGame(double dt) {
 			if (Magnitude(e->getPosition() - p->getPosition()) < 150 && timeScale >= 1.0f)
 				if (e->visible && p->visible) {
 					p->ChangeHealth(-1);
-					Game::GetInstance()->pHit = true;
+					
 				}
 			break;
 		}
@@ -241,8 +250,8 @@ void World::drawGame(sf::RenderWindow& window) {
 
 	// Display Controls
 	if (Game::GetInstance()->wave < 2) {
-		tuto->DrawMoveCommand(window, sf::Vector2f(1600, 50));
-		tuto->DrawShootButton(window, sf::Vector2f(1600, 200));
+		tuto->DrawMoveCommand(window, sf::Vector2f(1700, 50));
+		tuto->DrawShootButton(window, sf::Vector2f(1700, 300));
 	}
 	else if (Game::GetInstance()->wave < 3) {
 		tuto->DrawRJoystick(window, sf::Vector2f(1600, 50));
@@ -360,7 +369,7 @@ void World::SpawnObstacle(int radius, sf::Vector2f pos) {
 	sf::CircleShape* wShape = new sf::CircleShape(radius);
 	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
 	wShape->setFillColor(sf::Color::Transparent);
-	wShape->setOutlineThickness(radius / 7);
+	wShape->setOutlineThickness(radius / 5);
 	wShape->setOutlineColor(rand() % 2 == 0 ? sf::Color(155, 100, 0) : sf::Color::Cyan);
 	Entity* w = new Entity(EType::Wall, wShape);
 	w->setPosition(pos.x, pos.y);
