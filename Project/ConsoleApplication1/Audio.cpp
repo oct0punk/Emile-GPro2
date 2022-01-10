@@ -4,7 +4,7 @@
 Audio::Audio() {
 	stdShotBuf.loadFromFile("res/blipSelect.wav");
 	stdShot.setBuffer(stdShotBuf);
-	stdShot.setVolume(50);
+	stdShot.setVolume(50.0f);
 
 	themBuf.loadFromFile("res/them.wav");
 	them.setBuffer(themBuf); 

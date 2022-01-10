@@ -56,10 +56,11 @@ protected:
 	double timeSinceLevelStart = 0.0;
 	int health = 1;
 	bool invincible = false;
-	float invincibleTime = 1.0f;
+	float invincibleTimer = 1.0f;
 	bool hit = false;
 
 public:
+	float invincibleTime = 1.0f;
 	sf::Shape* spr = nullptr;
 	sf::Vector2f lastGoodPos;
 	EType			type;
@@ -192,6 +193,8 @@ public:
 			l = false;
 		shootflag = true;		
 		laser->reloading = 0.0f;
+		spr->setFillColor(fColor);
+		spr->setOutlineColor(oColor);
 	}
 	void Power();
 

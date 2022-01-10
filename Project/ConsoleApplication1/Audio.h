@@ -2,6 +2,13 @@
 #include "SFML/Audio/Sound.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
 
+struct AudioClip {
+	sf::Sound s;
+	sf::SoundBuffer buf;
+	float volume = 1.0f;
+	float pitch = 1.0f;
+};
+
 class Audio {
 
 private:
@@ -18,6 +25,7 @@ private:
 
 
 public:
+	float* generalVol = new float(1.0f);
 	sf::Sound stdShot;
 	sf::Sound them;
 	sf::Sound slow;
@@ -36,6 +44,10 @@ public:
 		lHit.setPitch(val);
 		power.setPitch(val);
 		hit.setPitch(val);
+	}
+
+	void GlobalVolumeSet() {
+
 	}
 };
 

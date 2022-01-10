@@ -83,9 +83,15 @@ void World::updateGame(double dt) {
 									scoretxt->setString(to_string(Game::GetInstance()->score));
 									flashTime = pi();
 									// FX
+									sf::Color c = enemy->fColor;
+									c.r += (rand() % 10) - 5;
+									c.g += (rand() % 10) - 5;
+									c.b += (rand() % 10) - 5;
 									for (int i = 0; i < 40; i++) {
 										sf::CircleShape* cShape = new sf::CircleShape(2 + rand() % 10);
 										cShape->setFillColor(sf::Color(255 - rand() % 25, 255 - rand() % 50, 0));
+										cShape->setOutlineColor(c);
+										cShape->setOutlineThickness(1);
 										Particle* p = new Particle(EType::Bot, cShape);
 										p->dx =  cos(i * rand() % 300) * RadToDeg();
 										p->dy =  sin(i * rand() % 300) * RadToDeg();
@@ -388,9 +394,16 @@ void World::KeepEntityOnScreen(Entity* e, float value) {
 
 
 void World::Tools() { using namespace ImGui;
-ImGui::Begin("Edit");
+ImGui::Begin("Gameplay");
 ImGui::InputInt("CamShake intensity", &camShakeIntensity, 1, 5);
 ImGui::InputFloat("CamShake duration", &camShaketime, .01f, .1f);
+ImGui::InputFloat("Player Invincibility Duration", &Game::GetInstance()->player->invincibleTime, .01f, .1f);
+ImGui::End();
+
+ImGui::Begin("Audio");
+float themVol = Audio::GetInstance()->them.getVolume();
+if (ImGui::SliderFloat("Music Volume", &themVol, 0.0f, 10.0f))
+Audio::GetInstance()->them.setVolume(themVol);
 ImGui::End();
 }
 

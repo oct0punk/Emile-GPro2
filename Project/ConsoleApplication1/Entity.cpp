@@ -89,15 +89,12 @@ void PlayerPad::update(double dt) {
 	if (invincible) {
 		spr->setFillColor(fColorInv);
 		spr->setOutlineColor(oColorInv);
-		invincibleTime -= dt;
-		if (invincibleTime <= 0) {
+		invincibleTimer -= dt;
+		if (invincibleTimer <= 0) {
 			invincible = false;
 			spr->setOutlineColor(oColor);
 			spr->setFillColor(fColor);
 		}
-	} else {
-		spr->setFillColor(fColor);
-		spr->setOutlineColor(oColor);
 	}
 
 	// Moves
@@ -134,7 +131,7 @@ bool PlayerPad::ChangeHealth(int amount) {
 	if (invincible) return false;
 	if (amount < 0) {
 		invincible = true;
-		invincibleTime = 1.0f;
+		invincibleTimer = invincibleTime;
 		spr->setOutlineColor(oColorInv);
 		spr->setFillColor(fColorInv);
 	}
