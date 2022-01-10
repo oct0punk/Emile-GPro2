@@ -63,16 +63,14 @@ void Game::draw(sf::RenderWindow& win) {
 void Game::NextWave() {
 	wave++;
 	enemyCount = wave * 3;
-	int radius = 30 + rand() % 50;
+	int radius = 50 + rand() % 50;
 	world->SpawnObstacle(radius, sf::Vector2f(-radius, -radius));
 	radius = rand() % 100;
 	world->SpawnObstacle(radius, sf::Vector2f(-1000, 2000 -radius));
 
 	player->ChangeHealth(1);
-	if (!pHit) {
-		world->InstantiatePower();
-	}
-	pHit = false;
+	world->InstantiatePower();
+	
 }
 
 // Launch a game from the beginning

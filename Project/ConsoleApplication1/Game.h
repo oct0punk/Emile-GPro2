@@ -20,8 +20,7 @@ public:
 	int score = 0;
 	int wave = 0;
 	int enemyCount = 0;
-	bool pHit = true;
-
+	
 	static void create(World* w, PlayerPad* p) {
 		Instance = new Game(w);
 		Instance->player = p;
