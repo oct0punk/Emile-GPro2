@@ -13,10 +13,13 @@
 
 class World {
 	bool aimDisplay = true;
+	float camShake = 0.0f;
+	int camShakeIntensity = 20;
 
 public:
 	Button* selectedButton = nullptr;
 	sf::RenderWindow* window = nullptr;
+	sf::View view;
 	Tuto* tuto;
 	sf::CircleShape* cursor = nullptr;
 
@@ -41,6 +44,8 @@ public:
 		Enemy::oColor = sf::Color::Blue;
 		tuto = new Tuto();
 		window = win;
+		view.setCenter(win->getSize().x / 2, win->getSize().y / 2);
+		view.setSize(win->getSize().x, win->getSize().y);
 
 		// Used for buttons
 		sf::Font* font = new sf::Font();
@@ -107,7 +112,7 @@ public:
 		rewind(f);
 		str = (char*)malloc(sizeof(char) * size);
 		fread(str, 1, size, f);
-		str[strlen(str) - 4] = 0;
+		str[strlen(str) - 8] = 0;
 		fclose(f);
 
 		credit.setFont(*font);
@@ -148,4 +153,10 @@ public:
 
 	void ShowTools();
 	void ColorsTool();
+	void CamShake() {
+		sf::Vector2f offset(rand() % camShakeIntensity - camShakeIntensity / 2, rand() % camShakeIntensity - camShakeIntensity / 2);
+		sf::Vector2f center(window->getSize().x / 2, window->getSize().y / 2);
+		view.setCenter(center + offset);
+		window->setView(view);
+	}
 };

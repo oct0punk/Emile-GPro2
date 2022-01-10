@@ -87,11 +87,13 @@ int main()
 	double tStart = getTimeStamp();
 	double tEnterFrame = getTimeStamp();
 	double tExitFrame = getTimeStamp();
+	double time = 0.0;
 
 	int* thickness = new int(2);
 
 	while (window.isOpen()) {
 		double dt = tExitFrame - tEnterFrame;
+		time += dt;
 		tEnterFrame = getTimeStamp();
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -99,9 +101,6 @@ int main()
 			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				window.close();
 		}
-
-		
-
 
 		// CONTROLS
 		Controls::GetInstance()->Update();	

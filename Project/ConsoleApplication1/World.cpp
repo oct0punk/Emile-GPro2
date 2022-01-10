@@ -222,7 +222,7 @@ void World::drawGame(sf::RenderWindow& window) {
 	window.draw(*scoretxt);
 
 	// Display Controls
-	
+	CamShake();
 	if (Game::GetInstance()->wave < 2) {
 		tuto->DrawMoveCommand(window, sf::Vector2f(800, 50));
 		tuto->DrawShootButton(window, sf::Vector2f(1100, 50));
@@ -377,20 +377,23 @@ void World::KeepEntityOnScreen(Entity* e, float value) {
 
 
 void World::ShowTools() { using namespace ImGui;
-
-	Begin("Edit");
-	float fCol[4]{ clearColor->r / 255.0f, clearColor->g / 255.0f, clearColor->b / 255.0f, clearColor->a / 255.0f };
-	if (ImGui::ColorPicker4("Fill Color", fCol)) {
-		clearColor->r = fCol[0] * 255.0f;
-		clearColor->g = fCol[1] * 255.0f;
-		clearColor->b = fCol[2] * 255.0f;
-		clearColor->a = fCol[3] * 255.0f;
-	}	
-	End();
+ImGui::Begin("Edit");
+ImGui::InputInt("camShake intensity", &camShakeIntensity, 1, 5);
+ImGui::End();
 }
 
 
 void World::ColorsTool() {	using namespace ImGui;
+
+	Begin("Background");
+	float col[4]{ clearColor->r / 255.0f, clearColor->g / 255.0f, clearColor->b / 255.0f, clearColor->a / 255.0f };
+	if (ImGui::ColorPicker4("Fill Color", col)) {
+		clearColor->r = col[0] * 255.0f;
+		clearColor->g = col[1] * 255.0f;
+		clearColor->b = col[2] * 255.0f;
+		clearColor->a = col[3] * 255.0f;
+	}
+	End();
 
 	#pragma region Player
 	
