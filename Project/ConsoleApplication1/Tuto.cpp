@@ -98,9 +98,6 @@ void Tuto::DrawAimButton(sf::RenderWindow& win, sf::Vector2f pos) {
 }
 
 void Tuto::DrawShootButton(sf::RenderWindow& win, sf::Vector2f pos) {
-	if (powerTuto)
-		if (Game::GetInstance()->world->timeScale == 1.0f)
-			shootPowerTuto = false;
 
 	if (Controls::GetInstance()->isConnected) {
 		controller->shootButton.setFillColor(color);

@@ -46,9 +46,3 @@ void Audio::Play(AudioClip s) {
 }
 
 Audio* Audio::instance = nullptr;
-
-void AudioClip::setVolume(float val) {
-	volume = val;
-	
-	sound->setVolume(val);
-}

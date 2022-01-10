@@ -17,8 +17,11 @@ struct AudioClip {
 		sound->setBuffer(*buffer);
 	}
 
-	void setVolume(float val);
 
+	void setVolume(float val) {
+		volume = val;
+		sound->setVolume(val);
+	}
 
 	void setPitch(int val) {
 		pitch = val;
@@ -47,7 +50,6 @@ private:
 
 
 public:
-	float generalVol = 1.0f;
 	float globalPitch = 1.0f;
 	AudioClip shot;
 	AudioClip them;
@@ -81,13 +83,5 @@ public:
 		hit.pitch = val;
 	}
 
-	void GlobalVolumeSet() {
-		shot.setVolume(shot.volume);
-		them.setVolume(them.volume);
-		slow.setVolume(slow.volume);
-		lHit.setVolume(lHit.volume);
-		hit.setVolume(hit.volume);
-		power.setVolume(power.volume);
-	}
 };
 

@@ -238,24 +238,26 @@ void World::drawGame(sf::RenderWindow& window) {
 	}
 	window.draw(*scoretxt);
 
-	// Display Controls
 
+	// Display Controls
 	if (Game::GetInstance()->wave < 2) {
-		tuto->DrawMoveCommand(window, sf::Vector2f(800, 50));
-		tuto->DrawShootButton(window, sf::Vector2f(1100, 50));
+		tuto->DrawMoveCommand(window, sf::Vector2f(1600, 50));
+		tuto->DrawShootButton(window, sf::Vector2f(1600, 200));
 	}
 	else if (Game::GetInstance()->wave < 3) {
-		tuto->DrawRJoystick(window, sf::Vector2f(1000, 50));
-		tuto->DrawAimButton(window, sf::Vector2f(1000, 50));
+		tuto->DrawRJoystick(window, sf::Vector2f(1600, 50));
+		tuto->DrawAimButton(window, sf::Vector2f(1600, 50));
 	}
 	if (Game::GetInstance()->player->power > 0) {
 		tuto->DrawPower(window, sf::Vector2f(1000, 200));
 	}
 	if (timeScale < 1.0f) {
 		tuto->powerTuto = false;
-		if (!tuto->shootPowerTuto)
+		if (tuto->shootPowerTuto)
 			tuto->DrawShootButton(window, sf::Vector2f(1000, 50));
 	}
+	else if (!tuto->powerTuto)
+		tuto->shootPowerTuto = false;
 }
 
 
@@ -401,9 +403,6 @@ ImGui::InputFloat("Player Invincibility Duration", &Game::GetInstance()->player-
 ImGui::End();
 
 ImGui::Begin("Audio");
-if (ImGui::SliderFloat("Genreal Volume", &Audio::GetInstance()->generalVol, 0.0f, 1.0f))
-	Audio::GetInstance()->GlobalVolumeSet();
-
 float themVol = Audio::GetInstance()->them.volume;
 if (ImGui::SliderFloat("Music Volume", &themVol, 0.0f, 10.0f))
 Audio::GetInstance()->them.setVolume(themVol);
