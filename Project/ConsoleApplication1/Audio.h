@@ -2,52 +2,92 @@
 #include "SFML/Audio/Sound.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
 
+class Audio;
+
 struct AudioClip {
-	sf::Sound s;
-	sf::SoundBuffer buf;
+	sf::Sound* sound = nullptr;
+	sf::SoundBuffer* buffer = nullptr;
 	float volume = 1.0f;
 	float pitch = 1.0f;
+
+	AudioClip() {}
+	AudioClip(sf::SoundBuffer buf) {
+		buffer = new sf::SoundBuffer(buf);
+		sound = new sf::Sound();
+		sound->setBuffer(*buffer);
+	}
+
+	void setVolume(float val);
+
+
+	void setPitch(int val) {
+		pitch = val;
+		sound->setPitch(val);
+	}
+
+	void setLoop(bool val) {
+		sound->setLoop(val);
+	}
+
+	void play() {
+		sound->play();
+	}
+
+	void setPlayingOffset(sf::Time t) {
+		sound->setPlayingOffset(t);
+	}
 };
 
+
 class Audio {
-
 private:
-	sf::SoundBuffer stdShotBuf;
-	sf::SoundBuffer themBuf;
-	sf::SoundBuffer slowBuf;
-	sf::SoundBuffer lHitBuf;
-	sf::SoundBuffer hitBuf;
-	sf::SoundBuffer powerBuf;
-	float pitch = 1.0f;
 
-	Audio();	
+
 	static Audio* instance;
 
 
 public:
-	float* generalVol = new float(1.0f);
-	sf::Sound stdShot;
-	sf::Sound them;
-	sf::Sound slow;
-	sf::Sound lHit;
-	sf::Sound hit;
-	sf::Sound power;
+	float generalVol = 1.0f;
+	float globalPitch = 1.0f;
+	AudioClip shot;
+	AudioClip them;
+	AudioClip slow;
+	AudioClip lHit;
+	AudioClip hit;
+	AudioClip power;
 
+	Audio();
 	static Audio* GetInstance();
+	
 
-	void Play(sf::Sound* s);
+	void Play(AudioClip s);
 
 	void SetPitch(float val) {
-		pitch = val;
-		stdShot.setPitch(val);
-		them.setPitch(val);
-		lHit.setPitch(val);
-		power.setPitch(val);
-		hit.setPitch(val);
+		globalPitch = val;
+
+		shot.sound->setPitch(val);
+		shot.pitch = val;
+
+		them.sound->setPitch(val);
+		them.pitch = val;
+
+		lHit.sound->setPitch(val);
+		lHit.pitch = val;
+
+		power.sound->setPitch(val);
+		power.pitch = val;
+
+		hit.sound->setPitch(val);
+		hit.pitch = val;
 	}
 
 	void GlobalVolumeSet() {
-
+		shot.setVolume(shot.volume);
+		them.setVolume(them.volume);
+		slow.setVolume(slow.volume);
+		lHit.setVolume(lHit.volume);
+		hit.setVolume(hit.volume);
+		power.setVolume(power.volume);
 	}
 };
 

@@ -11,9 +11,17 @@ void World::updateGame(double dt) {
 	PlayerPad* p = Game::GetInstance()->player;
 	p->update(dt);
 	KeepEntityOnScreen(p);
-	dt *= timeScale;
 	if (flashTime > 0.0f)
 		flashTime -= dt * 14.0f;
+	if (camShake > 0.0f) {
+		camShake -= dt;
+		CamShake();
+		if (camShake <= 0.0f) {
+			view.setCenter(window->getSize().x / 2, window->getSize().y / 2);
+			window->setView(view);
+		}
+	}
+	dt *= timeScale;
 
 	for (auto e : dataPlay) {
 		if (!e->visible || e->type == Player) continue;
@@ -103,7 +111,7 @@ void World::updateGame(double dt) {
 								if (l->power[i] > 1)
 									camShake = camShaketime;
 								l->alive[i] = false;
-								Audio::GetInstance()->Play(&Audio::GetInstance()->hit);
+								Audio::GetInstance()->Play(Audio::GetInstance()->hit);
 							}
 						}
 					}
@@ -131,10 +139,10 @@ void World::updateGame(double dt) {
 						if (e->spr->getGlobalBounds().contains(sf::Vector2f(l->px[i], l->py[i]))) {
 							if (e->ChangeHealth(-l->power[i])) {
 								p->power++;
-								Audio::GetInstance()->Play(&Audio::GetInstance()->power);
+								Audio::GetInstance()->Play(Audio::GetInstance()->power);
 							}
 							l->alive[i] = false;
-							Audio::GetInstance()->Play(&Audio::GetInstance()->hit);
+							Audio::GetInstance()->Play(Audio::GetInstance()->hit);
 
 						}
 					}
@@ -155,14 +163,6 @@ void World::updateGame(double dt) {
 	else
 		pauseKeyUp = true;
 
-	if (camShake > 0.0f) {
-		camShake -= dt;
-		CamShake();
-		if (camShake <= 0.0f) {
-			view.setCenter(window->getSize().x / 2, window->getSize().y / 2);
-			window->setView(view);
-		}
-	}
 }
 
 
@@ -401,10 +401,18 @@ ImGui::InputFloat("Player Invincibility Duration", &Game::GetInstance()->player-
 ImGui::End();
 
 ImGui::Begin("Audio");
-float themVol = Audio::GetInstance()->them.getVolume();
+if (ImGui::SliderFloat("Genreal Volume", &Audio::GetInstance()->generalVol, 0.0f, 1.0f))
+	Audio::GetInstance()->GlobalVolumeSet();
+
+float themVol = Audio::GetInstance()->them.volume;
 if (ImGui::SliderFloat("Music Volume", &themVol, 0.0f, 10.0f))
 Audio::GetInstance()->them.setVolume(themVol);
+
+float shotVol = Audio::GetInstance()->shot.volume;
+if (ImGui::SliderFloat("Shot Volume", &shotVol, 0.0f, 50.0f))
+Audio::GetInstance()->shot.setVolume(shotVol);
 ImGui::End();
+
 }
 
 

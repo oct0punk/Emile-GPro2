@@ -157,7 +157,7 @@ void PlayerPad::Power() {
 void Laser::create(float _px, float _py, float _dx, float _dy, float rTime, int p) {
 	if (reloading > 0.0f) return;
 	reloading = rTime;
-	Audio::GetInstance()->Play(&Audio::GetInstance()->stdShot);
+	Audio::GetInstance()->Play(Audio::GetInstance()->shot);
 
 	sf::Vector2f dir(_dx, _dy);
 	Normalize(&dir);
@@ -192,7 +192,7 @@ void Laser::ChangeDirection(int idx, float x, float y) {
 	dx[idx] = dir.x;
 	dy[idx] = dir.y;
 	power[idx] += 5;
-	Audio::GetInstance()->Play(&Audio::GetInstance()->lHit);
+	Audio::GetInstance()->Play(Audio::GetInstance()->lHit);
 }
 
 

@@ -2,31 +2,35 @@
 #include "Game.h"
 
 Audio::Audio() {
-	stdShotBuf.loadFromFile("res/blipSelect.wav");
-	stdShot.setBuffer(stdShotBuf);
-	stdShot.setVolume(50.0f);
-
+	sf::SoundBuffer themBuf;
 	themBuf.loadFromFile("res/them.wav");
-	them.setBuffer(themBuf); 
-	them.setVolume(10);
+	them = AudioClip(themBuf);
+	them.setVolume(10.0f);
 	them.setLoop(true);
 	them.setPlayingOffset(sf::seconds(68.4f));
+
 	them.play();
+	sf::SoundBuffer stdShotBuf;
+	stdShotBuf.loadFromFile("res/blipSelect.wav");
+	shot = AudioClip(stdShotBuf);
+	shot.setVolume(20.0f);
 
+	sf::SoundBuffer lHitBuf;
 	lHitBuf.loadFromFile("res/laserHit.wav");
-	lHit.setBuffer(lHitBuf);
-	lHit.setVolume(40);
-	
+	lHit = AudioClip(lHitBuf);
+	lHit.setVolume(40.0f);
+
+	sf::SoundBuffer slowBuf;
 	slowBuf.loadFromFile("res/slow.wav");
-	slow.setBuffer(slowBuf);
+	slow = AudioClip(slowBuf);
 
+	sf::SoundBuffer hitBuf;
 	hitBuf.loadFromFile("res/hitHurt.wav");
-	hit.setBuffer(hitBuf);
+	hit = AudioClip(hitBuf);
 
+	sf::SoundBuffer powerBuf;
 	powerBuf.loadFromFile("res/powerUp.wav");
-	power.setBuffer(powerBuf);
-	
-	pitch = Game::GetInstance()->world->timeScale;
+	power = AudioClip(powerBuf);
 }
 
 Audio* Audio::GetInstance() {
@@ -35,10 +39,16 @@ Audio* Audio::GetInstance() {
 	return instance;
 }
 
-void Audio::Play(sf::Sound* s) {
-	float p = (rand() % 3000) / 10000.0f;
-	s->setPitch(pitch + p * Game::GetInstance()->world->timeScale);
-	s->play();
+void Audio::Play(AudioClip s) {
+	float pitch = (rand() % 3000) / 10000.0f;
+	s.setPitch(globalPitch + pitch);
+	s.play();
 }
 
 Audio* Audio::instance = nullptr;
+
+void AudioClip::setVolume(float val) {
+	volume = val;
+	
+	sound->setVolume(val);
+}
