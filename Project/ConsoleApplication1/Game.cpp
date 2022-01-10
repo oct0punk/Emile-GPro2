@@ -4,6 +4,34 @@
 
 Game::Game(World* w) { world = w; }
 
+void Game::ChangeState(GameState nState) {
+	state = nState;
+	switch (state)
+	{
+	case Playing:
+		world->ImguiWindow = nullptr;
+		break;
+	case Menu:
+		world->ImguiWindow = &World::Tools;
+		break;
+	case Pause:
+		break;
+	case GameOver:
+		if (score > bestScore) { // New record
+			bestScore = score;
+			world->scoreEnd.setFillColor(sf::Color::Yellow);
+			world->scoreEnd.setString(sf::String("	You did : " + std::to_string(score) + "\nIt's a new record, congratulations!"));
+		}
+		else {
+			world->scoreEnd.setFillColor(sf::Color::Cyan);
+			world->scoreEnd.setString(sf::String("You did : " + std::to_string(score) + "\nBest score was : " + std::to_string(bestScore)));
+		}
+		break;
+	default:
+		break;
+	}
+}
+
 void Game::update(double dt) {
 	switch (state) {
 	case Playing:

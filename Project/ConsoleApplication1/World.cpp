@@ -295,6 +295,7 @@ void World::drawGameOver(sf::RenderWindow& win) {
 		e->draw(win);
 	}
 	win.draw(*scoretxt);
+	win.draw(scoreEnd);
 
 	// Display controller's controls
 	if (selectedButton) {

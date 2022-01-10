@@ -30,6 +30,7 @@ public:
 	std::vector<Button*>	dataMenu;
 	std::vector<Button*>	dataGameOver;
 	sf::Text credit;
+	sf::Text scoreEnd;
 	sf::Text* scoretxt = nullptr;
 
 	sf::Color* clearColor = new sf::Color(0, 0, 20, 0);
@@ -51,6 +52,8 @@ public:
 		// Used for buttons
 		sf::Font* font = new sf::Font();
 		font->loadFromFile("res/astro.ttf");
+		sf::Font* astro = new sf::Font();
+		astro->loadFromFile("res/astron boy wonder.ttf");
 		sf::Text* text = new sf::Text("Play", *font);
 
 		sf::RectangleShape* rect = new sf::RectangleShape(
@@ -120,7 +123,10 @@ public:
 		credit.setString(sf::String(str));
 		credit.setCharacterSize(12);
 		credit.setPosition(10, 10);
-
+		
+		scoreEnd.setFont(*astro);
+		scoreEnd.setCharacterSize(100);
+		scoreEnd.setPosition(200, 100);
 #pragma endregion
 
 		// Stars in background

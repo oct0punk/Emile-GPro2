@@ -28,9 +28,11 @@ int main()
 	World world(&window);
 
 	Font font;
-	font.loadFromFile("res/arial.ttf");
+	font.loadFromFile("res/astron boy.ttf");
 	Text text;
 	text.setFont(font);
+	text.setFillColor(sf::Color(200, 175, 0));
+	text.setCharacterSize(50);
 	world.scoretxt = &text;
 
 	// Target cursor
@@ -71,7 +73,6 @@ int main()
 	pShape->setFillColor(Color::Blue);
 	pShape->setOutlineColor(Color::Yellow);
 	pShape->setOutlineThickness(7);
-
 	PlayerPad p(pShape, &b);
 	p.setPosition(950, 400);
 	world.dataPlay.push_back(&p);

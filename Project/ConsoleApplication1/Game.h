@@ -18,6 +18,7 @@ public:
 	PlayerPad* player = nullptr;
 	World* world = nullptr;
 	int score = 0;
+	int bestScore = 0;
 	int wave = 0;
 	int enemyCount = 0;
 	
@@ -30,24 +31,7 @@ public:
 	}
 	Game(World* w);
 
-	void ChangeState(GameState nState) {
-		state = nState;
-		switch (state)
-		{
-		case Playing:
-			world->ImguiWindow = nullptr;
-			break;
-		case Menu:
-			world->ImguiWindow = &World::Tools;
-			break;
-		case Pause:
-			break;
-		case GameOver:
-			break;
-		default:
-			break;
-		}
-	}
+	void ChangeState(GameState nState);
 	GameState GetGameState() {
 		return state;
 	}
