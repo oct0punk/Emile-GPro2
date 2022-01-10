@@ -94,6 +94,8 @@ void World::updateGame(double dt) {
 										dataFX.push_back(p);
 									}
 								}
+								if (l->power[i] > 1)
+									camShake = camShaketime;
 								l->alive[i] = false;
 								Audio::GetInstance()->Play(&Audio::GetInstance()->hit);
 							}
@@ -146,6 +148,15 @@ void World::updateGame(double dt) {
 	}
 	else
 		pauseKeyUp = true;
+
+	if (camShake > 0.0f) {
+		camShake -= dt;
+		CamShake();
+		if (camShake <= 0.0f) {
+			view.setCenter(window->getSize().x / 2, window->getSize().y / 2);
+			window->setView(view);
+		}
+	}
 }
 
 
@@ -222,7 +233,7 @@ void World::drawGame(sf::RenderWindow& window) {
 	window.draw(*scoretxt);
 
 	// Display Controls
-	CamShake();
+
 	if (Game::GetInstance()->wave < 2) {
 		tuto->DrawMoveCommand(window, sf::Vector2f(800, 50));
 		tuto->DrawShootButton(window, sf::Vector2f(1100, 50));
@@ -376,9 +387,10 @@ void World::KeepEntityOnScreen(Entity* e, float value) {
 
 
 
-void World::ShowTools() { using namespace ImGui;
+void World::Tools() { using namespace ImGui;
 ImGui::Begin("Edit");
-ImGui::InputInt("camShake intensity", &camShakeIntensity, 1, 5);
+ImGui::InputInt("CamShake intensity", &camShakeIntensity, 1, 5);
+ImGui::InputFloat("CamShake duration", &camShaketime, .01f, .1f);
 ImGui::End();
 }
 

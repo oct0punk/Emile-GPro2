@@ -14,6 +14,7 @@
 class World {
 	bool aimDisplay = true;
 	float camShake = 0.0f;
+	float camShaketime = .2f;
 	int camShakeIntensity = 20;
 
 public:
@@ -32,7 +33,7 @@ public:
 	sf::Text* scoretxt = nullptr;
 
 	sf::Color* clearColor = new sf::Color(0, 0, 20, 0);
-	void (World::* ImguiWindow)() = &World::ShowTools;
+	void (World::* ImguiWindow)() = &World::Tools;
 
 	float timeSinceLevelLoad = 0.0f;
 	float timeScale = 1.0f;
@@ -151,7 +152,7 @@ public:
 	void drawMenu(sf::RenderWindow& win);
 	void drawGameOver(sf::RenderWindow& win);
 
-	void ShowTools();
+	void Tools();
 	void ColorsTool();
 	void CamShake() {
 		sf::Vector2f offset(rand() % camShakeIntensity - camShakeIntensity / 2, rand() % camShakeIntensity - camShakeIntensity / 2);

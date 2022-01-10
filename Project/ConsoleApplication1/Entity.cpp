@@ -299,7 +299,7 @@ void OptionButton() {
 
 	Game::GetInstance()->world->ImguiWindow =
 		Game::GetInstance()->world->ImguiWindow == &World::ColorsTool ?
-		&World::ShowTools :
+		&World::Tools :
 		&World::ColorsTool;
 }
 

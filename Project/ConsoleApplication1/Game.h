@@ -39,7 +39,7 @@ public:
 			world->ImguiWindow = nullptr;
 			break;
 		case Menu:
-			world->ImguiWindow = &World::ShowTools;
+			world->ImguiWindow = &World::Tools;
 			break;
 		case Pause:
 			break;
