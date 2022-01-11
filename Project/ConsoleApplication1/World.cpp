@@ -164,7 +164,7 @@ void World::updateGame(double dt) {
 			p->update(dt);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 		if (pauseKeyUp) {
 			Game::GetInstance()->ChangeState(GameState::Pause);
 			pauseKeyUp = false;
@@ -199,7 +199,7 @@ void World::updateMenu(double dt) {
 
 
 void World::updatePause(double dt) {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 		if (pauseKeyUp) {
 			Game::GetInstance()->ChangeState(GameState::Playing);
 			pauseKeyUp = false;
@@ -207,6 +207,26 @@ void World::updatePause(double dt) {
 	}
 	else
 		pauseKeyUp = true;
+
+	for (auto e : dataGameOver) {
+		e->update(dt);
+
+		sf::Vector2f mPos(cursor->getPosition().x, cursor->getPosition().y);
+		if (e->spr->getGlobalBounds().contains(mPos)) {
+			selectedButton = e;
+
+			if (Controls::GetInstance()->selectControl())
+				e->state = ButtonState::Clicked;
+			else
+				e->state = ButtonState::Selected;
+
+		}
+		else {
+			if (selectedButton == e)
+				selectedButton = nullptr;
+			e->state = ButtonState::Normal;
+		}
+	}
 }
 
 
@@ -414,6 +434,9 @@ ImGui::InputFloat("CamShake duration", &camShaketime, .01f, .1f);
 ImGui::InputFloat("Player Invincibility Duration", &Game::GetInstance()->player->invincibleTime, .01f, .1f);
 ImGui::End();
 
+
+#pragma region Audio
+
 ImGui::Begin("Audio");
 float themVol = Audio::GetInstance()->them.volume;
 if (ImGui::SliderFloat("Music Volume", &themVol, 0.0f, 10.0f))
@@ -441,6 +464,7 @@ Audio::GetInstance()->slow.setVolume(slowVol);
 
 ImGui::End();
 
+#pragma endregion
 }
 
 

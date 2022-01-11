@@ -121,7 +121,7 @@ void PlayerPad::update(double dt) {
 	}
 
 	if (health < 2) {
-
+		// Clignote
 	}
 }
 
@@ -302,6 +302,10 @@ void OptionButton() {
 		Game::GetInstance()->world->ImguiWindow == &World::ColorsTool ?
 		&World::Tools :
 		&World::ColorsTool;
+}
+
+void QuitGame() {
+	Game::GetInstance()->world->window->close();
 }
 
 

@@ -76,7 +76,7 @@ void Game::draw(sf::RenderWindow& win) {
 		world->drawMenu(win);
 		break;
 	case Pause:
-		world->drawGame(win);
+		world->drawPause(win);
 		break;
 	case GameOver:
 		world->drawGameOver(win);

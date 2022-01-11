@@ -26,7 +26,6 @@ public:
 
 	std::vector<Entity*>	dataPlay;
 	std::vector<Particle*>	dataFX;
-	std::vector<Button*>	dataPause;
 	std::vector<Button*>	dataMenu;
 	std::vector<Button*>	dataGameOver;
 	sf::Text credit;
@@ -101,6 +100,16 @@ public:
 		Button* menuButton = new Button(rect, text, BackToMenu);
 		menuButton->setPosition(750, 666);
 		dataGameOver.push_back(menuButton);
+
+		// --------------------------- QUIT GAME BUTTON ---------------------------
+		text->setString("Quit");
+		rect = new sf::RectangleShape(
+			sf::Vector2f(
+				text->getString().getSize() * text->getCharacterSize() * 1.24f,
+				text->getCharacterSize() * 2.3f));
+		Button* quitButton = new Button(rect, text, QuitGame);
+		quitButton->setPosition(1050, 666);
+		dataMenu.push_back(quitButton);
 #pragma endregion
 
 
@@ -127,6 +136,8 @@ public:
 		scoreEnd.setFont(*astro);
 		scoreEnd.setCharacterSize(100);
 		scoreEnd.setPosition(200, 100);
+
+
 #pragma endregion
 
 		// Stars in background
@@ -156,6 +167,12 @@ public:
 	void clear(sf::RenderWindow& win) { win.clear(*clearColor); }
 	void drawGame(sf::RenderWindow& win);
 	void drawMenu(sf::RenderWindow& win);
+	void drawPause(sf::RenderWindow& win) {
+		drawGame(win);
+		for (auto e : dataGameOver) {
+			e->draw(win);
+		}
+	}
 	void drawGameOver(sf::RenderWindow& win);
 
 	void Tools();
