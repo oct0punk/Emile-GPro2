@@ -17,7 +17,7 @@ void Entity::update(double dt) {
 
 	if (type == EType::Wall)
 		Movement(dt * 5);
-	}
+}
 
 void Entity::draw(sf::RenderWindow& win) {
 	if (visible) {
@@ -85,10 +85,12 @@ PlayerPad::PlayerPad(sf::Shape* _spr, Laser* l) : Entity(EType::Player, _spr) {
 }
 
 void PlayerPad::update(double dt) {
-	if (!visible) return;
-	if (invincible) {
+	Entity::update(dt);
+
+	if (invincible) {		
 		spr->setFillColor(fColorInv);
 		spr->setOutlineColor(oColorInv);
+
 		invincibleTimer -= dt;
 		if (invincibleTimer <= 0) {
 			invincible = false;
@@ -96,6 +98,42 @@ void PlayerPad::update(double dt) {
 			spr->setFillColor(fColor);
 		}
 	}
+
+	if (health < 1) {
+		if (cos(timeSinceLevelStart * 10) > 0.0f) {
+			if (spr->getFillColor().a > 0) {
+				sf::Color transparent = spr->getFillColor();
+				transparent.a = 0;
+				spr->setFillColor(transparent);
+				spr->setOutlineColor(sf::Color::Red);
+			}
+			else {
+				if (spr->getFillColor().a < 255) {
+					sf::Color opaque = spr->getFillColor();
+					opaque.a = 255;
+					spr->setFillColor(opaque);
+					spr->setOutlineColor(oColor);
+				}
+			}
+		}
+	}
+	else if (health < 3) {
+		if (cos(timeSinceLevelStart * 20) < -.5f) {
+			if (spr->getOutlineColor().a > 0) {
+				sf::Color transparent = spr->getOutlineColor();
+				transparent.a = 0;
+				spr->setOutlineColor(transparent);
+			}
+			else {
+				if (spr->getOutlineColor().a < 255) {
+					sf::Color opaque = spr->getOutlineColor();
+					opaque.a = 255;
+					spr->setOutlineColor(opaque);
+				}
+			}
+		}
+	} 
+
 
 	// Moves
 	sf::Vector2f pPos = Controls::GetInstance()->moveControl();
@@ -120,9 +158,6 @@ void PlayerPad::update(double dt) {
 
 	}
 
-	if (health < 2) {
-		// Clignote
-	}
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {
@@ -138,6 +173,10 @@ bool PlayerPad::ChangeHealth(int amount) {
 		invincibleTimer = invincibleTime;
 		spr->setOutlineColor(oColorInv);
 		spr->setFillColor(fColorInv);
+	}
+	else {
+		spr->setOutlineColor(oColor);
+		spr->setFillColor(fColor);
 	}
 	health += amount;
 	if (health < 0) {
@@ -238,7 +277,7 @@ void Laser::draw(sf::RenderWindow& win) {
 
 bool Enemy::ChangeHealth(int amount) {
 	health += amount;
-	hit = true; 
+	hit = true;
 	if (health < 0) {
 		visible = false;
 		spr->setFillColor(fColorHit);
@@ -251,7 +290,7 @@ bool Enemy::ChangeHealth(int amount) {
 
 void Enemy::update(double dt)
 {
-	if (!visible) 
+	if (!visible)
 		return;
 	Entity::update(dt);
 
@@ -336,7 +375,7 @@ void Button::update(double dt) {
 
 void Button::draw(sf::RenderWindow& win) {
 	Entity::draw(win);
-	win.draw(text);	
+	win.draw(text);
 }
 
 

@@ -298,6 +298,8 @@ void World::drawMenu(sf::RenderWindow& win) {
 		e->draw(win);
 	}
 	win.draw(credit);
+	win.draw(title);
+	
 
 	// Display controller's controls
 	if (selectedButton) {

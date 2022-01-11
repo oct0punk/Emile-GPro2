@@ -28,6 +28,7 @@ public:
 	std::vector<Particle*>	dataFX;
 	std::vector<Button*>	dataMenu;
 	std::vector<Button*>	dataGameOver;
+	sf::Text title;
 	sf::Text credit;
 	sf::Text scoreEnd;
 	sf::Text* scoretxt = nullptr;
@@ -53,20 +54,22 @@ public:
 		font->loadFromFile("res/astro.ttf");
 		sf::Font* astro = new sf::Font();
 		astro->loadFromFile("res/astron boy wonder.ttf");
-		sf::Text* text = new sf::Text("Play", *font);
+		
 
+		sf::Text* text = new sf::Text("Play", *font);
 		sf::RectangleShape* rect = new sf::RectangleShape(
 			sf::Vector2f(
 				text->getString().getSize() * text->getCharacterSize() * 1.32f,
 				text->getCharacterSize() * 2.3f));
 		rect->setOrigin(20, 20);
-		rect->setFillColor(sf::Color(155, 25, 0));
+		rect->setOutlineThickness(14);
+		rect->setOutlineColor(sf::Color::Yellow);
 
 
 	#pragma region Button
 		// --------------------------- PLAY BUTTON ---------------------------
 		Button* menuPlay = new Button(rect, text, PlayMode);
-		menuPlay->setPosition(450, 666);
+		menuPlay->setPosition(100, 300);
 		dataMenu.push_back(menuPlay);
 		
 
@@ -78,7 +81,7 @@ public:
 				text->getCharacterSize() * 2.3f));
 		rect->setOrigin(20, 20);
 		Button* options = new Button(rect, text, OptionButton);
-		options->setPosition(750, 666);
+		options->setPosition(100, 500);
 		dataMenu.push_back(options);
 
 		// --------------------------- RETRY BUTTON ---------------------------
@@ -87,8 +90,9 @@ public:
 			sf::Vector2f(
 				text->getString().getSize() * text->getCharacterSize() * 1.24f,
 				text->getCharacterSize() * 2.3f));
+		rect->setOrigin(20, 20);
 		Button* retry = new Button(rect, text, PlayMode);
-		retry->setPosition(450, 666);
+		retry->setPosition(660, 666);
 		dataGameOver.push_back(retry);
 
 		// --------------------------- MAIN MENU BUTTON ---------------------------
@@ -97,8 +101,9 @@ public:
 			sf::Vector2f(
 				text->getString().getSize() * text->getCharacterSize() * 1.24f,
 				text->getCharacterSize() * 2.3f));
+		rect->setOrigin(20, 20);
 		Button* menuButton = new Button(rect, text, BackToMenu);
-		menuButton->setPosition(750, 666);
+		menuButton->setPosition(1260, 666);
 		dataGameOver.push_back(menuButton);
 
 		// --------------------------- QUIT GAME BUTTON ---------------------------
@@ -107,13 +112,16 @@ public:
 			sf::Vector2f(
 				text->getString().getSize() * text->getCharacterSize() * 1.24f,
 				text->getCharacterSize() * 2.3f));
+		rect->setOrigin(20, 20);
+		rect->setOutlineThickness(-7);
+		rect->setOutlineColor(sf::Color::Red);
 		Button* quitButton = new Button(rect, text, QuitGame);
-		quitButton->setPosition(1050, 666);
+		quitButton->setPosition(100, 700);
 		dataMenu.push_back(quitButton);
 #pragma endregion
 
 
-	#pragma region Credit
+	#pragma region Texts
 
 		// Print credit text written in "res/credit.txt"
 		FILE* f = nullptr;
@@ -128,6 +136,12 @@ public:
 		str[strlen(str) - 8] = 0;
 		fclose(f);
 
+
+		title.setFont(*astro);
+		title.setString("ASTRO NEON");
+		title.setCharacterSize(100);
+		title.setPosition(150, 50);
+
 		credit.setFont(*font);
 		credit.setString(sf::String(str));
 		credit.setCharacterSize(12);
@@ -138,7 +152,7 @@ public:
 		scoreEnd.setPosition(200, 100);
 
 
-#pragma endregion
+#pragma endregion		
 
 		// Stars in background
 		for (int i = 0; i < 1000; i++) {
