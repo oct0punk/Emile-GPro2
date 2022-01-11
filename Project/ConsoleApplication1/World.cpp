@@ -89,6 +89,7 @@ void World::updateGame(double dt) {
 									eCount--;
 									Game::GetInstance()->score += 10 * (l->power[i] / 1.9f);
 									scoretxt->setString(to_string(Game::GetInstance()->score));
+									scoretxt->setFillColor(sf::Color::Red);
 									flashTime = pi();
 									// FX
 									sf::Color c = enemy->fColor;
@@ -246,6 +247,7 @@ void World::drawGame(sf::RenderWindow& window) {
 		e->draw(window);
 	}
 	window.draw(*scoretxt);
+	scoretxt->setFillColor(sf::Color(50, 50, 50));
 
 
 	// Display Controls
@@ -420,6 +422,23 @@ Audio::GetInstance()->them.setVolume(themVol);
 float shotVol = Audio::GetInstance()->shot.volume;
 if (ImGui::SliderFloat("Shot Volume", &shotVol, 0.0f, 50.0f))
 Audio::GetInstance()->shot.setVolume(shotVol);
+
+float hitVol = Audio::GetInstance()->hit.volume;
+if (ImGui::SliderFloat("Hit Volume", &hitVol, 0.0f, 10.0f))
+Audio::GetInstance()->hit.setVolume(hitVol);
+
+float lHitVol = Audio::GetInstance()->lHit.volume;
+if (ImGui::SliderFloat("lHit Volume", &lHitVol, 0.0f, 10.0f))
+Audio::GetInstance()->lHit.setVolume(lHitVol);
+
+float powVol = Audio::GetInstance()->power.volume;
+if (ImGui::SliderFloat("Got Power Volume", &powVol, 0.0f, 10.0f))
+Audio::GetInstance()->power.setVolume(powVol);
+
+float slowVol = Audio::GetInstance()->slow.volume;
+if (ImGui::SliderFloat("Use Power Volume", &slowVol, 0.0f, 10.0f))
+Audio::GetInstance()->slow.setVolume(slowVol);
+
 ImGui::End();
 
 }

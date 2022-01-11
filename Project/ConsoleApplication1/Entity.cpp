@@ -119,6 +119,10 @@ void PlayerPad::update(double dt) {
 		}
 
 	}
+
+	if (health < 2) {
+
+	}
 }
 
 void PlayerPad::draw(sf::RenderWindow& win) {
@@ -146,7 +150,7 @@ bool PlayerPad::ChangeHealth(int amount) {
 
 void PlayerPad::Power() {
 	Game::GetInstance()->world->timeScale = 0.01f;
-	Audio::GetInstance()->SetPitch(0.2f);
+	Audio::GetInstance()->SetPitch(0.3f);
 	Audio::GetInstance()->slow.play();
 	laser->reloading = 0.0f;
 }

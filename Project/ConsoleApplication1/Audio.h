@@ -67,19 +67,19 @@ public:
 	void SetPitch(float val) {
 		globalPitch = val;
 
-		shot.sound->setPitch(val);
+		shot.setPitch(val);
 		shot.pitch = val;
 
-		them.sound->setPitch(val);
+		them.setPitch(val);
 		them.pitch = val;
 
-		lHit.sound->setPitch(val);
+		lHit.setPitch(val);
 		lHit.pitch = val;
 
-		power.sound->setPitch(val);
+		power.setPitch(val);
 		power.pitch = val;
 
-		hit.sound->setPitch(val);
+		hit.setPitch(val);
 		hit.pitch = val;
 	}
 
