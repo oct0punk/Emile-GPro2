@@ -49,9 +49,7 @@ int main()
 
 
 #pragma region Bullet
-	float bWidth = 35.0f;
-	float bHeight = 3.0f;
-	RectangleShape* bShape = new RectangleShape(Vector2f(bWidth, bHeight));
+	RectangleShape* bShape = new RectangleShape(Vector2f(35, 5));
 	Laser b(bShape);
 	world.dataPlay.push_back(&b);
 #pragma endregion

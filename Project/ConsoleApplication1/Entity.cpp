@@ -229,12 +229,9 @@ void Laser::create(float _px, float _py, float _dx, float _dy, float rTime, int 
 void Laser::ChangeDirection(int idx, float x, float y) {
 	sf::Vector2f dir(x, y);
 	Normalize(&dir);
-	float acc = Magnitude(sf::Vector2f(dx[idx], dy[idx])) * 1.5f;
-	dir.x *= acc;
-	dir.y *= acc;
 	dx[idx] = dir.x;
 	dy[idx] = dir.y;
-	power[idx] += 5;
+	power[idx] *= 4;
 	Audio::GetInstance()->Play(Audio::GetInstance()->lHit);
 }
 

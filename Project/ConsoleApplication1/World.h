@@ -40,6 +40,7 @@ public:
 	float timeScale = 1.0f;
 	int eCount = 0;
 	bool pauseKeyUp = true;
+	bool lockWall = false;
 	float flashTime = 0.0f;
 
 	World(sf::RenderWindow* win) {

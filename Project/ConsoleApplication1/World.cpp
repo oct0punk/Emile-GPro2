@@ -55,18 +55,45 @@ void World::updateGame(double dt) {
 			for (auto b : dataPlay) { // Rebound
 				if (b->type == Bullet) {
 					Laser* l = (Laser*)b;
-					for (int i = 1; i <= l->px.size(); i++) {
+					for (int i = 1; i <= l->px.size(); i++) { 
 						sf::Vector2f bPos = sf::Vector2f(l->px[i - 1], l->py[i - 1]);
 						float distance = Magnitude(e->getPosition().x, e->getPosition().y, bPos.x, bPos.y);
-
+												
 						// Collision
 						if (distance < e->spr->getGlobalBounds().width / 2) {
 							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - e->getPosition());
-							l->px[i - 1] -= l->dx[i - 1] * dt * l->speed * 1.2f;			// Move the bullet to previous good position
-							l->py[i - 1] -= l->dy[i - 1] * dt * l->speed * 1.2f;
-							l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new direction to bullet
-							if (e->spr->getFillColor() == sf::Color::Red)
-								e->ChangeHealth(-1);
+							if (l->power[i - 1] > 100) {
+								l->alive[i - 1] = false;
+								break;
+							}
+							if (lockWall) {
+								Entity* dirWall = nullptr;
+								float dotMax = FLT_MIN;
+								for (auto w : dataPlay) {
+									if (w->type != Wall || e == w) continue;
+									sf::Vector2f dir(w->getPosition() - sf::Vector2f(l->px[i - 1], l->py[i - 1]));	// Direction from laser to wall
+									if (!dirWall) { dirWall = w; dotMax = DotProduct(rebound, dir); continue; }
+
+									if (DotProduct(rebound, dir) > dotMax) {
+										dotMax = DotProduct(rebound, dir);
+										dirWall = w;
+									}
+								}
+
+								if (dirWall && dotMax > .9f) {
+									sf::Vector2f dir(dirWall->getPosition() - sf::Vector2f(l->px[i - 1], l->py[i - 1]));
+									l->ChangeDirection(i - 1, dir.x, dir.y);
+								}
+								else
+								{
+									l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new default direction to bullet
+								}
+							}
+							else {
+								l->px[i - 1] -= l->dx[i - 1] * 1.2f;
+								l->py[i - 1] -= l->dy[i - 1] * 1.2f;
+								l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new default direction to bullet
+							}
 						}
 					}
 				}
@@ -134,8 +161,7 @@ void World::updateGame(double dt) {
 			// Contact with player
 			if (Magnitude(e->getPosition() - p->getPosition()) < 150 && timeScale >= 1.0f)
 				if (e->visible && p->visible) {
-					p->ChangeHealth(-1);
-					
+					p->ChangeHealth(-1);					
 				}
 			break;
 		}
@@ -434,6 +460,7 @@ ImGui::Begin("Gameplay");
 ImGui::InputInt("CamShake intensity", &camShakeIntensity, 1, 5);
 ImGui::InputFloat("CamShake duration", &camShaketime, .01f, .1f);
 ImGui::InputFloat("Player Invincibility Duration", &Game::GetInstance()->player->invincibleTime, .01f, .1f);
+ImGui::Checkbox("Aimm Assist", &lockWall);
 ImGui::End();
 
 

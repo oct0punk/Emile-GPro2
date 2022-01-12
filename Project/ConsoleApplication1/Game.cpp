@@ -2,7 +2,14 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/Text.hpp"
 
-Game::Game(World* w) { world = w; }
+Game::Game(World* w) { 
+	world = w;
+
+	FILE* f;
+	fopen_s(&f, "res/register.txt", "rb");	
+	fscanf_s(f, "%i", &bestScore);
+	fclose(f);
+}
 
 void Game::ChangeState(GameState nState) {
 	state = nState;
@@ -21,6 +28,11 @@ void Game::ChangeState(GameState nState) {
 			bestScore = score;
 			world->scoreEnd.setFillColor(sf::Color::Yellow);
 			world->scoreEnd.setString(sf::String("	You did : " + std::to_string(score) + "\nIt's a new record, congratulations!"));
+			FILE* f;
+			fopen_s(&f, "res/register.txt", "wb");		
+			fprintf(f, "");
+			fprintf(f, std::to_string(score).c_str());
+			fclose(f);
 		}
 		else {
 			world->scoreEnd.setFillColor(sf::Color::Cyan);
@@ -92,9 +104,9 @@ void Game::NextWave() {
 	wave++;
 	enemyCount = wave * 3;
 	int radius = 50 + rand() % 50;
-	world->SpawnObstacle(radius, sf::Vector2f(-radius, -radius));
+	world->SpawnObstacle(radius, sf::Vector2f(rand() % 1920, rand() % 1080));
 	radius = rand() % 100;
-	world->SpawnObstacle(radius, sf::Vector2f(-1000, 2000 -radius));
+	world->SpawnObstacle(radius, sf::Vector2f(rand() % 1920, rand() % 1080));
 
 	player->ChangeHealth(1);
 	world->InstantiatePower();
