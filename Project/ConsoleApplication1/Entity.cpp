@@ -23,6 +23,11 @@ void Entity::draw(sf::RenderWindow& win) {
 	if (visible) {
 		win.draw(*spr);
 	}
+
+	if (type == Wall) {
+		if (spr->getOutlineColor() != outlineColor)
+			spr->setOutlineColor(outlineColor);
+	}
 }
 
 void Entity::Movement(double dt) {

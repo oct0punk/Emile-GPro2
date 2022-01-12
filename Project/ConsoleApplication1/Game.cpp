@@ -2,11 +2,11 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/Text.hpp"
 
-Game::Game(World* w) { 
+Game::Game(World* w) {
 	world = w;
 
 	FILE* f;
-	fopen_s(&f, "res/register.txt", "rb");	
+	fopen_s(&f, "res/register.txt", "rb");
 	fscanf_s(f, "%i", &bestScore);
 	fclose(f);
 }
@@ -29,7 +29,7 @@ void Game::ChangeState(GameState nState) {
 			world->scoreEnd.setFillColor(sf::Color::Yellow);
 			world->scoreEnd.setString(sf::String("	You did : " + std::to_string(score) + "\nIt's a new record, congratulations!"));
 			FILE* f;
-			fopen_s(&f, "res/register.txt", "wb");		
+			fopen_s(&f, "res/register.txt", "wb");
 			fprintf(f, "");
 			fprintf(f, std::to_string(score).c_str());
 			fclose(f);
@@ -54,7 +54,7 @@ void Game::update(double dt) {
 			}
 			else {
 				time = 0.3f + static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				world->SpawnEnemy(sf::Vector2f(rand() % 1000, - 500 -rand() % 100));
+				world->SpawnEnemy(sf::Vector2f(rand() % 1000, -500 - rand() % 100));
 				enemyCount--;
 			}
 
@@ -110,7 +110,7 @@ void Game::NextWave() {
 
 	player->ChangeHealth(1);
 	world->InstantiatePower();
-	
+
 }
 
 // Launch a game from the beginning

@@ -60,6 +60,8 @@ protected:
 	bool hit = false;
 
 public:
+	sf::Color fillColor;
+	sf::Color outlineColor;
 	float invincibleTime = 1.0f;
 	sf::Shape* spr = nullptr;
 	sf::Vector2f lastGoodPos;

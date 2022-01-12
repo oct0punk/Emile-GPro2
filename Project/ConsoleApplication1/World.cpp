@@ -61,8 +61,9 @@ void World::updateGame(double dt) {
 												
 						// Collision
 						if (distance < e->spr->getGlobalBounds().width / 2) {
+							e->spr->setOutlineColor(sf::Color::Red);
 							sf::Vector2f rebound = Reflect(sf::Vector2f(l->dx[i - 1], l->dy[i - 1]), bPos - e->getPosition());
-							if (l->power[i - 1] > 100) {
+							if (l->power[i - 1] > 200) {
 								l->alive[i - 1] = false;
 								break;
 							}
@@ -90,8 +91,8 @@ void World::updateGame(double dt) {
 								}
 							}
 							else {
-								l->px[i - 1] -= l->dx[i - 1] * 1.2f;
-								l->py[i - 1] -= l->dy[i - 1] * 1.2f;
+								//l->px[i - 1] -= l->dx[i - 1] * 1.2f;		// Move back the laser
+								//l->py[i - 1] -= l->dy[i - 1] * 1.2f;
 								l->ChangeDirection(i - 1, rebound.x, rebound.y);	// Apply new default direction to bullet
 							}
 						}
@@ -420,9 +421,12 @@ void World::SpawnObstacle(int radius, sf::Vector2f pos) {
 	sf::CircleShape* wShape = new sf::CircleShape(radius);
 	wShape->setOrigin(wShape->getRadius(), wShape->getRadius());
 	wShape->setFillColor(sf::Color::Transparent);
-	wShape->setOutlineThickness(radius / 5);
-	wShape->setOutlineColor(rand() % 2 == 0 ? sf::Color(155, 100, 0) : sf::Color::Cyan);
+	wShape->setOutlineThickness(-radius / 5);
+	sf::Color oColor = rand() % 2 == 0 ? sf::Color(155, 100, 0) : sf::Color::Cyan;
+	wShape->setOutlineColor(oColor);
 	Entity* w = new Entity(EType::Wall, wShape);
+	w->fillColor = sf::Color::Transparent;
+	w->outlineColor = oColor;
 	w->setPosition(pos.x, pos.y);
 	dataPlay.push_back(w);
 }
