@@ -4,6 +4,7 @@
 #include "SFML/Window/Keyboard.hpp"
 #include "imgui.h"
 #include "Game.hpp"
+#include "Tool.hpp"
 
 using namespace sf;
 
@@ -61,7 +62,36 @@ bool Entity::isColliding(int ccx, int ccy) {
 	return false;
 }
 
+void Entity::updatePath(double dt) {
+	if (std::nullopt != target) {
+		float dstX = cx + rx;
+		float dstY = cy + ry;
+		if (
+			fequal(dstX, target->x + 0.5)
+			&& fequal(dstY, target->y + 0.5)) {
+			target = std::nullopt;
+		}
+		else {
+			float diffX = (target->x + 0.5 - dstX);
+			float diffY = (target->y + 0.5 - dstY);
+			float angle = atan2(diffY, diffX);
+			dx = cos(angle) * 5;
+			dy = sin(angle) * 5;
+		}
+		return;
+	}
+	else {
+		//we have no target
+		target = curPath[0];
+		curPath.erase(curPath.begin());
+	}
+}
+
 void Entity::update(double dt) {
+	if (target || curPath.size()) {
+		updatePath(dt);
+		return;
+	}
 	currentState->Update(this, dt);
 
 	dy += gy * dt;

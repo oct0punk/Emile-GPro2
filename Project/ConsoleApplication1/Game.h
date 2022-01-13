@@ -1,7 +1,7 @@
 #pragma once
 #include "World.h"
 
-enum  GameState {
+enum GameState {
 	Playing,
 	Menu,
 	Pause,
@@ -22,24 +22,17 @@ public:
 	int wave = 0;
 	int enemyCount = 0;
 	
-	static void create(World* w, PlayerPad* p) {
-		Instance = new Game(w);
-		Instance->player = p;
-	}
-	static Game* GetInstance() {
-		return Instance;
-	}
+	static void create(World* w, PlayerPad* p);
+	static Game* GetInstance();
 	Game(World* w);
 
 	void ChangeState(GameState nState);
-	GameState GetGameState() {
-		return state;
-	}
+	GameState GetGameState();
 
 	void update(double dt);
 	void draw(sf::RenderWindow& win);
 	void NextWave();
-	int EnemyHealth() { return -1 + wave * 2 + rand() % wave; }
+	int EnemyHealth();
 
 	void Reset();
 };

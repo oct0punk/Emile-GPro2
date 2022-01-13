@@ -2,6 +2,15 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/Text.hpp"
 
+void Game::create(World* w, PlayerPad* p) {
+	Instance = new Game(w);
+	Instance->player = p;
+}
+
+Game* Game::GetInstance() {
+	return Instance;
+}
+
 Game::Game(World* w) {
 	world = w;
 
@@ -42,6 +51,10 @@ void Game::ChangeState(GameState nState) {
 	default:
 		break;
 	}
+}
+
+GameState Game::GetGameState() {
+	return state;
 }
 
 void Game::update(double dt) {
@@ -112,6 +125,8 @@ void Game::NextWave() {
 	world->InstantiatePower();
 
 }
+
+int Game::EnemyHealth() { return -1 + wave * 2 + rand() % wave; }
 
 // Launch a game from the beginning
 void Game::Reset() {

@@ -1,2 +1,1 @@
-﻿Tuto.obj : error LNK2001: symbole externe non résolu "bool __cdecl SelectMouse(void)" (?SelectMouse@@YA_NXZ)
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\x64\Release\ConsoleApplication1.exe : fatal error LNK1120: 1 externes non résolus
+﻿  ConsoleApplication1.vcxproj -> C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\Project\ConsoleApplication1\x64\Release\ConsoleApplication1.exe
