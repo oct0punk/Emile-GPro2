@@ -4,6 +4,16 @@ C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleAppli
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Curve.hpp(50,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(52,33): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(54,97): warning C4244: 'argument' : conversion de 'long' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(58,63): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
+          with
+          [
+              T=int
+          ]
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(58,45): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
+          with
+          [
+              T=int
+          ]
   Entity.cpp
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(67,15): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(68,15): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
@@ -30,9 +40,10 @@ C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleAppli
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(149,35): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(149,23): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
   Game.cpp
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(12,66): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(12,43): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(38,44): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(38,22): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(13,66): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(13,43): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(39,44): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(39,22): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(58,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
   Génération de code en cours...
   ConsoleApplication1.vcxproj -> C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe

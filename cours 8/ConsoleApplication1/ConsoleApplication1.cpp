@@ -52,10 +52,12 @@ int main(){
 	spr->setOrigin(spr->getSize().x*0.5, spr->getSize().y);
 	Game::init();
 	Game::player = new Entity(spr, Game::W / Entity::stride *0.5, lround(Game::H / Entity::stride) -2);
+	Dijkstra dijkstra;
 
 	while (window.isOpen()){
-		sf::Event event;
+		dijkstra.compute(sf::Vector2i(Game::player->px, Game::player->py));
 
+		sf::Event event;
 		double dt = tExitFrame - tEnterFrame;
 		tEnterFrame = getTimeStamp();
 		while (window.pollEvent(event)){

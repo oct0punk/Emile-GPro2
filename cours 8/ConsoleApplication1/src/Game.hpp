@@ -2,8 +2,10 @@
 #include "Particle.hpp"
 #include "Entity.hpp"
 #include <unordered_map>
+#include <optional>
 
 float clamp(float val, float a, float b);
+float magnitude(sf::Vector2i u);
 
 namespace std {
 	template <>
@@ -19,7 +21,24 @@ namespace std {
 
 class Dijkstra {
 public:
+	std::unordered_map<sf::Vector2i, bool> g;
 	std::unordered_map<sf::Vector2i, float> dist;
+	std::unordered_map<sf::Vector2i, sf::Vector2i> pred;
+	std::vector<sf::Vector2i> queue;
+
+	void compute(const sf::Vector2i& start);
+
+	void init(const sf::Vector2i& start);
+
+	std::optional<sf::Vector2i> findMin(std::vector<sf::Vector2i>& q);
+
+	 void maj_distances(sf::Vector2i s1, sf::Vector2i s2) {
+		 if (dist[s2] > dist[s1] + magnitude(s2 - s1)) {
+			 dist[s2] = magnitude(s2 - s1);
+			 pred[s2] = s1;
+		 }
+	 }
+
 };
 
 

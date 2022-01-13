@@ -92,7 +92,7 @@ public:
 	}
 
 	void			im();
-	bool			isColliding(int _cx, int _cy);
+	static bool			isColliding(int _cx, int _cy);
 	virtual void	update(double dt);
 	virtual void	draw(sf::RenderWindow& win);
 	void			syncSprite();

@@ -2,6 +2,7 @@
 #include "Entity.hpp"
 #include "imgui.h"
 #include "SFML/Graphics/RectangleShape.hpp"
+
 Particle Game::parts;
 int Game::shake = 0;
 Entity * Game::player= nullptr;
@@ -51,4 +52,59 @@ float clamp(float val, float a, float b) {
 	if (val > b)
 		val = b;
 	return val;
+}
+
+float magnitude(sf::Vector2i u) {
+	return sqrt(u.x * u.x + u.y * u.y);
+}
+
+void Dijkstra::compute(const sf::Vector2i& start) {
+	g.clear();
+	int maxCellW = Game::W / Entity::stride + 1;
+	int maxCellH = Game::H / Entity::stride + 1;
+	for (int y = 0; y < maxCellH; ++y) {
+		for (int x = 0; x < maxCellW; ++x) {
+			if (!Entity::isColliding(x, y))
+				g[sf::Vector2i(x, y)] = true;
+		}
+	}
+	init(start);
+	while (!queue.empty()) {
+		std::optional<sf::Vector2i> s1 = findMin(queue);
+		if (s1 == std::nullopt) break;
+
+		auto pos = std::find(queue.begin(), queue.end(), *s1);
+		queue.erase(pos);
+
+		sf::Vector2i dirs[] = {
+			sf::Vector2i(0, 1),
+			sf::Vector2i(0, -1),
+			sf::Vector2i(1, 0),
+			sf::Vector2i(-1, 0)
+		};
+		for (int i = 0; i < 4; i++) {
+			sf::Vector2i neighbor = *s1 + dirs[i];
+			maj_distances(*s1, neighbor);
+		}
+	}
+}
+
+void Dijkstra::init(const sf::Vector2i& start) {
+	for (auto d : g) {
+		dist[d.first] = FLT_MAX;
+		queue.push_back(d.first);
+	}
+	dist[start] = 0;
+}
+
+std::optional<sf::Vector2i> Dijkstra::findMin(std::vector<sf::Vector2i>& q) {
+	float min = FLT_MAX;
+	std::optional<sf::Vector2i> sommet = std::nullopt;
+	for (auto& s : q) {
+		if (dist[s] < min) {
+			min = dist[s];
+			sommet = s;
+		}
+	}
+	return sommet;
 }
