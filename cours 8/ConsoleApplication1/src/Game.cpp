@@ -15,6 +15,7 @@ void Game::particlesAt(sf::Vector2f pos) {
 }
 
 void Game::init() {
+	dij.dist[sf::Vector2i(0, 0)] = 1.0f;
 	walls.push_back(sf::Vector2i(5, 5));
 }
 
@@ -43,13 +44,34 @@ void Game::render(sf::RenderWindow& win) {
 
 	if(player) player->draw(win);
 
-	sf::RectangleShape block(sf::Vector2f(1, 1));
+	sf::RectangleShape block(sf::Vector2f(3, 3));
 	block.setFillColor(sf::Color::Red);
 	for (auto z : dij.g) {
-		block.setPosition(sf::Vector2f(z.first.x * Entity::stride, z.first.y * Entity::stride));
+		block.setPosition(sf::Vector2f((z.first.x + 0.5f) * Entity::stride, (z.first.y + 0.5f) * Entity::stride));
 		win.draw(block);
 	}
 
+	sf::VertexArray arr;
+	arr.setPrimitiveType(sf::PrimitiveType::Lines);
+	for (auto& p : dij.pred) {
+		sf::Vertex start;
+		sf::Vertex end;
+
+		start.color = sf::Color::Cyan;
+		end.color = sf::Color::Cyan;
+
+		start.position = sf::Vector2f(
+			(p.first.x + 0.5f) * Entity::stride,
+			(p.first.y + 0.5f) * Entity::stride);
+		end.position = sf::Vector2f(
+			(p.second.x + 0.5f) * Entity::stride,
+			(p.second.y + 0.5f) * Entity::stride);
+
+		arr.append(start);
+		arr.append(end);
+	}
+	
+	win.draw(arr);
 }
 
 bool Game::isColliding(int ccx, int ccy) {
@@ -93,6 +115,9 @@ void Dijkstra::compute(const sf::Vector2i& start) {
 				g[sf::Vector2i(x, y)] = true;
 		}
 	}
+	pred.clear();
+	dist.clear();
+	queue.clear();
 	init(start);
 	while (!queue.empty()) {
 		std::optional<sf::Vector2i> s1 = findMin(queue);
@@ -116,14 +141,14 @@ void Dijkstra::compute(const sf::Vector2i& start) {
 
 void Dijkstra::init(const sf::Vector2i& start) {
 	for (auto d : g) {
-		dist[d.first] = FLT_MAX;
+		dist[d.first] = 1024 * 1024;
 		queue.push_back(d.first);
 	}
 	dist[start] = 0;
 }
 
 std::optional<sf::Vector2i> Dijkstra::findMin(std::vector<sf::Vector2i>& q) {
-	float min = FLT_MAX;
+	float min = 1024 * 1024;
 	std::optional<sf::Vector2i> sommet = std::nullopt;
 	for (auto& s : q) {
 		if (dist[s] < min) {
@@ -132,4 +157,11 @@ std::optional<sf::Vector2i> Dijkstra::findMin(std::vector<sf::Vector2i>& q) {
 		}
 	}
 	return sommet;
+}
+
+void Dijkstra::maj_distances(sf::Vector2i s1, sf::Vector2i s2) {
+	if (dist[s2] > dist[s1] + magnitude(s2 - s1)) {
+		dist[s2] = dist[s1] + magnitude(s2 - s1);
+		pred[s2] = s1;
+	}
 }

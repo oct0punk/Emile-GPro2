@@ -33,12 +33,7 @@ public:
 
 	std::optional<sf::Vector2i> findMin(std::vector<sf::Vector2i>& q);
 
-	 void maj_distances(sf::Vector2i s1, sf::Vector2i s2) {
-		 if (dist[s2] > dist[s1] + magnitude(s2 - s1)) {
-			 dist[s2] = magnitude(s2 - s1);
-			 pred[s2] = s1;
-		 }
-	 }
+	void maj_distances(sf::Vector2i s1, sf::Vector2i s2);
 
 };
 

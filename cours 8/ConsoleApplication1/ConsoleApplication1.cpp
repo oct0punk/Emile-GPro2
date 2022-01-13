@@ -52,7 +52,9 @@ int main(){
 	spr->setOrigin(spr->getSize().x*0.5, spr->getSize().y);
 	Game::init();
 	Game::player = new Entity(spr, Game::W / Entity::stride *0.5, lround(Game::H / Entity::stride) -2);
-	Game::dij.compute(sf::Vector2i(Game::player->px, Game::player->py));
+
+	bool mRightWasressed = false;
+	bool lRightWasressed = false;
 
 	while (window.isOpen()){
 
@@ -66,7 +68,7 @@ int main(){
 				window.close();
 
 			if (event.type == sf::Event::KeyPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-				Game::dij.compute(sf::Vector2i(Game::player->px, Game::player->py));
+				Game::dij.compute(sf::Vector2i(Game::player->cx, Game::player->cy));
 
 			if (event.type == sf::Event::MouseButtonPressed) {
 				auto cx = event.mouseButton.x / Entity::stride;
@@ -84,6 +86,7 @@ int main(){
 					Game::walls.push_back(sf::Vector2i(cx, cy));
 				else
 					Game::walls.erase(Game::walls.begin() + pos);
+
 			}
 		}
 
