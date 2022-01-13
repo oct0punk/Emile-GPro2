@@ -73,6 +73,14 @@ bool SelectJoystick() { return sf::Joystick::isButtonPressed(0, 0); }
 
 bool SelectMouse() { return sf::Mouse::isButtonPressed(sf::Mouse::Left); }
 
+bool PauseJoystick() {
+	return sf::Joystick::isButtonPressed(0, 7);
+}
+
+bool PauseMouse() {
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+}
+
 
 sf::Vector2f CursorJoystick(sf::CircleShape* cursor)
 {

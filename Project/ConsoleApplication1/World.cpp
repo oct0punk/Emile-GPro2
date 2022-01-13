@@ -191,7 +191,7 @@ void World::updateGame(double dt) {
 			p->update(dt);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+	if (Controls::GetInstance()->pauseControl()) {
 		if (pauseKeyUp) {
 			Game::GetInstance()->ChangeState(GameState::Pause);
 			pauseKeyUp = false;
@@ -226,7 +226,7 @@ void World::updateMenu(double dt) {
 
 
 void World::updatePause(double dt) {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+	if (Controls::GetInstance()->pauseControl()) {
 		if (pauseKeyUp) {
 			Game::GetInstance()->ChangeState(GameState::Playing);
 			pauseKeyUp = false;
