@@ -7,6 +7,7 @@
 float clamp(float val, float a, float b);
 float magnitude(sf::Vector2i u);
 
+
 namespace std {
 	template <>
 	struct hash<sf::Vector2i> {
@@ -48,6 +49,7 @@ public:
 	static inline const int H = 720;
 	static int			shake;
 	static Particle		parts;
+	static Dijkstra dij;
 
 	static std::vector<sf::Vector2i> walls;
 
@@ -57,4 +59,5 @@ public:
 	static void			im();
 	static void			update(double dt);
 	static void			render(sf::RenderWindow &win);
+	static bool isColliding(int ccx, int ccy);
 };

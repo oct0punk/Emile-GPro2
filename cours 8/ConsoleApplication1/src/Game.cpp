@@ -2,6 +2,7 @@
 #include "Entity.hpp"
 #include "imgui.h"
 #include "SFML/Graphics/RectangleShape.hpp"
+Dijkstra Game::dij;
 
 Particle Game::parts;
 int Game::shake = 0;
@@ -42,8 +43,32 @@ void Game::render(sf::RenderWindow& win) {
 
 	if(player) player->draw(win);
 
-	
+	sf::RectangleShape block(sf::Vector2f(1, 1));
+	block.setFillColor(sf::Color::Red);
+	for (auto z : dij.g) {
+		block.setPosition(sf::Vector2f(z.first.x * Entity::stride, z.first.y * Entity::stride));
+		win.draw(block);
+	}
 
+}
+
+bool Game::isColliding(int ccx, int ccy) {
+	if (ccx < 0)
+		return true;
+	if (ccy < 0)
+		return true;
+
+	if (ccx >= 1280 / Entity::stride)
+		return true;
+
+	if (ccy >= 720 / Entity::stride)
+		return true;
+
+	for (auto& vi : walls)
+		if ((vi.x == ccx) && (vi.y == ccy))
+			return true;
+	
+	return false;
 }
 
 float clamp(float val, float a, float b) {
@@ -64,7 +89,7 @@ void Dijkstra::compute(const sf::Vector2i& start) {
 	int maxCellH = Game::H / Entity::stride + 1;
 	for (int y = 0; y < maxCellH; ++y) {
 		for (int x = 0; x < maxCellW; ++x) {
-			if (!Entity::isColliding(x, y))
+			if (!Game::isColliding(x, y))
 				g[sf::Vector2i(x, y)] = true;
 		}
 	}
