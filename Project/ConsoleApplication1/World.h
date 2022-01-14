@@ -70,7 +70,7 @@ public:
 	#pragma region Button
 		// --------------------------- PLAY BUTTON ---------------------------
 		Button* menuPlay = new Button(rect, text, PlayMode);
-		menuPlay->setPosition(100, 300);
+		menuPlay->setPosition(500, 300);
 		dataMenu.push_back(menuPlay);
 		
 
@@ -82,7 +82,7 @@ public:
 				text->getCharacterSize() * 2.3f));
 		rect->setOrigin(20, 20);
 		Button* options = new Button(rect, text, OptionButton);
-		options->setPosition(100, 500);
+		options->setPosition(500, 500);
 		dataMenu.push_back(options);
 
 		// --------------------------- RETRY BUTTON ---------------------------
@@ -117,7 +117,7 @@ public:
 		rect->setOutlineThickness(-7);
 		rect->setOutlineColor(sf::Color::Red);
 		Button* quitButton = new Button(rect, text, QuitGame);
-		quitButton->setPosition(100, 700);
+		quitButton->setPosition(500, 700);
 		dataMenu.push_back(quitButton);
 #pragma endregion
 

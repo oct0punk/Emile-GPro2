@@ -88,8 +88,8 @@ sf::Vector2f CursorJoystick(sf::CircleShape* cursor)
 		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::U),
 		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::V)
 	);
-	dir.x *= .3f;
-	dir.y *= .3f;
+	dir.x *= Controls::GetInstance()->sensitivity;
+	dir.y *= Controls::GetInstance()->sensitivity;
 	dir += cursor->getPosition();
 	dir.x = clamp(dir.x, 0, 1920 - cursor->getRadius());
 	dir.y = clamp(dir.y, 0, 1080 - cursor->getRadius());

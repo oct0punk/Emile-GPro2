@@ -333,7 +333,7 @@ void World::drawMenu(sf::RenderWindow& win) {
 		tuto->DrawButton0(win, selectedButton->getPosition());
 	}
 	if (!aimDisplay) return;
-	tuto->DrawRJoystick(*window, sf::Vector2f(1000, 50));
+	tuto->DrawRJoystick(*window, sf::Vector2f(1400, 600));
 	if (Magnitude(cursor->getPosition()) > 800)
 		aimDisplay = false;
 
@@ -461,10 +461,15 @@ void World::KeepEntityOnScreen(Entity* e, float value) {
 
 void World::Tools() { using namespace ImGui;
 ImGui::Begin("Gameplay");
+ImGui::SliderFloat("sensitibility", &Controls::GetInstance()->sensitivity, 0.01f, 0.5f);
+ImGui::Checkbox("Aim Assist", &lockWall);
+ImGui::Separator();
+ImGui::NewLine();
 ImGui::InputInt("CamShake intensity", &camShakeIntensity, 1, 5);
 ImGui::InputFloat("CamShake duration", &camShaketime, .01f, .1f);
+ImGui::Separator();
+ImGui::NewLine();
 ImGui::InputFloat("Player Invincibility Duration", &Game::GetInstance()->player->invincibleTime, .01f, .1f);
-ImGui::Checkbox("Aimm Assist", &lockWall);
 ImGui::End();
 
 
@@ -480,11 +485,11 @@ if (ImGui::SliderFloat("Shot Volume", &shotVol, 0.0f, 50.0f))
 Audio::GetInstance()->shot.setVolume(shotVol);
 
 float hitVol = Audio::GetInstance()->hit.volume;
-if (ImGui::SliderFloat("Hit Volume", &hitVol, 0.0f, 10.0f))
+if (ImGui::SliderFloat("Enemy Hit Volume", &hitVol, 0.0f, 10.0f))
 Audio::GetInstance()->hit.setVolume(hitVol);
 
 float lHitVol = Audio::GetInstance()->lHit.volume;
-if (ImGui::SliderFloat("lHit Volume", &lHitVol, 0.0f, 10.0f))
+if (ImGui::SliderFloat("Asteroid Hit Volume", &lHitVol, 0.0f, 10.0f))
 Audio::GetInstance()->lHit.setVolume(lHitVol);
 
 float powVol = Audio::GetInstance()->power.volume;

@@ -43,6 +43,7 @@ public:
 	}
 
 	bool isConnected = false;
+	float sensitivity = .5f;
 	sf::Vector2f (*aimingControl)() = AimingMouse;
 	sf::Vector2f (*moveControl)() = MoveMouse;
 	bool (*shootControl)() = ShootMouse;
