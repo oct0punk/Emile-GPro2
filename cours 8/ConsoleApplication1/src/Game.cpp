@@ -3,11 +3,12 @@
 #include "imgui.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 Dijkstra Game::dij;
-
+std::vector<sf::Vector2i> Game::currentPath;
 Particle Game::parts;
 int Game::shake = 0;
 Entity * Game::player= nullptr;
 std::vector<sf::Vector2i> Game::walls;
+
 
 void Game::particlesAt(sf::Vector2f pos) {
 	int flip = (rand() % 2 == 0) ? 1 : -1;

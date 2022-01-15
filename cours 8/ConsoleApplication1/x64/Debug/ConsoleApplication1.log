@@ -1,53 +1,7 @@
-﻿  ConsoleApplication1.cpp
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Curve.hpp(48,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Curve.hpp(49,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Curve.hpp(50,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(52,33): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(54,97): warning C4244: 'argument' : conversion de 'long' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(71,66): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
-          with
-          [
-              T=int
-          ]
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\ConsoleApplication1.cpp(71,48): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
-          with
-          [
-              T=int
-          ]
-  Entity.cpp
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(70,27): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(71,30): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(75,16): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(76,16): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(97,15): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(98,15): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(99,15): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(101,32): warning C4244: '*=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(102,32): warning C4244: '*=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(105,27): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(105,22): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(107,12): warning C4305: '=' : troncation de 'double' à 'float'
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(115,27): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(115,22): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(117,12): warning C4305: '=' : troncation de 'double' à 'float'
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(126,26): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(126,19): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(137,26): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(137,19): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(174,12): warning C4244: '-=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(176,34): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(176,28): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(177,34): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(177,28): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(178,35): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(178,23): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(179,35): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Entity.cpp(179,23): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-  Game.cpp
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(14,66): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(14,43): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(41,44): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(41,22): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(105,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-  Génération de code en cours...
+﻿  Game.cpp
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(15,66): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(15,43): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(42,44): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(42,22): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\src\Game.cpp(106,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
   ConsoleApplication1.vcxproj -> C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 8\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe

@@ -45,6 +45,7 @@ public:
 	static int			shake;
 	static Particle		parts;
 	static Dijkstra dij;
+	static std::vector<sf::Vector2i> currentPath;
 
 	static std::vector<sf::Vector2i> walls;
 

@@ -88,11 +88,15 @@ void Entity::updatePath(double dt) {
 }
 
 void Entity::update(double dt) {
-	if (target || curPath.size()) {
+
+	if ((target != std::nullopt)
+		|| curPath.size()) {
 		updatePath(dt);
-		return;
 	}
-	currentState->Update(this, dt);
+
+
+	if (currentState)
+		currentState->Update(this, dt);
 
 	dy += gy * dt;
 	rx += dt * dx;
