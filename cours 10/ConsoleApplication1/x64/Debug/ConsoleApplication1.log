@@ -4,22 +4,22 @@ C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleAppl
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\src\Curve.hpp(50,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(52,34): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(54,98): warning C4244: 'argument' : conversion de 'long' en 'float', perte possible de données
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(95,70): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(100,70): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
           with
           [
               T=int
           ]
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(95,52): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(100,52): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
           with
           [
               T=int
           ]
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(135,67): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(140,67): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
           with
           [
               T=int
           ]
-C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(135,49): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
+C:\Users\Emile\Desktop\Recherches\Human Academy\Emile-GPro2\cours 10\ConsoleApplication1\ConsoleApplication1.cpp(140,49): warning C4244: 'argument' : conversion de 'float' en 'T', perte possible de données
           with
           [
               T=int

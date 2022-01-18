@@ -63,10 +63,15 @@ int main() {
 		std::cout << "no shader";
 		return 1;
 	}
-	sf::Glsl::Vec4 addCol(1.0f, 0.0f, 0.0f, 1.0f);
+	sf::Glsl::Vec4 transCol(1.0f, 1.0f, 1.0f, 1.0f);
+	sf::Glsl::Vec4 mulCol(1.0f, 1.0f, 1.0f, 1.0f);
+	sf::Glsl::Vec4 addCol(0.0f, 0.0f, 0.0f, 1.0f);
 
-	sf::RectangleShape shaderShape(sf::Vector2f(50, 50));
-	shaderShape.setPosition(400, 400);
+	sf::RectangleShape shaderShape(sf::Vector2f(1240, 720));
+	sf::Texture bg;
+	bg.loadFromFile("res/bg.jpg");
+	shaderShape.setTexture(&bg);
+	shader.setUniform("texture", sf::Shader::CurrentTexture);
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -137,16 +142,6 @@ int main() {
 			}
 		}
 
-		/*ImGui::Begin("Shader");
-		float colAdd[4] = { addCol.x, addCol.y, addCol.z, addCol.w };
-		if (ImGui::SliderFloat4("AddCol", colAdd, 0.0f, 1.0f)) {
-			addCol.x = colAdd[0];
-			addCol.y = colAdd[1];
-			addCol.z = colAdd[2];
-			addCol.w = colAdd[3];
-		}
-		ImGui::End();*/
-
 
 		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 
@@ -177,6 +172,34 @@ int main() {
 		auto ms = sf::milliseconds(dtms == 0 ? 1 : dtms);
 		ImGui::SFML::Update(window, ms);
 
+		ImGui::Begin("Shader"); 
+		float colTrans[4] = { transCol.x, transCol.y, transCol.z, transCol.w };
+		if (ImGui::ColorPicker4("Transmission", colTrans)) {
+			transCol.x = colTrans[0] / 255.0f;
+			transCol.y = colTrans[1] / 255.0f;
+			transCol.z = colTrans[2] / 255.0f;
+			transCol.w = colTrans[3] / 255.0f;
+		}
+		float colAdd[4] = { addCol.x, addCol.y, addCol.z, addCol.w};
+		if (ImGui::ColorPicker4("AddCol", colAdd)) {
+			addCol.x = colAdd[0];
+			addCol.y = colAdd[1];
+			addCol.z = colAdd[2];
+			addCol.w = colAdd[3];
+		}
+		float colMul[4] = { mulCol.x, mulCol.y, mulCol.z, mulCol.w};
+		if (ImGui::ColorPicker4("MulCol", colMul)) {
+			mulCol.x = colMul[0];
+			mulCol.y = colMul[1];
+			mulCol.z = colMul[2];
+			mulCol.w = colMul[3];
+		}
+		ImGui::End();
+
+		shader.setUniform("mulCol", mulCol);
+		shader.setUniform("addCol", addCol);
+		shader.setUniform("transCol", transCol);
+
 		Game::im();
 
 		Game::update(dt);
@@ -190,7 +213,6 @@ int main() {
 		Game::render(window);
 		window.draw(tDt);
 
-		shader.setUniform("col", addCol);
 		window.draw(shaderShape, &shader);
 
 		/*

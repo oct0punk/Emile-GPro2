@@ -1,11 +1,21 @@
-
-uniform vec4 col;
+uniform sampler2D texture;
+uniform vec4 mulCol;
+uniform vec4 addCol;
+uniform vec4 transCol;
 
 void main()
 {
 
-	vec4 pixel = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	pixel *= col;
+    // lookup the pixel in the texture
+    vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);
 
-   	 gl_FragColor = gl_Color * pixel;
+	pixel += addCol;
+	pixel *= mulCol;
+	pixel.x *= transCol.x;
+	pixel.y *= transCol.y;
+	pixel.z *= transCol.z;
+	pixel.w *= transCol.w;
+	
+    // multiply it by the color
+    gl_FragColor = gl_Color * pixel;
 }
