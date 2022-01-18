@@ -1,0 +1,28 @@
+//#define TEXTURE
+//#define COLOR
+
+#ifdef TEXTURE
+uniform sampler2D texture;
+#endif
+
+#ifdef COLOR
+uniform vec4 col;
+#endif
+
+void main()
+{
+
+    // récupère le pixel dans la texture
+	#ifdef TEXTURE
+    vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);
+	#else
+	vec4 pixel = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	#endif
+
+	#ifdef COLOR
+	pixel *= color;
+	#endif
+
+    // et multiplication avec la couleur pour obtenir le pixel final
+    gl_FragColor = gl_Color * pixel;
+}
