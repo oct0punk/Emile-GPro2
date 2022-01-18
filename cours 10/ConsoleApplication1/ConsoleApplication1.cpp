@@ -53,10 +53,17 @@ int main() {
 	Game::init();
 	Game::player = new Entity(spr, Game::W / Entity::stride * 0.5, lround(Game::H / Entity::stride) - 2);
 
+	if (!sf::Shader::isAvailable()) {
+		cout << "shaders are not supported\n";
+		return 1;
+	}
+
 	sf::Shader shader;
 	if (!shader.loadFromFile("res/VtxShader.txt", "res/FrgtShader.txt")) {
-		throw "no shader";
+		std::cout << "no shader";
+		return 1;
 	}
+	sf::Glsl::Vec4 addCol(1.0f, 0.0f, 0.0f, 1.0f);
 
 	sf::RectangleShape shaderShape(sf::Vector2f(50, 50));
 	shaderShape.setPosition(400, 400);
@@ -130,7 +137,15 @@ int main() {
 			}
 		}
 
-
+		/*ImGui::Begin("Shader");
+		float colAdd[4] = { addCol.x, addCol.y, addCol.z, addCol.w };
+		if (ImGui::SliderFloat4("AddCol", colAdd, 0.0f, 1.0f)) {
+			addCol.x = colAdd[0];
+			addCol.y = colAdd[1];
+			addCol.z = colAdd[2];
+			addCol.w = colAdd[3];
+		}
+		ImGui::End();*/
 
 
 		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
@@ -174,6 +189,8 @@ int main() {
 		Game::parts.draw(window);
 		Game::render(window);
 		window.draw(tDt);
+
+		shader.setUniform("col", addCol);
 		window.draw(shaderShape, &shader);
 
 		/*
