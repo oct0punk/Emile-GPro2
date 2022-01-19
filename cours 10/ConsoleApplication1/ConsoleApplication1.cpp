@@ -67,11 +67,14 @@ int main() {
 	sf::Glsl::Vec4 mulCol(1.0f, 1.0f, 1.0f, 1.0f);
 	sf::Glsl::Vec4 addCol(0.0f, 0.0f, 0.0f, 1.0f);
 
-	sf::RectangleShape shaderShape(sf::Vector2f(1240, 720));
+	sf::RectangleShape shaderShape(sf::Vector2f(120, 72));
 	sf::Texture bg;
 	bg.loadFromFile("res/bg.jpg");
 	shaderShape.setTexture(&bg);
 	shader.setUniform("texture", sf::Shader::CurrentTexture);
+
+	sf::Glsl::Vec4 matrix{ 0.0f, 0.0f, 0.0f, 0.0f };
+	double time = 0.0;
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -194,11 +197,21 @@ int main() {
 			mulCol.z = colMul[2];
 			mulCol.w = colMul[3];
 		}
+		ImGui::NewLine();
+
 		ImGui::End();
+
+		time += dt;
+		//matrix.x = (.5f + .5f * sin(time)) * 1240;
+		//matrix.y = (.5f + .5f * cos(time)) * 720 ;
+		matrix.x = (1 + sin(time)) * 1240;
+		matrix.y = (1 + cos(time)) * 720;
+		matrix.w = 1.0f;
 
 		shader.setUniform("mulCol", mulCol);
 		shader.setUniform("addCol", addCol);
 		shader.setUniform("transCol", transCol);
+		shader.setUniform("matrix", matrix);
 
 		Game::im();
 

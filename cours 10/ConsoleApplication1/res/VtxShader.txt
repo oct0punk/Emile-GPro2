@@ -1,7 +1,11 @@
+uniform vec4 matrix;
+
 void main()
 {
+	vec4 worldPos = gl_Vertex;
+	worldPos += matrix;
     // transforme la position du vertex
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+    gl_Position = gl_ModelViewProjectionMatrix * worldPos;
 
     // transforme les coordonnées de texture
     gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
