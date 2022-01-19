@@ -1,4 +1,7 @@
 uniform vec4 matrix;
+uniform vec4 uvCoord;
+uniform vec4 uvPos;
+
 
 void main()
 {
@@ -8,7 +11,7 @@ void main()
     gl_Position = gl_ModelViewProjectionMatrix * worldPos;
 
     // transforme les coordonnées de texture
-    gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
+    gl_TexCoord[0] = gl_TextureMatrix[0] * (gl_MultiTexCoord0 + uvCoord) * uvPos;
 
     // transmet la couleur
     gl_FrontColor = gl_Color;

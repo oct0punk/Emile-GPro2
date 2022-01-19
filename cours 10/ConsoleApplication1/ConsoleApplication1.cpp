@@ -20,8 +20,13 @@
 #include "Entity.hpp"
 #include "Game.hpp"
 
+float lerp(float a, float b, float t)
+{
+	return a + t * (b - a);
+}
 
 int main() {
+	
 	sf::RenderWindow window(sf::VideoMode(Game::W, Game::H), "SFML works!");
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
@@ -67,13 +72,19 @@ int main() {
 	sf::Glsl::Vec4 mulCol(1.0f, 1.0f, 1.0f, 1.0f);
 	sf::Glsl::Vec4 addCol(0.0f, 0.0f, 0.0f, 1.0f);
 
-	sf::RectangleShape shaderShape(sf::Vector2f(120, 72));
+	sf::RectangleShape shaderShape(sf::Vector2f(1024, 1024));
 	sf::Texture bg;
 	bg.loadFromFile("res/bg.jpg");
 	shaderShape.setTexture(&bg);
 	shader.setUniform("texture", sf::Shader::CurrentTexture);
 
 	sf::Glsl::Vec4 matrix{ 0.0f, 0.0f, 0.0f, 0.0f };
+	sf::Glsl::Vec4 uvMap{ 0.0f, 0.0f, 0.0f, 0.0f };
+	sf::Glsl::Vec4 uvZoom{
+		0.4f,
+		0.4f,
+		0.0f,
+		0.0f };
 	double time = 0.0;
 
 	while (window.isOpen()) {
@@ -144,7 +155,7 @@ int main() {
 				}
 			}
 		}
-
+		
 
 		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 
@@ -178,10 +189,10 @@ int main() {
 		ImGui::Begin("Shader"); 
 		float colTrans[4] = { transCol.x, transCol.y, transCol.z, transCol.w };
 		if (ImGui::ColorPicker4("Transmission", colTrans)) {
-			transCol.x = colTrans[0] / 255.0f;
-			transCol.y = colTrans[1] / 255.0f;
-			transCol.z = colTrans[2] / 255.0f;
-			transCol.w = colTrans[3] / 255.0f;
+			transCol.x = colTrans[0];
+			transCol.y = colTrans[1];
+			transCol.z = colTrans[2];
+			transCol.w = colTrans[3];
 		}
 		float colAdd[4] = { addCol.x, addCol.y, addCol.z, addCol.w};
 		if (ImGui::ColorPicker4("AddCol", colAdd)) {
@@ -199,19 +210,26 @@ int main() {
 		}
 		ImGui::NewLine();
 
+
+
 		ImGui::End();
 
 		time += dt;
-		//matrix.x = (.5f + .5f * sin(time)) * 1240;
-		//matrix.y = (.5f + .5f * cos(time)) * 720 ;
 		matrix.x = (1 + sin(time)) * 1240;
 		matrix.y = (1 + cos(time)) * 720;
 		matrix.w = 1.0f;
-
 		shader.setUniform("mulCol", mulCol);
 		shader.setUniform("addCol", addCol);
 		shader.setUniform("transCol", transCol);
 		shader.setUniform("matrix", matrix);
+		uvMap = sf::Glsl::Vec4{ 
+			matrix.x,
+			matrix.y,
+			0.0f, 
+			0.0f };
+		shader.setUniform("uvCoord", uvMap);
+		shader.setUniform("uvPos", uvZoom);
+
 
 		Game::im();
 

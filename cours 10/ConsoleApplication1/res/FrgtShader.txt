@@ -8,13 +8,14 @@ void main()
 
     // lookup the pixel in the texture
     vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);
-
-	pixel += addCol;
-	pixel *= mulCol;
-	pixel.x *= transCol.x;
-	pixel.y *= transCol.y;
-	pixel.z *= transCol.z;
-	pixel.w *= transCol.w;
+	if (mod(gl_TexCoord[0].y , 0.2) > 0.1) {
+		pixel += addCol;
+		pixel *= mulCol;
+		pixel.x *= transCol.x;
+		pixel.y *= transCol.y;
+		pixel.z *= transCol.z;
+		pixel.w *= transCol.w;
+	}
 	
     // multiply it by the color
     gl_FragColor = gl_Color * pixel;
