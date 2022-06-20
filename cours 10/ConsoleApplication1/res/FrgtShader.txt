@@ -3,6 +3,46 @@ uniform vec4 mulCol;
 uniform vec4 addCol;
 uniform vec4 transCol;
 
+
+vec4 blurG3x3Tex( sampler2D tex, vec2 uv, vec2 res, float blurRadius) {
+	vec4 col = vec4(0.0, 0.0, 0.0, 0.0);
+	
+	float ux = res.x * blurRadius;
+	float ux2 = 2.0 * res.x * blurRadius;
+	
+	float uy = res.y * blurRadius;
+	float uy2 = 2.0 * res.y * blurRadius;
+	
+	
+	col += 0.00078633 * texture2D(tex, vec2(uv.x + -ux2	, 	(uv.y + uy2)  	));
+	col += 0.00655965 * texture2D(tex, vec2(uv.x + -ux	, 	(uv.y + uy2)  	));
+	col += 0.01330373 * texture2D(tex, vec2(uv.x  		, 	(uv.y + uy2)  	));
+	col += 0.00655965 * texture2D(tex, vec2(uv.x + ux	, 	(uv.y + uy2)  	));
+	col += 0.00078633 * texture2D(tex, vec2(uv.x + ux2	, 	(uv.y + uy2)  	));
+	col += 0.00655965 * texture2D(tex, vec2(uv.x + -ux2	,  	(uv.y + uy)  	));
+	col += 0.05472157 * texture2D(tex, vec2(uv.x + -ux	, 	(uv.y + uy)  	));
+	col += 0.11098164 * texture2D(tex, vec2(uv.x 		, 	(uv.y + uy)  	));
+	col += 0.05472157 * texture2D(tex, vec2(uv.x + ux	, 	(uv.y + uy)  	));
+	col += 0.00655965 * texture2D(tex, vec2(uv.x + ux2	, 	(uv.y + uy)  	));
+	col += 0.01330373 * texture2D(tex, vec2(uv.x + -ux2	,  	(uv.y)   		));
+	col += 0.11098164 * texture2D(tex, vec2(uv.x + -ux	,   (uv.y)			));
+	col += 0.22508352 * texture2D(tex, vec2(uv.x 		,  	(uv.y)   		));
+	col += 0.11098164 * texture2D(tex, vec2(uv.x + ux	,   (uv.y) 		));
+	col += 0.01330373 * texture2D(tex, vec2(uv.x + ux2	, 	(uv.y)   		));
+	col += 0.00655965 * texture2D(tex, vec2(uv.x + -ux2	,  	(uv.y - uy)  	));
+	col += 0.05472157 * texture2D(tex, vec2(uv.x + -ux	, 	(uv.y - uy)  	));
+	col += 0.11098164 * texture2D(tex, vec2(uv.x 		,  	(uv.y - uy)  	));
+	col += 0.05472157 * texture2D(tex, vec2(uv.x + ux	, 	(uv.y - uy)  	));
+	col += 0.00655965 * texture2D(tex, vec2(uv.x + ux2	, 	(uv.y - uy)  	));
+	col += 0.00078633 * texture2D(tex, vec2(uv.x + -ux2	, 	(uv.y - uy2)  	));
+	col += 0.00655965 * texture2D(tex, vec2(uv.x + -ux	, 	(uv.y - uy2)  	));
+	col += 0.01330373 * texture2D(tex, vec2(uv.x 		, 	(uv.y - uy2)  	));
+	col += 0.00655965 * texture2D(tex, vec2(uv.x + ux	, 	(uv.y - uy2)  	));
+	col += 0.00078633 * texture2D(tex, vec2(uv.x + ux2	, 	(uv.y - uy2)  	));
+	
+	return col;
+}
+
 void main()
 {
 
@@ -16,6 +56,7 @@ void main()
 		pixel.z *= transCol.z;
 		pixel.w *= transCol.w;
 	}
+		blurG3x3Tex( texture, gl_TexCoord[0], pixel, .1f);
 	
     // multiply it by the color
     gl_FragColor = gl_Color * pixel;
