@@ -1,18 +1,4 @@
 Excellent!
-
 http://h.garreta.free.fr
-
 multithread, rendu, transforms, maths
 
-.hpp
-- Contient toutes les déclarations
-- Toujours inline
-
-.cpp
-- implémentation
-
-#pragme once
-Référence unique
-
-C# exporté en module 
-C++ copié-collé à chaque implémentations
